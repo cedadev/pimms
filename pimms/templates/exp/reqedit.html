@@ -1,0 +1,121 @@
+{% extends "site/two_column_page_wideleft.html" %}
+
+
+{% block page_top_menu %}
+    
+    {% include 'page/pagemenu.html' %}
+    
+    <div class="page-header">   
+      {% if reqform.instance.abbrev %}
+        <h3>Edit Requirement <strong>{{reqform.instance.abbrev}}</strong></h3>
+      {% else %}
+        <h3>Edit New Requirement</h3>
+      {% endif %}
+    </div>
+    
+    {% if reqform.errors%} 
+      <div class="row">
+        <div class="offset1 span10">
+            <div class="alert alert-error ">
+              {% if reqform.non_field_errors %}
+                <p>{{ reqform.non_field_errors }}</p>
+              {% else %}
+                <p> Please correct the marked fields</p>
+              {% endif %}
+            </div>
+        </div>
+      </div>
+    {% endif %}
+  
+{% endblock %}
+
+
+{% block page_column_one %}
+
+      <form action="{{ urls.reqedit }}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+           
+            <div class="row">        
+              <div class="span2">
+                <label for="name"{% if reqform.name.errors %} class="text-error" {% endif %}>Name {% if reqform.fields.name.required %}*{% endif %}</label>
+              </div>
+              <div class="span3">
+                {{ reqform.name }}
+              </div>
+              <div class="span2">
+              {% if reqform.name.errors %}
+                {% for error in reqform.name.errors %}
+                    <p class="text-error">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              </div>
+            </div>
+            <br/>
+            
+            <div class="row">        
+              <div class="span2">
+                <label for="docid"{% if reqform.docid.errors %} class="text-error" {% endif %}>Doc ID {% if reqform.fields.docid.required %}*{% endif %}</label>
+              </div>
+              <div class="span3">
+                {{ reqform.docid }}
+              </div>
+              <div class="span2">
+              {% if reqform.docid.errors %}
+                {% for error in reqform.docid.errors %}
+                    <p class="text-error">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              </div>
+            </div>
+            <br/>
+            
+            <div class="row">        
+              <div class="span2">
+                <label for="rectype"{% if reqform.reqtype.errors %} class="text-error" {% endif %}>Requirement Type {% if reqform.fields.reqtype.required %}*{% endif %}</label>
+              </div>
+              <div class="span3">
+                {{ reqform.reqtype }}
+              </div>
+              <div class="span2">
+              {% if reqform.reqtype.errors %}
+                {% for error in reqform.reqtype.errors %}
+                    <p class="text-error">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              </div>
+            </div>
+            <br/>
+            
+            <div class="row">        
+              <div class="span2">
+                <label for="descripton"{% if reqform.description.errors %} class="text-error" {% endif %}>Description {% if reqform.fields.description.required %}*{% endif %}</label>
+              </div>
+              <div class="span3">
+                {{ reqform.description }}
+              </div>
+              <div class="span2">
+              {% if reqform.description.errors %}
+                {% for error in reqform.description.errors %}
+                    <p class="text-error">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              </div>
+            </div>
+            <br/>
+    
+{% endblock %}
+
+
+{% block page_column_two %}
+  <div class="well well-large span3">
+	  <div class="row">
+	    <div class="span3">
+	      <button type="submit" name="reqform" class="btn btn-primary btn-block"><strong>Save changes</strong></button>
+	      <button name="cancel" type="submit" value="Cancel" class="btn btn-block"><strong>Cancel</strong></button>          
+	    </div>
+	  </div>
+  </div>
+  
+  </form>
+  
+{% endblock %}

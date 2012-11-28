@@ -1,0 +1,41 @@
+{% extends "site/one_column_page.html" %}
+    
+    {% block pageheader %}
+      Controlled Vocabulary Management
+    {% endblock %}
+        
+    {% block page_column_one %}
+            
+	    <div class="page-header">
+	      {% if errors or warnings%}
+	        <h3>Your mindmap contains {{ errors|length }} errors and {{ warnings|length }} warnings</h3>
+	      {% else %}          
+	        <h3>Great! Your mindmap file is valid.</h3>
+          {% endif %}
+	    </div>
+    
+        <div class="row">
+          {% if errors %}
+	          <ul>
+	            {% for error in errors %}
+	              <div class="alert alert-error">
+	              Error - {{ error }}
+	              </div>
+	            {% endfor %}
+	          </ul>
+	      {% endif %}
+          {% if warnings %}
+              <ul>
+                {% for warning in warnings %}
+                  <div class="alert alert-block">
+                    Warning - {{ warning }}
+                  </div>
+                {% endfor %}
+              </ul>
+          {% endif %}
+          <div class="span2 offset9">
+            <a class="btn btn-block" href="{{ urls.cvhome }}">Return to CV Page</a>
+          </div>
+        </div>
+        
+    {% endblock %}

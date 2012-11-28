@@ -1,0 +1,69 @@
+{% extends "site/two_column_page_wideleft.html" %}
+
+
+{% block page_top_menu %}
+
+    {% include 'page/pagemenu.html' %}
+    
+    <div class="page-header">
+      <h3>Requirement <strong>{{ req.name }}</strong></h3>
+    </div>
+  
+{% endblock %}
+
+
+{% block page_column_one %}
+
+  <div class="row">
+    <div class="span2">
+      <strong>Name</strong>
+    </div>
+    <div class="span4">
+      {{ req.name }}
+    </div>
+  </div>
+  <br/>
+  
+  <div class="row">
+    <div class="span2">
+      <strong>Doc ID</strong>
+    </div>
+    <div class="span4">
+      {{ req.docid }}
+    </div>
+  </div>
+  <br/>
+  
+  <div class="row">
+    <div class="span2">
+      <strong>Description</strong>
+    </div>
+    <div class="span4">
+      {{ req.description }}
+    </div>
+  </div>
+  <br/>
+  
+  <div class="row">
+    <div class="span2">
+      <strong>Requirement Type</strong>
+    </div>
+    <div class="span4">
+      {{ req.reqtype }}
+    </div>
+  </div>   
+  <br/>
+  
+{% endblock %} 
+
+
+{% block page_column_two %}
+  <div class="well well-large span3">
+	  <div class="row">
+	    <div class="span3">
+	      <a href="{{ urls.reqlist }}" class="btn btn-block"><strong>Return to list</strong></a>
+	      <a href="{{ urls.reqedit }}" class="btn btn-block"><strong>Edit this Requirement</strong></a>
+	    </div>
+	  </div>
+  </div>
+{% endblock %}      

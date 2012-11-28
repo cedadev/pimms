@@ -1,0 +1,80 @@
+{% extends "site/two_column_page.html" %}
+
+    {% block pageheader %}
+      Controlled Vocabulary Management
+    {% endblock %}
+    
+    {% block page_column_one %}
+        <p class="justify">
+        This application can be used to check freemind-produced controlled 
+        vocabularies against that required for metadata questionnaire ingestion.
+        Upon passing validation the file can be translated to a metadata 
+        questionnaire-friendly xml input file. 
+        </p>
+    {% endblock %}
+    
+    {% block page_column_two %}
+        <div class="row well">
+	        <div class="row pagination-centered">
+	            <form enctype="multipart/form-data" action="{{ urls.cvhome }}" method="POST" onsubmit="return checkFile();">
+	              <input class="btn btn-block" type="hidden" name="MAX_FILE_SIZE"/>
+	              <input name="uploadedfile" type="file" id="mmfile"/><br />
+	        </div>
+	        
+	        <div class="row pagination-centered">
+	          <div class="offset0">
+	              {{ mmform.igWarnings }} Click to ignore warnings <p class="icon-info-sign ttip" rel="tooltip" data-placement="top" title="The translation to questionnaire xml will only be halted in the event of errors in the mindmaps. Warnings will be ignored."></p>
+	          </div>
+	        </div>
+        </div>
+        
+        <div class="row">
+            <input id="mm" class="btn btn-primary btn-block" type="submit" value="Translate mindmap" />
+        </div>
+          </form>
+        
+	    <div id="nofile" class="modal hide fade">
+	      <div class="modal-header">      
+          </div> 
+		  <div class="modal-body">
+		    <p>You must select a file</p>
+		  </div>
+		  <div class="modal-footer">
+		    <button id="cancel" class="btn" data-dismiss="modal" type="button" name="cancel">Close</a>
+		  </div>
+	    </div>
+	    
+	    <div id="notmm" class="modal hide fade">
+          <div class="modal-header">      
+          </div> 
+          <div class="modal-body">
+            <p>You must select a .mm file</p>
+          </div>
+          <div class="modal-footer">
+            <button id="cancel" class="btn" data-dismiss="modal" type="button" name="cancel">Close</a>
+          </div>
+        </div>
+    
+    {% endblock %}
+    
+    {% block extrajs %}
+      <script type="text/javascript">
+	      function checkFile() {
+	        var oTarget = document.getElementById('mmfile');
+            if (oTarget.value.length < 1) {
+              $("#nofile").modal('show')
+              return false;
+            } 
+            
+            if (oTarget.value.indexOf(".mm") === -1) {
+              $("#notmm").modal('show')
+              return false;
+            }
+            else {
+              return true;
+            }
+            
+	      }
+      </script>
+    {% endblock %}
+    

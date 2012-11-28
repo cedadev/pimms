@@ -1,0 +1,58 @@
+{% extends "site/one_column_page.html" %}
+
+{% block page_column_one %}
+
+{% if error or form.errors%}
+  <div class="alert alert-error ">
+    {% if error %}
+      <p>{{ error }}</p>
+    {% endif %}
+    {% if form.errors %}
+      <p> Please correct the marked fields</p>
+    {% endif %}
+  </div>
+{% else %}
+  <div class="alert alert-info">
+    Log in to your account....
+  </div>
+{% endif %}
+
+<br/>
+
+<div class="row">
+    <div class="offset4 span4">
+    
+		<form action="" method="post" class="form-horizontal well">
+			{% csrf_token %} 
+			
+			<div>
+			    {% if form.username.errors %} 
+			      {% for error in form.username.errors %}
+			        <p class="text-error">{{ error }}</p> 
+			      {% endfor %}
+			    {% endif %}
+			    <p><label for="username"{% if form.username.errors %} class="text-error"{% endif %}>Username:</label></p>
+			    <p>{{ form.username }}</p>
+			</div>
+			
+			<div>
+			    {% if form.password.errors %} 
+			      {% for error in form.password.errors %}
+			        <p class="text-error">{{ error }}</p>
+			      {% endfor %} 
+			    {% endif %}
+			    <p><label for="password"{% if form.password.errors %} class="text-error"{% endif %}>Password:</label></p>
+			    <p>{{ form.password }}</p>
+			</div>
+			<br/>
+			<br/>			
+			<div class="actions">
+	            <button type="submit" class="btn btn-primary btn-block"><i class="icon-signin"></i> Login</button>
+	            <a href="{{ urls.register }}" class="btn btn-block"><strong> or Register Account</strong></a>   
+	        </div>
+		</form>
+
+    </div>
+</div>
+
+{% endblock %} 
