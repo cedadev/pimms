@@ -2,7 +2,9 @@ from django.shortcuts import render_to_response
 from django.http import Http404
 from django.template.context import RequestContext
 
-from pimms.apps.helpers import genurls
+from pimms.apps.helpers import getsiteurls
+from pimms.apps.exp.helpers import getexpurls
+from pimms.apps.cv.helpers import getcvurls
 
 
 def home(request):
@@ -10,7 +12,10 @@ def home(request):
     '''
     try:
         # get my urls
-        urls = genurls()
+        urls = {}
+        urls = getsiteurls(urls)
+        urls = getexpurls(urls)
+        urls = getcvurls(urls)
     except:
         raise Http404
     
@@ -23,7 +28,8 @@ def about(request):
     '''
     try:
         # get my urls
-        urls = genurls()
+        urls = {}
+        urls = getsiteurls(urls)
     except:
         raise Http404
       

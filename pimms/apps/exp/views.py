@@ -11,8 +11,9 @@ from pimms.apps.exp.models import Experiment
 from pimms.apps.exp.models import NumericalRequirement
 from pimms.apps.exp.forms import ExperimentForm, RequirementForm
 from pimms.apps.exp.XMLutilities import getCIMXML
+from pimms.apps.exp.helpers import getexpurls
 
-from pimms.apps.helpers import genurls
+from pimms.apps.helpers import getsiteurls
 
 
 # TODO: link this to the template
@@ -20,7 +21,7 @@ def modalform1(request):
     '''
     controller for app about page
     '''
-    return render_to_response('page/modalform1.html', {},
+    return render_to_response('exp/modalform1.html', {},
                               context_instance=RequestContext(request))
 
 
@@ -31,17 +32,15 @@ def exphome(request):
     '''
     try:
         # get my urls
-        urls = genurls()
-        urls['modalform1'] = reverse('pimms.apps.exp.views.modalform1',
-                                   args=())
+        urls = {}
+        urls = getsiteurls(urls)
+        urls = getexpurls(urls)        
+        #urls['modalform1'] = reverse('pimms.apps.exp.views.modalform1', args=())
         allexps = Experiment.objects.filter(author=request.user)
         for exp in allexps:
-            exp.url = reverse('pimms.apps.exp.views.expview',
-                              args=(exp.id, ))
-            exp.cpurl = reverse('pimms.apps.exp.views.expcopy',
-                              args=(exp.id, ))
-            exp.delurl = reverse('pimms.apps.exp.views.expdelete',
-                              args=(exp.id, ))
+            exp.url = reverse('pimms.apps.exp.views.expview', args=(exp.id, ))
+            exp.cpurl = reverse('pimms.apps.exp.views.expcopy', args=(exp.id, ))
+            exp.delurl = reverse('pimms.apps.exp.views.expdelete', args=(exp.id, ))
     except:
         raise Http404
     return render_to_response('exp/exphome.html', {'allexps': allexps,
@@ -58,7 +57,9 @@ def expview(request, expid):
     exp = get_object_or_404(Experiment, pk=expid)
     
     # get my urls
-    urls = genurls()    
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)      
     urls['expedit']=reverse('pimms.apps.exp.views.expedit',args=(exp.id, ))
     urls['exppub']=reverse('pimms.apps.exp.views.exppub',args=(exp.id, ))
     
@@ -70,7 +71,7 @@ def expview(request, expid):
                               args=(req.id, ))   
     
     #Send to template
-    return render_to_response('page/expview.html', 
+    return render_to_response('exp/expview.html', 
                               {'exp': exp, 'urls':urls, 'reqs':reqs},
                                 context_instance=RequestContext(request))
 
@@ -85,7 +86,9 @@ def expcopy(request, expid):
     exp = get_object_or_404(Experiment, pk=expid)
     
     # get my urls
-    urls = genurls() 
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)  
     urls['expedit']=reverse('pimms.apps.exp.views.expedit',args=(exp.id, ))
     urls['exppub']=reverse('pimms.apps.exp.views.exppub',args=(exp.id, ))
     
@@ -100,7 +103,9 @@ def expdelete(request, expid):
     '''
     
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)  
     
     exp = get_object_or_404(Experiment, pk=expid)
     exp.delete()
@@ -117,7 +122,9 @@ def expadd(request):
     exp = Experiment()
         
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)  
     
     # Deal with response 
     if request.method == 'POST':
@@ -136,7 +143,7 @@ def expadd(request):
                     
                     return HttpResponseRedirect(urls['exphome']) # Redirect to list page 
                 else:
-                    return render_to_response('page/expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
+                    return render_to_response('exp/expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
             elif 'reqform' in request.POST:
                 reqform = RequirementForm(request.POST, 
                                           instance=NumericalRequirement(), 
@@ -150,7 +157,7 @@ def expadd(request):
         expform = ExperimentForm(instance=exp, prefix='exp', user=request.user) # An unbound form
         reqform = RequirementForm(prefix='req') # An unbound form
 
-    return render_to_response('page/expedit.html', 
+    return render_to_response('exp/expedit.html', 
                               {'expform': expform,               
                                'reqform': reqform, 
                                'urls':urls},
@@ -168,7 +175,9 @@ def expedit(request, expid=None):
     exp = get_object_or_404(Experiment, pk=expid)
         
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)  
     
     # Deal with response 
     if request.method == 'POST':
@@ -190,7 +199,7 @@ def expedit(request, expid=None):
                     
                     return HttpResponseRedirect(urls['exphome']) # Redirect to list page 
                 else:
-                    return render_to_response('page/expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
+                    return render_to_response('exp/expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
             elif 'reqform' in request.POST:
                 reqform = RequirementForm(request.POST, 
                                           instance=NumericalRequirement(), 
@@ -204,7 +213,7 @@ def expedit(request, expid=None):
         expform = ExperimentForm(instance=exp, prefix='exp', user=request.user) # An unbound form
         reqform = RequirementForm(prefix='req') # An unbound form
 
-    return render_to_response('page/expedit.html', 
+    return render_to_response('exp/expedit.html', 
                               {'expform': expform,               
                                'reqform': reqform, 
                                'urls':urls},
@@ -239,12 +248,14 @@ def reqlist(request):
                               args=(req.id, ))
         
         # get my urls
-        urls = genurls()
+        urls = {}
+        urls = getsiteurls(urls)
+        urls = getexpurls(urls)  
         
     except:
         raise Http404
     
-    return render_to_response('page/reqlist.html', {'allreqs':allreqs, 'urls':urls}, 
+    return render_to_response('exp/reqlist.html', {'allreqs':allreqs, 'urls':urls}, 
                                        context_instance=RequestContext(request))
 
 
@@ -258,10 +269,12 @@ def reqview(request, reqid):
     req = get_object_or_404(NumericalRequirement, pk=reqid)
     
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)  
     urls['reqedit']=reverse('pimms.apps.exp.views.reqedit',args=(req.id, ))
          
-    return render_to_response('page/reqview.html', {'req':req, 'urls':urls}, 
+    return render_to_response('exp/reqview.html', {'req':req, 'urls':urls}, 
                                 context_instance=RequestContext(request))
 
 
@@ -274,7 +287,9 @@ def reqadd(request):
     req = NumericalRequirement()  
     
     # get my urls
-    urls = genurls()  
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)    
           
     if request.method == 'POST': 
         cancel = request.POST.get('cancel', None)
@@ -291,11 +306,11 @@ def reqadd(request):
                 
                 return HttpResponseRedirect(urls['reqlist']) # Redirect after POST
             else:
-                return render_to_response('page/reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
+                return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
     else:
         reqform = RequirementForm(instance=req) # An unbound form
 
-    return render_to_response('page/reqedit.html', {'reqform': reqform, 'urls':urls}, 
+    return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, 
                                 context_instance=RequestContext(request))
 
 
@@ -309,7 +324,9 @@ def reqedit(request, reqid=None):
     req = get_object_or_404(NumericalRequirement, pk=reqid)  
     
     # get my urls
-    urls = genurls()  
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)    
           
     if request.method == 'POST': 
         cancel = request.POST.get('cancel', None)
@@ -327,11 +344,11 @@ def reqedit(request, reqid=None):
                 
                 return HttpResponseRedirect(urls['reqlist']) # Redirect after POST
             else:
-                return render_to_response('page/reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
+                return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
     else:
         reqform = RequirementForm(instance=req) # An unbound form
 
-    return render_to_response('page/reqedit.html', {'reqform': reqform, 'urls':urls}, 
+    return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, 
                                 context_instance=RequestContext(request))
 
 
@@ -346,26 +363,10 @@ def reqdelete(request, reqid=None):
     req.delete()
     
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)  
 
     # Redirect after POST
     return HttpResponseRedirect(urls['reqlist'])
-
-
-@login_required
-def importcim(request):
-    '''
-    controller for importing CIM document
-    '''
-    
-    try:        
-        message = 'Import CIM page will go here'
-        # get my urls
-        urls = genurls()
-        
-    except:
-        raise Http404
-    
-    return render_to_response('page/importcim.html', 
-                              {'message':message, 'urls':urls})
     

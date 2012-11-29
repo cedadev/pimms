@@ -1,19 +1,27 @@
 {% extends "site/one_column_page.html" %}
 
+{% block pagetitle %}
+  Register Account 
+{% endblock %}
+
 {% block page_column_one %}
  
 {% if form.errors%}
-  <div class="alert alert-error ">
+<div class="row">
+  <div class="alert alert-error span9 offset1">
     {% if form.non_field_errors %}
       <p>{{ form.non_field_errors }}</p>
     {% else %}
       <p> Please correct the marked fields</p>
     {% endif %}
   </div>
+</div>
 {% else %}
-  <div class="alert alert-info">
+<div class="row">
+  <div class="alert alert-info span9 offset1">
     Register a new account....
   </div>
+</div>
 {% endif %}
 
 <br/>

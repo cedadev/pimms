@@ -1,51 +1,63 @@
-{% extends "site/one_column_page.html" %}
+{% extends "site/home_two_column_page.html" %}
     
     {% block pagetitle %}
       Welcome
     {% endblock %}
  
     {% block page_column_one %}
+      <h4>What is PIMMS?</h4>
       <p class="justify">
         PIMMS is an infrastructure to manage the metadata requirements of a climate modelling project            
       </p>
-   
-      <div class="row">
-        <div class="offset1 span10">
-          <div class="row well">
-            <div class="span6 offset1">
-              1. Create experiments            
-            </div>
-            <div class="span2">
-              <a href="{{ urls.exphome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
+      <a href="{{ urls.about }}" class="btn btn-block"><strong>Read More...</strong></a>
+    
+    {% endblock %}
+    
+    
+    {% block page_column_two %}
+      {% if user.is_authenticated %}
+	   
+	      <div class="row well">
+	        <div class="span2">
+	          <strong>1. Create experiments</strong>            
+	        </div>
+	        <div class="offset1 span1">
+	          <a href="{{ urls.exphome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
+	        </div>
+	      </div>
+	      
+	      <div class="row well">
+	        <div class="span2">
+	          <strong>2. Manage Controlled Vocabs</strong>            
+	        </div>
+	        <div class="offset1 span1">
+	          <a href="{{ urls.cvhome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
+	        </div>
+	      </div>
+	      
+	      <div class="row well">
+	        <div class="span2">
+	          <strong>3. Metadata Questionnaire</strong>            
+	        </div>
+	        <div class="offset1 span1">
+	          <a href="{{ urls.qnhome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
+	        </div>
+	      </div>  
+	  {% else %}    
+	      <div class="row">
+            <div class="span12 btn-toolbar">
             </div>
           </div>
-        </div>
-      </div>
+          <div class="row">
+            <div class="span12 btn-toolbar">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="span4 offset1">
+              <a href="{{ urls.login }}" class="btn btn-primary btn-block"><strong>Login</strong></a>
+            </div>
+          </div>
+      {% endif %}
       
-      <div class="row">
-        <div class="offset1 span10">
-          <div class="row well">
-            <div class="span6 offset1">
-              2. Manage Controlled Vocabs            
-            </div>
-            <div class="span2">
-              <a href="{{ urls.cvhome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="offset1 span10">
-          <div class="row well">
-            <div class="span6 offset1">
-              3. Metadata Questionnaire            
-            </div>
-            <div class="span2">
-              <a href="{{ urls.qn }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
-            </div>
-          </div>
-        </div>
-      </div>
- 
     {% endblock %}

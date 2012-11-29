@@ -4,16 +4,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from apps.person.forms import RegistrationForm, LoginForm
-from apps.person.models import Person
-from apps.helpers import genurls
+from pimms.apps.person.forms import RegistrationForm, LoginForm
+from pimms.apps.person.models import Person
+from pimms.apps.helpers import getsiteurls
 
 
 def UserRegistration(request):
     ''' Registers credentials for a user '''
     
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
         
     if request.user.is_authenticated():
         return HttpResponseRedirect(urls['home'])
@@ -31,23 +32,25 @@ def UserRegistration(request):
                             institute=form.cleaned_data['institute'])
             person.save()
             
+            #automatically log this new person in 
+            new_user = authenticate(username=request.POST['username'],
+                                    password=request.POST['password1'])
+            login(request, new_user)            
             return HttpResponseRedirect(urls['home'])
         else:
-            # get my urls
-            urls = genurls()
-            return render_to_response('page/register.html', {'form': form, 'urls':urls}, context_instance=RequestContext(request))
+            return render_to_response('person/register.html', {'form': form, 'urls':urls}, context_instance=RequestContext(request))
             
     else:
         ''' user is not submitting a form therefore show a registration form '''
-        urls = genurls()
         form = RegistrationForm()
         context = {'form': form, 'urls':urls}
-        return render_to_response('page/register.html', context, context_instance=RequestContext(request))
+        return render_to_response('person/register.html', context, context_instance=RequestContext(request))
         
 
 def LoginRequest(request):
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
     
     if request.user.is_authenticated():
         return HttpResponseRedirect(urls['home'])
@@ -60,24 +63,25 @@ def LoginRequest(request):
             person = authenticate(username=username, password=password)
             if person is not None:
                 login(request, person)
-                return HttpResponseRedirect(urls['explist'])
+                return HttpResponseRedirect(urls['home'])
             else:
                 error = "Username and Password do not match. Please try again"
-                return render_to_response('page/login.html', {'form': form, 'error': error, 'urls': urls}, context_instance=RequestContext(request))
+                return render_to_response('person/login.html', {'form': form, 'error': error, 'urls': urls}, context_instance=RequestContext(request))
         else:
-            return render_to_response('page/login.html', {'form': form, 'urls': urls}, context_instance=RequestContext(request))        
+            return render_to_response('person/login.html', {'form': form, 'urls': urls}, context_instance=RequestContext(request))        
     else:
         ''' user is not submitting the form, therefore show the login form '''
         form = LoginForm()        
         context = {'form': form, 'urls':urls}
-        return render_to_response('page/login.html', context, context_instance=RequestContext(request))
+        return render_to_response('person/login.html', context, context_instance=RequestContext(request))
     
     
 def LogoutRequest(request):
     logout(request)
     
     # get my urls
-    urls = genurls()
+    urls = {}
+    urls = getsiteurls(urls)
     
     return HttpResponseRedirect(urls['home'])
 

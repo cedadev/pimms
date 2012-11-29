@@ -4,7 +4,8 @@ from django.template.context import RequestContext
 
 from pimms.apps.cv.forms import MMForm
 from pimms.apps.cv.mindmap import checkMM, translateMM
-from pimms.apps.helpers import genurls
+from pimms.apps.cv.helpers import getcvurls
+from pimms.apps.helpers import getsiteurls
 
 
 def cvhome(request):
@@ -17,7 +18,9 @@ def cvhome(request):
   
     try:
         # get my urls
-        urls = genurls()
+        urls = {}
+        urls = getsiteurls(urls)
+        urls = getcvurls(urls) 
     except:
         raise Http404
       
@@ -62,7 +65,9 @@ def about(request):
     '''
     try:
         # get my urls
-        urls = genurls()
+        urls = {}
+        urls = getsiteurls(urls)
+        urls = getcvurls(urls) 
     except:
         raise Http404
       

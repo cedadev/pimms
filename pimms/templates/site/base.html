@@ -12,6 +12,7 @@
     <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-spacelab.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/mystyles.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -49,11 +50,25 @@
     
     <!--page header -->
     <header class="jumbotron subhead" id="overview">
-      <h1>PIMMS Metadata Manager</h1>
-      <p class="lead">{% block pagetitle %}{% endblock %}</p>
+      <div class="span9">
+        <h1>PIMMS Metadata Manager</h1>
+        <p class="lead">{% block pagetitle %}{% endblock %}</p>
+      </div>
+      <div class="span2">
+        <img src="{{ STATIC_URL }}images/pimms_logo.png" alt="pimms logo">
+      </div>
       <br/>
     </header>     
     <!--end page header -->
+    
+    <div class="row">
+       <div class="span12 btn-toolbar">
+       </div>
+    </div>
+    <div class="row">
+       <div class="span12 btn-toolbar">
+       </div>
+    </div>
              
     <!--page content -->
     {% block content %}

@@ -8,10 +8,6 @@ urlpatterns = patterns('',
                            
     # admin:
     url(r'^admin/', include(admin.site.urls)),
-    
-    # home and about pages
-    #(r'^$','pimms.apps.main.views.home', {}, 'home'),
-    #(r'^about/$','pimms.apps.main.views.about', {}, 'about'),
         
     # for user registration/login/logout
     (r'^register/$', 'pimms.apps.person.views.UserRegistration', {}, 'register'),
@@ -21,8 +17,8 @@ urlpatterns = patterns('',
     # including app level urls.py's
     (r'', include('pimms.apps.main.urls')),
     (r'', include('pimms.apps.person.urls')),
-    (r'^exp/$', include('pimms.apps.exp.urls')),
-    (r'^cv/$', include('pimms.apps.cv.urls')),
+    (r'^exp/', include('pimms.apps.exp.urls')),
+    (r'^cv/', include('pimms.apps.cv.urls')),
 )
 
 

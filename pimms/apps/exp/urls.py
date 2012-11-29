@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     #----------Experiments-------------------------------------------
     
     # exp 'home' page (experiment list page)                   
-    (r'^$','pimms.apps.exp.views.explist', {}, 'exphome'),
+    (r'^$','pimms.apps.exp.views.exphome', {}, 'exphome'),
     
     #add new experiment page 
     (r'^expadd/$', 'pimms.apps.exp.views.expadd', {}, 'expadd'),
@@ -50,12 +50,5 @@ urlpatterns = patterns('',
     
     #delete experiment page 
     (r'^reqdelete/(?P<reqid>\d+)/$', 'pimms.apps.exp.views.reqdelete',{}, 'reqdelete'),
-    
-    
-    # -----------Imports---------------------------------------------- 
-    
-    #import cim page
-    (r'^importcim/$', 'pimms.apps.exp.views.importcim', {}, 'import'),
         
     )
-
