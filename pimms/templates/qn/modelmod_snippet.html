@@ -1,0 +1,14 @@
+<table>
+<tr> <td width="20%">Mnemonic: {{form.mnemonic.errors}}</td><td>{{form.mnemonic}}</td></tr>
+<tr> <td>Type: {{form.mtype.errors}}</td><td>{{form.mtype}}</td></tr>
+<tr> <td>Optional numeric modification:</td><td>Parameter: {{form.k.errors}}{{form.k}}, Value:{{form.v.errors}}{{form.v}}</td></tr>
+<tr> <td>Description: {{form.description.errors}}</td><td>{{form.description}}</td></tr>
+<tr> <td>Component: {{form.component.errors}}</td><td>{{form.component}}</td></tr>
+</table>
+<center>
+    <input id="subDatBut" type="submit" value="Save">
+    <script type="text/javascript">
+    var subDatBut = new YAHOO.widget.Button("subDatBut",
+                  {value:"subDatButvalue"});
+    </script>
+</center>

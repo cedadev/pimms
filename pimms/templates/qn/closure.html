@@ -1,0 +1,23 @@
+<table>
+<tr>
+    <td> <table> 
+    {% ifequal ff.instance.ctype 'internal' %}
+    <tr><td>From: {{ff.target.errors}}{{ff.target}} &nbsp;</td></tr> {% else %}
+    
+    <tr><td>File: {{ff.targetFile.errors}}{{ff.targetFile}}</td></tr>
+    <tr><td {% if forloop.first %}id="tt{{f.cf.instance.id}}"{% endif %} >Variable: {{ff.target.errors}}{{ff.target}}</td></tr>
+    {% endifequal %}
+    <tr><td>(delete: {{ff.DELETE.errors}}{{ff.DELETE}})</td></tr>
+    </table></td>
+    <td>
+        <table>
+        <tr><td> 
+        Spatial Regridding: {{ff.spatialRegrid.errors}} {{ff.spatialRegrid}}
+        </td></tr><tr><td>
+Time Mapping: {{ff.temporalTransform.errors}} {{ff.temporalTransform}}
+        </td></tr>
+        </table>
+    </td>
+</tr>
+</table>
+{% for hid in ff.hidden_fields %} {{hid}}{% endfor %}

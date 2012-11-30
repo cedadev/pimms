@@ -1,0 +1,14 @@
+{% if centre_list %}
+   <ul>
+  {% for centre in centre_list %}
+     <li>{{centre.abbrev}}</li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p> No centres loaded! Your centre needs to be defined by the site administrators
+  before model metadata can be added. Please contact SOMEONE </p>
+{% endif %}
+<form action="/load/" method="POST" onsubmit="myProject.bypassConfirm()">
+{{cf.as_p}}
+<input type="submit" value="Submit"/>
+</form>

@@ -1,0 +1,20 @@
+<!-- reference_snippet.html -->
+<p class="guidance"> Please enter citations in the form:<br/>
+    Author1, A.B, C.D. Author2,...,and Y.Z. AuthorLast (1984). "The year of the bat". Journal of Irreducable Results, 44, 1-23.<br/>
+and enter doi strings in the link box as doi:a.b.c </p>
+<table>
+<tr width="100%"> <td>Mnemonic: *{{form.name.errors}}</td><td>{{form.name}}</td>
+    <td width="25%">Type: *{{form.refType.errors}} {{form.refType}}</td>
+    <td width="50%">Link: {{form.link.errors}} {{form.link}}</td>
+</tr>
+<tr><td>Citation: *{{form.citation.errors}}</td><td colspan="3">{{form.citation}}</td></tr>
+<tr><td colspan="4">
+    <center>
+    <input id="subDatBut" type="submit" value="Save Reference">
+    <script type="text/javascript">
+        var subDatBut = new YAHOO.widget.Button("subDatBut",
+                            {value:"subDatButvalue"});
+    </script>
+    </center>
+</td></tr>
+</table>

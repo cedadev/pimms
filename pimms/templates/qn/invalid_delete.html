@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="boxer">
+  
+  <h1> Unable to delete {{klass}} instance "{{instance}}" </h1>
+  <p> This object cannot be deleted until other objects which point to it have 
+      been fixed so they no longer reference it. This can include, for example, 
+      variables within files, or couplings in models and/or simulations.
+  </p>
+  <h4> Objects which reference {{instance}} are listed below:</h4>
+  <p/>
+  
+  <ul>
+    {% for k,l in failed.items %}
+      <li> {{ k }} 
+        <ul>
+          {% for i in l %}
+            {% if i.coupling %}
+              <li>{{ i.coupling }}</li>
+            {% else %}
+              <li>{{ i }}</li>
+            {% endif %}
+                
+          {% endfor %}
+        </ul>
+      </li> 
+    {% endfor %}
+  </ul>
+
+  <p> Use your browser back button to return </p>
+
+</div>
+{% endblock %}

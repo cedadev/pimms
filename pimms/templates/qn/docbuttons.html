@@ -1,0 +1,55 @@
+<!-- buttons corresponding to those methods defined in cimHandler.py commonURLs-->
+
+<center> 
+<p>Document Options</p>
+{% if urls.html %} 
+  <p>
+    <a id="cimHTMLBut" href="{{urls.html}}">HTML View</a>
+  </p> 
+{% endif %}
+
+{% if urls.text %} 
+  <p>
+    <a id="txtlinkbut" href="{{ urls.text }}">Export Text</a>
+  </p>
+{% endif %}
+ 
+{% if urls.cimView %} 
+  <p>
+    <a id="cimViewBut" href="{{urls.cimView}}" target="_blank">View</a>
+  </p> 
+{% endif %}
+
+{% if urls.validate %} 
+  <p>
+    <a id="cimValBut" href="{{urls.validate}}">Validate</a>
+  </p> 
+{% endif %}
+
+{% if urls.xml %} 
+  <p>
+    <a id="cimXMLBut" href="{{urls.xml}}" target="_blank">Export XML</a>
+  </p> 
+{% endif %}
+
+{% if urls.export %} 
+  <p>
+    <a id="cimESGBut" href="{{urls.export}}">Publish</a>
+    <br/>
+  </p>
+  <p>
+    (You can edit later if necessary and republish)
+  </p>
+{% endif %}
+
+</center>
+
+<script type="text/javascript">  
+    var cimLinkButton2 = new YAHOO.widget.Button("cimValBut"); 
+    var cimLinkbutton3 = new YAHOO.widget.Button("cimXMLBut");
+    var cimLinkbutton4 = new YAHOO.widget.Button("cimHTMLBut");
+    var cimLinkbutton5 = new YAHOO.widget.Button("cimViewBut");
+    var cimLinkbutton6 = new YAHOO.widget.Button("cimESGBut");
+    var olinkButton7 = new YAHOO.widget.Button("txtlinkbut");
+</script>
+

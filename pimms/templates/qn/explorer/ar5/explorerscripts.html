@@ -1,0 +1,124 @@
+      <!-- Site-wide stylesheets -->
+      <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="/static/css/cycletable.css" type="text/css" />
+      
+      <!-- YUI javascript and css-->
+      <script type="text/javascript" src="/static/yui/build/yahoo/yahoo-min.js"></script>
+      <script type="text/javascript" src="/static/yui/build/event/event-min.js"></script>
+      <script type="text/javascript" src="/static/yui/build/connection/connection-min.js"></script>
+      <script type="text/javascript" src="/static/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+      <script type="text/javascript" src="/static/yui/build/treeview/treeview-min.js"></script>
+      <script type="text/javascript" src="/static/yui/build/element/element-min.js"></script>
+      <script type="text/javascript" src="/static/yui/build/button/button.js"></script>
+      <script type="text/javascript" src="/static/yui/build/container/container-min.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/yui/build/treeview/assets/skins/sam/treeview.css">
+      <link rel="stylesheet" type="text/css" href="/static/yui/build/button/assets/skins/sam/button.css"> 
+      <link rel="stylesheet" type="text/css" href="/static/yui/build/container/assets/skins/sam/container.css" />
+                   
+      <!-- Jquery, Jquery-UI, and Jquery-UI css  -->
+      <script type="text/javascript" src="/static/jquery/jquery-1.6.2.min.js"></script>
+      <script type="text/javascript" src="/static/jquery/jquery-ui-1.8.16.custom.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/jquery/themes/smoothness/jquery-ui-1.8.16.custom.css" />
+      
+      <!-- Additional jquery libraries and associated css-->
+      <script type="text/javascript" src="/static/jquery/jquery-collapsible/jquery.collapsible.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-collapsible/jquery.collapsible.css"/>      
+      <script type="text/javascript" src="/static/jquery/jquery-checkformsave/jquery.checkformsave.js"></script>      
+      <script type="text/javascript" src="/static/jquery/jquery-dropdown-checklist/ui.dropdownchecklist-1.1-min.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-dropdown-checklist/ui.dropdownchecklist.standalone.css"/>      
+      <script type="text/javascript" src="/static/jquery/jquery-datatables/jquery.dataTables.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-datatables/datatables.css"/>
+      <script type="text/javascript" src="/static/jquery/jquery-fixer/jquery.fixer.js"></script>
+      <script type="text/javascript" src="/static/jquery/jquery-confirmaction/jconfirmaction.jquery.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-confirmaction/jconfirmaction.css"/>
+      
+      <!-- Site-wide jquery scripts-->
+      
+        <!-- making all submit buttons jquery-ui -->
+        <script type="text/javascript">
+         $(function() {
+          $( "input:submit, button, .buttonbar a").button();
+         });
+        </script>
+		      
+	    <!-- Open a confirmation box on actions marked 'ask' -->
+		      
+        <script type="text/javascript">
+          $(function() {
+            $(".ask").jConfirmAction();
+          });
+        </script>
+
+   
+  
+  <script>
+    function showLoading() {
+      $("#loading").show();
+    }
+  </script>
+  
+  <script>
+    function hideLoading() {
+      $("#loading").hide();
+    }
+  </script>
+  
+  
+   
+  <script type="text/javascript">
+    $(function() {
+	        $( "input:submit, a, button", ".toolbar" ).button();
+	   });
+  </script>
+  
+      
+  <script type="text/javascript">
+    $().ready(function() {
+	     $('#dialog').dialog();
+	   })
+	    
+			 $(function() {
+			  var $dialog = $('<div></div>')
+			   .html('The table below gives an overview of the models being described'+ 
+				        'in the CMIP5 questionnaire, including details of the top level'+ 
+				        'realm components. You can use the toolbar buttons to export to a'+
+				        'csv format as well as a bibliography of all references included '+
+				        'within the table ')
+		   .dialog({
+		    autoOpen: false,
+		    title: 'AR5 Tables help',
+		    width: 500,
+		    modal: true,
+		    resizable: false
+		   });
+				
+		  $('#opener').click(function() {
+				  $dialog.dialog('open');
+				  // prevent the default action, e.g., following a link
+				  return false;
+				 });
+				});
+		</script>
+		
+		    
+ <script type="text/javascript">
+	 $(function(){
+	  $('.ui-state-default').hover(
+	   function(){ $(this).addClass('ui-state-hover'); }, 
+	   function(){ $(this).removeClass('ui-state-hover'); }
+	  );
+	
+	  $('.ui-state-default').click(
+			 function(){ $(this).toggleClass('ui-state-active');
+	  });
+	
+	 });
+</script>
+		
+			
+ <script>
+    $(function() {
+      $('.tablescroll').fixer({fixedrows:1,fixedcols:1,width:0, height:600});
+    });
+ </script> 
+ 

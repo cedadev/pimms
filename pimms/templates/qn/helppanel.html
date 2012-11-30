@@ -1,0 +1,21 @@
+<!-- expandable/collapsable panel help (specialised with own text depending on scenario) -->
+
+<div class="boxer">      
+    <div class="msg_list">
+	    <div class="msg_head warning_boxer">
+	      <table>
+	        <tr>
+	          <td>{{ helppaneltitle }}</td>
+	          <td align="right">(click to expand/collapse)</td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="msg_body">
+	      {% autoescape off %} 
+            {{ helppaneltext }}
+          {% endautoescape %} 
+		</div>
+    </div>
+</div>
+
+<!-- End of expandable/collapsable panel -->

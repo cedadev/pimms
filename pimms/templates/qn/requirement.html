@@ -1,0 +1,19 @@
+<tr>
+    <td>{{r.name}}</td>
+    <td>{{r.ctype}}</td>
+    <td><table class="backgrey">
+        <tr><td colspan="3">{% if r.description %}{{r.description}}{% endif %}</td></tr>
+        {% ifequal r.ctype.name 'SpatioTemporalConstraint'%}<tr><td colspan="3">
+        <table>
+        <tr><td>Required Duration:</td><td>{{r.get_child_object.requiredDuration}}</td></tr>
+        <tr><td>Required Resolution:</td><td> {{r.get_child_object.spatialResolution}}</td></tr>
+        </table>
+        </td></tr>{% endifequal %}
+        
+        <!-- Can only handle one level down ... -->
+        {% for rr in r.consistsOf.all %} 
+        <tr><td>{{rr.name}}</td><td>{{rr.ctype}}</td><td>{{rr.description}}{% if rr.consistsOf.all %} (Further requirement children ommitted {% endif %}
+        </td></tr>
+        {% endfor %}
+    </table></td>
+</tr>

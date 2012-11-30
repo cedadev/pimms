@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h2> Enter New Reference </h2>
+<p class="guidance"> Please enter citations in the form:<br/>
+    Author1, A.B, C.D. Author2,...,and Y.Z. AuthorLast (1984). "The year of the bat". Journal of Irreducable Results, 44, 1-23.<br/>
+and enter doi strings in the link box as doi:a.b.c </p>
+<table width="100%">
+<tbody>
+  {% for r in dform %}
+  <tr><td width="95%">
+    <form action="{{r.MyEditURL}}" method="POST" id="newref" onsubmit="myProject.bypassConfirm()">
+    <table> {% include "reference.html" %} </table>
+    </td><td  align="center"><input id="newrefin" type="submit" value="update"/></td>
+  </tr>
+  {%endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

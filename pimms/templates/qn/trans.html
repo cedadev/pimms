@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<div class="boxer">
+<h1> Questionnaire CIM export Changes since Release 1.0 </h1>
+</div>
+<div class="boxer">
+
+<h4>trunk@r2310</h4>
+<ul>
+   <li>1. removed gmd:CI_ResponsibleParty element output as the latest version of the CIM does not use this</li>
+   <li>2. removed gmd:CI_Citation element output as the latest version of the CIM does not use this</li>
+   <li>3. added project@value='CMIP5' element to simulation to specify what the document relates to</li>
+   <li>4. added authorsList/list element to simulation to store the questionnaire authorList information. This closes ticket 831</li>
+   <li>5. changed default CV server to trunk (was previously branches/vn1.0_devel) as we are currently working on the trunk</li>
+   <li>6. re-instated the open attribute for controlled vocabulary terms as the latest version of the CIM requires this</li>
+</ul>
+<br/> 
+
+<h4>trunk@2356</h4>
+<ul>
+   <li>1. grid: horizontal_properties/gridMnemonic now output to gridTile or GridMosaic? (for composite grid) as mnemonic</li>
+   <li>2. grid: any grid references on top level page are now output in esmModelGrid/referenceList</li>
+   <li>3. grid: isLeaf, numTiles and numMosaics attributes now output (these are inferred)</li>
+   <li>4. grid: gridTile attribute now output correctly for mosaics (as specified by Marie-Pierre)</li>
+</ul>
+<br/> 
+
+<h4>trunk@2485</h4>
+<ul>
+   <li>1. component : removed empty numericalProperties, scientificProperties, componentProperties elements as these are now optional in the CIM</li>
+   <li>2. grid: horizontal extent now output for non-composite grid</li>
+   <li>3. grid: references now output correctly (bug fix)</li>
+   <li>4. shortName and longName no longer output for gridMosaic and gridTile</li>
+   <li>5. horizontal and vertical descriptions are output together in gridTile/description</li>
+   <li>6. refinement details now output as part of gridTile/horizontalResolution/@description</li>
+   <li>7. compositeGrid field output in gridMosaic/description</li>
+</ul>
+<br/> 
+
+<h4>trunk@2488</h4>
+<ul>
+   <li>1. grid: references now output correctly - after a change to the CIM</li>
+   <li>2. grid: horizontal extent now output for composite grid</li>
+</ul>
+<br/>
+
+<h4>trunk@2639 </h4>
+<ul>
+   <li>1. cimDocumentSet replaces cimRecordSet</li>
+   <li>2. cimRecord nesting removed</li>
+   <li>3. namespace changed to http://metafor.eu/cim/schemas/1.5</li>
+   <li>4. experiment requiredDuration removed</li>
+   <li>5. experiment duration information added inside spatiotemporalconstraint.</li>
+   <li>6. model previousVersion information stored in CIM documentGenealogy at the end of a component now called previousVersionOf</li>
+   <li>7. CIM documentGenealogy now has a direction attribute "toTarget" to explain which model "previousVersionOf" is referring to. </li>
+</ul>
+<br/>
+
+</div>
+</div>
+{% endblock %}

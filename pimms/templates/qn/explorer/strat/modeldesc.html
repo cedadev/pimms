@@ -1,0 +1,202 @@
+{% extends "explorer/base_explorer.html" %} 
+
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    DynVar Model Descriptions
+  </div>
+{% endblock%} 
+
+{% block pagelinks %}
+  <div class="boxer">
+    <a href = "{{ urls.home }}">Explorer home page</a>
+  </div>
+{% endblock%} 
+
+{% block pagetools %}
+  <div class="boxer">
+    <div class="toolbar">
+      <a href="{{ urls.stratcsv }}" class="ui-state-default ui-corner-all" title="export">csv</a>
+      <a href="{{ urls.stratbib }}" class="ui-state-default ui-corner-all" title="references">bib</a>
+    </div>
+  </div>
+{% endblock%} 
+
+{% block content %}
+
+<div class="jqmWindow" id="dialog">
+  <a href="#" class="jqmClose">Close</a>
+  <hr>
+  <em>READ ME</em> -->
+  Help text to go here
+</div>
+
+<div class="boxer">
+<table class="tablescroll cycletable">
+  <thead>
+   <tr>
+     <!-- Main Model info -->
+     <th style="width:240px">
+       (1) Model ID
+       <br/> 
+       (2) Vintage
+     </th>
+     
+     <th>
+       (1) Institution
+       <br/> 
+       (2) Main Reference(s)
+     </th>
+     
+     <!-- Atmosphere Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Atmosphere
+       </span>
+       <br/>
+       (1) Component Name
+       <br/>
+       (2) Horizontal Grid
+       <br/>
+       (3) Number of Vert Levels
+       <br/>
+       (4) Grid Top
+       <br/>                 
+       (5) References
+     </th>
+     
+     <!-- Gravity Wave Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Non-Orographic Gravity Waves
+       </span>
+       <br/>
+       (1) Source Mechanisms
+       <br/>
+       (2) Propogation scheme
+       <br/>
+       (3) Dissipation scheme
+     </th>
+     
+     <!-- Strat Chem Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Strat Heter Chemistry
+       </span>
+       <br/>
+       (1) Gas-phase species 
+       <br/>
+       (2) Aerosol Species
+     </th>
+     
+     <!-- Atmos Grid Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Atmospheric Grid
+       </span>
+       <br/>
+       (1) Levels above 200 hPa
+     </th>
+     
+   </tr>
+  </thead>
+  <tbody>
+  {% for model in table1 %}
+  <tr class="{%cycle 'row2' 'row1'%}">
+    
+    <td style="width:240px">
+      (1)
+      {{ model.abbrev }}
+      <br/>       
+      (2)
+      {% if model.yearReleased %}
+        {{ model.yearReleased }}
+      {% endif %}
+    </td>
+    
+    <td>
+      (1)
+      {{ model.centre.name }}
+      <br/>
+      (2)
+      {% for ref in model.mainrefs %}
+        {{ ref }};  
+      {% endfor %}
+    </td>
+    
+    <!-- Atmosphere -->
+    <td>
+       {% if model.atmosimplemented%}
+         (1)
+         {{ model.atmosabbrev }}
+         <br/>
+         (2)
+         {{model.atmoshorgrid}}
+         <br/>
+         (3)
+         {{ model.atmosnumlevels }}
+         <br/>
+         (4)
+         {{ model.atmosgridtop }}
+         <br/>
+         (5)
+         {% for ref in model.atmosrefs %}
+           {{ ref }}
+         {% endfor %}
+       {% else %}
+         None
+       {% endif %}
+    </td>
+    
+    <!-- Gravity waves -->
+    <td>
+       {% if model.atmosimplemented%}
+         (1)
+         {% for src in model.oroggwsrcs %}
+           {{ src }},
+         {% endfor %}
+         <br/>
+         (2)
+         {{ model.oroggwprop }}
+         <br/>
+         (3)
+         {{ model.oroggwdiss }}
+       {% else %}
+         Component not implemented
+       {% endif %}
+    </td>
+    
+    <!-- Strat Chem -->
+    <td>
+       {% if model.atmchemimplemented%}
+         (1)
+         {% for val in model.strathetchemgas %}
+           {{ val }},
+         {% endfor %}
+         <br/>
+         (2)
+         {% for val in model.strathetchemaer %}
+           {{ val }},
+         {% endfor %}
+       {% else %}
+         Component not implemented
+       {% endif %}
+    </td>
+    
+    <!-- Atmos Grid -->
+    <td>
+       {% if model.atmosimplemented%}
+         (1)
+         {{ model.levsabove200 }}
+       {% else %}
+         Component not implemented
+       {% endif %}
+    </td>
+            
+  </tr>
+  {% endfor %}
+</tbody>
+
+</table>
+</div>
+
+{% endblock %}

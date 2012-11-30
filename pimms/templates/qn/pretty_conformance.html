@@ -1,0 +1,7 @@
+<!-- Tidy layout for a conformance -->
+conforms by "{{con.ctype}}" 
+
+<!-- We shouldn't need this section now as we no longer link conformances explicitly to the actual method  
+exploiting model modifications [{% if con.mod.all|length %}{% for cs in con.mod.all %}{{cs}} {% endfor %}{%else%}none{% endif%}]
+and input bindings [{% if con.coupling.all|length %}{% for cs in con.coupling.all %}{{cs}} {% endfor %}{% else %}none{%endif%}].
+-->

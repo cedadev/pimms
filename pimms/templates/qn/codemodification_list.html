@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h1> List of Code Modifications </h1>
+</div>
+<div class="boxer">
+    {% if objects|length_is:0 %}
+    <p>No code modifications loaded at present</p>
+    {% else %} 
+    <table>
+    {% for d in objects %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td><a href="{{d.editURL}}">{{d}}</td></tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+</div>
+<div class="boxer">
+<h4> Add new code modification: </h4>
+<div id="data">
+    <form action="{{editURL}}" method="POST" onsubmit="myProject.bypassConfirm()">
+      
+       {% include 'codemodification_snippet.html' %}
+       
+    </form>
+</div>
+{% if target %}
+<center><a href="{{target.url}}">{{target.instance}}</a></center>
+{% endif %}
+</div>
+{% endblock%}

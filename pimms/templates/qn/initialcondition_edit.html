@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h4> Edit Initial Description description </h4>
+<div id="data">
+    <form action="{{editURL}}" method="POST" onsubmit="myProject.bypassConfirm()">
+       {% include 'initialcondition_snippet.html' %}
+    </form>
+</div>
+</div>
+{% endblock%} 

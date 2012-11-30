@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<div class="boxer">
+<h1> Internal CMIP5 Vocabulary List for {{vocab}} </h1>
+</div>
+<div class="boxer">
+{% for i in v %}
+<p>{{i}}</p>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

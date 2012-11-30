@@ -1,0 +1,86 @@
+<!--  Publication info table section -->
+
+<script type="text/javascript">
+/* <![CDATA[ */
+$(document).ready(function() {
+ $('#pubs-table').dataTable({
+	 "bJQueryUI": true,
+	 "bAutoWidth": false,
+  'sPaginationType': 'full_numbers',
+  'aaSorting': [[ 0, "desc" ]],
+ });
+} );
+/* ]]> */
+</script>
+  
+  <div class="header">
+    <h2> Published CIM metadata </h2>
+  </div>
+  
+  <div class="info">
+    The table below allows the user to explore CIM documents that have been 
+    exported from the CMIP5 questionnaire. Use the column headings to sort 
+    columns and the search box to filter information. Use the view icon to 
+    navigate to a full portal view of a particular CIM record (for most recent 
+    versions of Simulations only). Note however that a short delay may occur 
+    between publishing a CIM record from the questionnaire and being able to 
+    view it in the portal. 
+  </div>
+  
+  <div class="content">
+  
+				<table>
+				  <tr>
+				    <td width="100%">
+				      <table id="pubs-table">
+				        <thead>
+				          <tr>
+                <th width="15%">
+                  Date created
+                </th>
+                <th width="15%">
+                  Abbrev
+                </th>
+				            <th width="10%">
+				              CIM type
+				            </th>
+				            <th width="10%">
+				              Centre
+				            </th>
+				            <th width="15%">
+                  Uses model
+                </th>
+                <th width="20%">
+                  Under experiment
+                </th>
+				            <th width="15%">
+				              View record
+				            </th>
+				          </tr>
+				        </thead>
+				        <tbody>
+				          {% for pub in pubs %}
+												   <tr>
+                <td>{{pub.created.date}}</td>
+												    <td>{{pub.abbreviation}}...</td>
+												    <td>{{pub.cimtype}}</td>
+												    <td>{{pub.centrename}}</td>
+												    <td>{{pub.usesmodel}}</td>
+												    <td>{{pub.forexp}}</td>
+												    <td>
+												      {% if pub.esgurl %}
+												          <a href={{pub.esgurl}} target="_blank"><img src="/static/icons/24x24/View.png"/></a>
+												      {% endif %}
+												    </td>
+												   </tr>
+												  {% endfor %}
+				        </tbody>
+				      </table>
+				    </td>
+				  </tr>
+				</table>  
+		
+		</div>
+  
+
+<!-- End of publication table info -->

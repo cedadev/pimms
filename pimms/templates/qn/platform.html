@@ -1,0 +1,129 @@
+{% extends 'twopanel.html' %}
+
+
+{% block titlerow %}
+  {% if p %}
+    Edit platform <b>{{p}}</b> for centre <b>{{p.centre}}</b>
+  {% else %}
+    Create new platform for centre <b>{{c}}</b>
+  {% endif %}
+{% endblock %}
+
+
+{% block leftcolumn %}
+  <div class="boxer">
+    <p class="red"> All buttons and links in the tabs and this column navigate 
+    away from this page. Save your work first!</p>
+  </div>
+  {% if p.id %}
+    <div class="boxer">
+      {% include 'docbuttons.html' %}
+    </div>
+  {% endif %}
+{% endblock %}
+
+
+{% block mainpanel %}
+<div class="boxer2">
+  <form action='{{urls.edit}}' method='post' onsubmit="myProject.bypassConfirm()">
+    
+    {% if pform.errors %}
+      <div class="error_boxer">
+        <p>
+          This page contains errors. Please correct these before saving 
+        </p>
+      </div>
+    {% endif%}
+    <div class="boxer formbox">
+      <table>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Machine Name*</td>
+          <td width="52%">{{pform.abbrev}}</td>
+          <td width="20%">{{pform.abbrev.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Contact</td>
+          <td width="52%">{{pform.contact}}</td>
+          <td width="20%">{{pform.contact.errors}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="boxer formbox">
+      <table>
+        <tr> 
+          <td width="3%"></td>
+          <td width="20%">Vendor*</td>
+          <td width="52%">{{pform.vendor}}</td>
+          <td width="20%">{{pform.vendor.errors}}</td>                
+        </tr>
+        <tr>                
+          <td width="3%"></td>
+          <td width="20%">Compiler*</td>
+          <td width="52%">{{pform.compiler}}</td>
+          <td width="20%">{{pform.compiler.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Compiler Version*</td>
+          <td width="52%">{{pform.compilerVersion}}</td>
+          <td width="20%">{{pform.compilerVersion.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Operating System</td>
+          <td width="52%">{{pform.operatingSystem}}</td>
+          <td width="20%">{{pform.operatingSystem.errors}}</td>
+        </tr>
+      </table>
+      <div class="helper_boxer">
+        The processor statistics below should describe the 
+        capacity of the machine rather than the resources that were used for 
+        your simulations.
+      </div>
+      <table>      
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Maximum Processors</td>
+          <td width="52%">{{pform.maxProcessors}}</td>
+          <td width="20%">{{pform.maxProcessors.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Cores Per Processor</td>
+          <td width="52%">{{pform.coresPerProcessor}}</td>
+          <td width="20%">{{pform.coresPerProcessor.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Hardware</td>
+          <td width="52%">{{pform.hardware}}</td>
+          <td width="20%">{{pform.hardware.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Processor Type</td>
+          <td width="52%">{{pform.processor}}</td>
+          <td width="20%">{{pform.processor.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Interconnect Type</td>
+          <td width="52%">{{pform.interconnect}}</td>
+          <td width="20%">{{pform.interconnect.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Any extra information</td>
+          <td width="52%">{{pform.description}}</td>
+          <td width="20%">{{pform.description.errors}}</td>
+        </tr>     
+      </table>
+    </div>
+    <center> 
+      <input class="saveBut" type="submit" value="Save"/>
+    </center>
+  </form>
+</div>
+{% endblock %}

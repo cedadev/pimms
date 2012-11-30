@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="inner">
+
+    <div class="boxer">
+        <h1> Experiment {{e}} </h1>
+        <p><em>{{e.rationale}}</em></p>
+        <p>{{e.description}} </p>
+        <p class="guidance"> Calendars need to go here</p> 
+    </div>
+    
+    <div class="boxer">
+        {% if e.requirementSet %}
+        
+        <h4> Ensemble Requirement Set</h4>
+        <p> This experiment expects an ensemble of runs with each run addressing one of the following:</p>
+        <div class="backgrey">
+        <table>
+        {% for r in e.requirementSet.members.all %}
+            {% include 'requirement.html' %}
+        {% endfor %}
+        </table>
+        </div>
+        
+        {% endif %}
+        
+        <h4> {% if e.requirementSet %}Other {% endif %}Requirements </h4>
+        <div class="backgrey">
+        <table>
+            {% for r in reqs %}
+            {% include 'requirement.html' %}        
+            {% endfor %}
+        </table>
+        </div>
+        
+    </div>
+    
+    <!--
+    <div class="boxer">
+        <p class="cmip5q"> Placeholder for a list of centres and simulation numbers which have been documented for this experiment </p>
+    </div>
+    -->
+
+</div>
+
+{% endblock %}

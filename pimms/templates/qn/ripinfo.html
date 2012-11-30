@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="boxer titlerow">
+      Ensemble information for centre <b>{{centre}}</b>
+    </div>
+
+    <!-- expandable/collapsable panel help -->
+	    <div class="boxer">      
+	        <div class="msg_list">
+			    <div class="msg_head">
+			      <table>
+			        <tr>
+			          <td>Help Information</td>
+			          <td align="right">Click on panel to expand help section</td>
+			        </tr>
+			      </table>
+			    </div>
+			    <div class="msg_body">
+            <div class="helper_panel">
+	                On this page you will find, for each simulation, information 
+                  detailing what each of the different ensemble member rip 
+                  values (e.g. r1i1p2) refer to. For each cmip5 
+                  experiment currently addressed by the parent centre, you will 
+                  find the name, description and number of ensemble members in 
+                  the actual simulation. If the simulation is a single member 
+                  simulation this will be stated and no further information will 
+                  be given (apart from the rip value for that single member). 
+                  <br/>
+                  <br/>
+                  For a multi-member ensemble simulation, a description for that 
+                  ensemble will be given, as well as the ensemble type, e.g. 
+                  Initial Condition. Then, for each individual member of that 
+                  ensemble from member 2 upwards, a table will outline the rip 
+                  value, as well as the details of the modifications made for 
+                  that particular member. This could be, for example, an input 
+                  modification, or a code modification, or a combination of the 
+                  two.   
+                  <br/>
+                  <br/>
+                  Note that, although a simulation may state it has multiple 
+                  ensemble members, this information may not have been fully 
+                  completed by the parent centre, in which case you will see 'None'. 
+                  Additionnally, as a centre has the ability to temporarily 
+                  limit ensemble information for a particular simulation from 
+                  being shown on this page (on the ensemble description page 
+                  itself), you may find the information has not yet been made 
+                  available. A message will be given in this event.    
+                     
+            </div>
+	        </div>
+        </div>
+	    </div>
+	<!-- End of expandable/collapsable panel -->
+        
+    {% for sim in sims %}
+      <div class="boxer ripbox">
+        <p class="titlerow">Experiment {{sim.experiment}}</p>
+        <!-- The top level information -->
+        <table>
+          <tr>
+            <td width="3%"></td>
+            <td width="20%" class="bold">Simulation Name:</td>
+            <td width="75%" class="italic">{{sim.abbrev}}</td>
+            <td width="2%"></td>
+          </tr>
+          <tr>
+            <td width="3%"></td>
+            <td width="20%" class="bold">Simulation Description:</td>
+            <td width="75%" class="italic">{{sim.description}}</td>
+            <td width="2%"></td>
+          </tr>
+          <tr>
+            <td width="3%"></td>
+            <td width="20%" class="bold">Number of Ensemble Members</td>
+            {% ifequal sim.ensembleMembers 1 %}
+              <td width="52%" class="italic">This is a single member run</td>
+            {% else %}
+              <td width="75%" class="italic">{{sim.ensembleMembers}}</td>
+            {% endifequal %}
+            <td width="2%"></td>
+          </tr>
+          <tr>
+            <td width="3%"></td>
+            {% ifequal sim.ensembleMembers 1 %}
+              <td width="20%" class="bold">Simulation rip value:</td>
+            {% else %}
+              <td width="20%" class="bold">Simulation (first member) rip value:</td>
+            {% endifequal %}
+            <td width="75%" class="italic">{{sim.drsMember}}</td>
+            <td width="2%"></td>
+          </tr>
+        </table>
+
+        <br/>
+
+        {% ifnotequal sim.ensembleMembers 1 %}
+
+          <!-- Ensemble level information -->
+          {% for ens in sim.ensemble_set.all %}   
+            {% if not ens.riphidden %} 
+              <table>
+                <tr>
+                  <td width="3%"></td>
+                  <td width="20%" class="bold">Ensemble Description:</td>
+                  <td width="75%" class="italic">{{ens.description}}</td>
+                  <td width="2%"></td>
+                </tr>
+                <tr>
+                  <td width="3%"></td>
+                  <td width="20%" class="bold">Ensemble Type:</td>
+                  <td width="75%" class="italic">{{ens.etype}}</td>
+                  <td width="2%"></td>
+                </tr>
+              </table>
+          
+              <br/>
+              <br/>
+                
+              <table class="riptable">
+                {% for mem in ens.ensemblemember_set.all %}
+                  {% if not forloop.first %}
+  		              <tr class="{%cycle 'row2' 'row1'%}">
+  		                <td width="15%"> 
+                        <p> Member: {{ mem.memberNumber }}</p>
+                        <p class="titlerow"> {{ mem.drsMember }}</p> 
+                      </td>
+                      <td width="85%">
+  
+                        {% if mem.imod %}
+                          <table class="riptable">
+                            <thead>
+    	                        <tr>
+      		                      <th width="15%"> Input mod type </th>
+    	                          <th width="20%"> Input start date </th>
+    	                          <th width="65%"> Input mod description </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="{%cycle 'row2' 'row1'%}">
+  		                          <td> {{ mem.imod.inputTypeModified }} </td>
+  		                          {% if mem.imod.memberStartDate %}
+                                      <td> {{ mem.imod.memberStartDate }} </td>
+                                  {% else %}
+                                      <td></td>
+                                  {% endif %}
+                                      
+  		                          <td> {{ mem.imod.description }} </td>
+                              </tr>
+                            </tbody>
+                          </table>
+    		                {% endif %}
+    
+                        {% if mem.cmod %}  
+                          <table class="riptable"">
+                            <thead>
+  	                          <tr>
+  		                          <th width="15%"> Code mod type </th>
+                                <th width="37%"> Code mod Description </th>
+                                <th width="18%"> Modified component</th>
+                                <th width="18%"> Modified parameter </th>
+                                <th width="12%"> New value </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="{%cycle 'row2' 'row1'%}">
+  		                          <td> {{ mem.cmod.mtype }} </td>
+                                <td> {{ mem.cmod.description }} </td>
+                                <td> {{ mem.cmod.component }} </td>
+                                <td> {{ mem.cmod.k }} </td>
+                                <td> {{ mem.cmod.v }} </td>
+                              </tr>
+                            </tbody>
+                          </table>
+    		                {% endif %}
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            {% else %}
+              <table>
+                <tr>
+                  <td width="3%"></td>
+                  <td class="italic"> Ensemble member information for this simulation has not yet been made available by the parent centre </td>
+                </tr>
+              </table>
+            {% endif %}
+          {% endfor %}
+        
+        {% endifnotequal %}
+
+      </div>
+    {% endfor %}
+
+{% endblock %}

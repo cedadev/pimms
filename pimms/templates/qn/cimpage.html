@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<div class="boxer">
+<h2> {{source}} for {{obj}} <h2>
+</div>
+<table>
+    <tr>
+        <td valign="top" width="200px"><div class="boxer">
+        <h4> Return to </h4>
+        <p><a id="MeBut" href="{{obj.edit_url}}">{{obj}}</a></p>
+        <script  type="text/javascript">  
+            var ObjButton = new YAHOO.widget.Button("MeBut"); 
+        </script>
+        <h4> Processing Options </h4>
+        {% include 'docbuttons.html' %}
+        </div></td>
+        <td><div class="boxer">
+        {{html|safe}}
+        {% if urls.persisted %}
+        <p>You can download the persisted document from 
+            <a href="{{urls.persisted}}">here</a>.</p>
+        <p> Tthe information from this document will appear in the ESG gateway within a couple of days. </p> 
+        {% endif %}
+        </div></td>
+    </tr>
+</table>
+{% endblock %}

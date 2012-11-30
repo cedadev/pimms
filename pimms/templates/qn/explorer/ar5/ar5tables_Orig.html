@@ -1,0 +1,93 @@
+{% extends "base.html" %}     
+
+{% block pagehead %}
+  <script type="text/javascript">
+    $(function() {
+         $( "#tabs" ).tabs();
+    });
+  </script>
+   
+  <script type="text/javascript">
+    $(function() {
+	        $( "input:submit, a, button", ".toolbar" ).button();
+	   });
+  </script>
+      
+  <script type="text/javascript">
+    $().ready(function() {
+	     $('#dialog').dialog();
+	   })
+	    
+			 $(function() {
+			  var $dialog = $('<div></div>')
+			   .html('The table below gives an overview of the models being described'+ 
+				        'in the CMIP5 questionnaire, including details of the top level'+ 
+				        'realm components. You can use the toolbar buttons to export to a'+
+				        'csv format as well as a bibliography of all references included '+
+				        'within the table ')
+		   .dialog({
+		    autoOpen: false,
+		    title: 'AR5 Tables help',
+		    width: 500,
+		    modal: true,
+		    resizable: false
+		   });
+				
+		  $('#opener').click(function() {
+				  $dialog.dialog('open');
+				  // prevent the default action, e.g., following a link
+				  return false;
+				 });
+				});
+		 </script>
+		    
+   <script type="text/javascript">
+				 $(function(){
+				  $('.ui-state-default').hover(
+				   function(){ $(this).addClass('ui-state-hover'); }, 
+				   function(){ $(this).removeClass('ui-state-hover'); }
+				  );
+				
+				  $('.ui-state-default').click(
+						 function(){ $(this).toggleClass('ui-state-active');
+				  });
+				
+				 });
+			</script>
+			
+	  <script>
+	    $(function() {
+	      $('.tablescroll').fixer({fixedrows:1,fixedcols:1,width:0, height:600});
+	    });
+	  </script>
+			
+{% endblock %}
+     
+     
+{% block content %}
+
+  <div class="boxer titlerow">
+    Model description table for AR5
+  </div>
+          
+		<div id="tabs">
+		
+		  <!-- Navigation among ar5 tables -->
+		  <ul>
+				  <li><a href="#tabs-1">Model Description</a></li>
+				  <li><a href="#tabs-2">Experiment Design</a></li>
+				  <li><a href="#tabs-3">Forcings</a></li>
+				</ul>
+  
+    <!-- Table 1 --> 
+			 {% include 'ar5/ar5_tab1.html' %}
+			 
+    <!-- Table 2 --> 
+    {% include 'ar5/ar5_tab2.html' %}
+			 					 
+    <!-- Table 3 --> 
+    {% include 'ar5/ar5_tab3.html' %}
+
+  </div>
+
+{% endblock %}

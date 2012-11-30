@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h1> List of Initial Conditions </h1>
+</div>
+<div class="boxer">
+    {% if objects|length_is:0 %}
+    <p>No initial condition descriptions loaded at present</p>
+    {% else %} 
+    <table>
+    {% for d in objects %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td><a href="{{d.editURL}}">{{d}}</td></tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+</div>
+<div class="boxer">
+<div class="boxer2">
+<p> Add new initial description: </p>
+<div id="data">
+    <form action="{{editURL}}" method="POST" onsubmit="myProject.bypassConfirm()">
+       <table>
+       {% include 'initialcondition_snippet.html' %}
+       </table>
+    </form>
+</div>
+</div>
+{% if target %}
+<center><a id="returnBut" href="{{target.url}}">Return to {{target.type}} for {{target.instance}}</a></center>
+<script type="text/javascript"> 
+        var oLinkButton1 = new YAHOO.widget.Button("returnBut"); 
+</script>
+{% endif %}
+
+</div>
+{% endblock%}

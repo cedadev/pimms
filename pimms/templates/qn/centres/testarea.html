@@ -1,0 +1,34 @@
+<div class="formcontainer">
+  
+  <div class="header"> 
+    <h1> Test Area </h1>
+  </div>
+  
+  <div class="info">
+    In this section, you can either look at an example of what is expected in 
+    terms of filling out the questionnaire, or use the test centre to 'play' with 
+    the questionnaire before entering information for real
+  </div>
+  
+  <div class="content">
+    <form action="{{curl}}" method='post' onsubmit="myProject.bypassConfirm()">
+
+		    {% for choice in auxList %}
+		      <p>
+		        <input type="radio" name="auxchoice" id="{{forloop.counter}}" value="{{choice.id}}"/>
+		        <label for="choice{{forloop.counter}}">
+		          {{choice.abbrev}} 
+		          ({{choice.name}})
+		        </label>
+		      </p>
+		    {% endfor %}
+		 
+  </div>
+    
+  <div class="buttonbar">
+    <input type="submit" class="submitBut" value="Choose"/>
+  </div>
+  
+  </form>
+    
+</div>

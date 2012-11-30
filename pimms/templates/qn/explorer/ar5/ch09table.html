@@ -1,0 +1,289 @@
+{% extends "explorer/base_explorer.html" %} 
+
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    AR5 Ch09 Model Information
+  </div>
+{% endblock%} 
+
+{% block pagelinks %}
+  <div class="boxer">
+    <a href = "{{ urls.home }}">Return to Menu</a>
+  </div>
+{% endblock%} 
+
+{% block pagetools %}
+  <div class="boxer">
+    <div class="toolbar">
+      <a href="{{ urls.ch09csv }}" class="ui-state-default ui-corner-all" title="export">csv</a>
+    </div>
+  </div>
+{% endblock%} 
+
+{% block content %}
+
+<div class="boxer">
+<table class="tablescroll cycletable">
+  <thead>
+   <tr>
+     <th>
+       Model ID
+     </th>
+     
+     <th>
+       Institution
+     </th>
+     
+     <!-- Model Assembly Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Model Development Path
+       </span>
+       <br/>
+       Model Assembly
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Model Development Path
+       </span>
+       <br/>
+       If 'Model Assembly' is 'Assembled from components mostly developed in other institutions', which institutions?
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Model Development Path
+       </span>
+       <br/>
+       If 'Model Assembly' is 'Developed as part of a multi-institute formal consortium', what is the consortium name?
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Model Development Path
+       </span>
+       <br/>
+       If 'Model Assembly' is 'Assembled from a mix of in house and other institutions components', which components and which institutions were involved?
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Model Development Path
+       </span>
+       <br/>
+       If 'Model Assembly' is 'Mostly taken off shelf from another institution', which off-the-shelf institution?
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Model Development Path
+       </span>
+       <br/>
+       Any additional values given
+     </th>
+                    
+     <!-- Tuning Section Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Mean State Global Metrics
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Observed Trends Metrics
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Mean State Regional Metrics
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Temporal Variability Metrics
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Adjusted Parameters
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Other Model Tuning
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Tuning Section
+       </span>
+       <br/>
+       Any additional values given
+     </th>
+     
+     <!-- Conservation of Integral Quantities Column -->
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Integral Quantities
+       </span>
+       <br/>
+       Integral Conservation
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Integral Quantities
+       </span>
+       <br/>
+       Specific Tuning
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Integral Quantities
+       </span>
+       <br/>
+       Flux Correction Used?
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Integral Quantities
+       </span>
+       <br/>
+       Flux Correction Fields
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Integral Quantities
+       </span>
+       <br/>
+       Flux Correction Method
+     </th>
+     <th>
+       <span style="text-decoration: underline; color:white">
+       Integral Quantities
+       </span>
+       <br/>
+       Any additional values given
+     </th>
+   </tr>
+  </thead>
+  
+  <tbody>
+  {% for model in ch09table %}
+  <tr class="{%cycle 'row2' 'row1'%}">
+    
+    <td style="width:240px">
+      {{ model.abbrev }}
+    </td>
+    
+    <td>
+      {{ model.centre.name }}
+    </td>
+    
+    <!-- Model Development Path -->
+    <td>
+       {{ model.modelassembly }}
+    </td>
+    <td>
+       {{ model.assemblyotherinstitutes }}
+    </td>
+    <td>
+       {{ model.assemblyconsortium }}
+    </td>
+    <td>
+       {{ model.mixedassemblynames }}
+    </td>
+    <td>
+       {{ model.offshelfinst }}
+    </td>
+    <td>
+      {% for other in model.modeldevothers %}
+           &#8226;{{ other }}
+           <br/>
+      {% endfor %}
+    </td>
+    
+    <!-- Tuning Section -->
+    <td>
+      {% for met in model.meanstateglobmets %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {% for met in model.obstrendsmets %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {% for met in model.meanstateregmets %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {% for met in model.tempvarmets %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {% for met in model.adjparams %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {{ model.othmodtuning }}
+    </td>
+    <td>
+      {% for other in model.tuningsectothers %}
+           &#8226;{{ other }}
+           <br/>
+      {% endfor %}
+    </td>
+    
+     <!-- Conservation Section -->
+    <td>
+      {% for met in model.intconservation %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {{ model.spectuning }}
+    </td>
+    <td>
+      {{ model.fluxcorrused }}
+    </td>
+    <td>
+      {% for met in model.fluxcorrfields %}
+           &#8226;{{ met }}
+           <br/>
+      {% endfor %}
+    </td>
+    <td>
+      {{ model.fluxcorrmeth }}
+    </td>
+    <td>
+      {% for other in model.consintegothers %}
+           &#8226;{{ other }}
+           <br/>
+      {% endfor %}
+    </td>
+           
+  </tr>
+  {% endfor %}
+</tbody>
+
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "explorer/base_explorer.html" %} 
+
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    AR5 Chemistry Information
+  </div>
+{% endblock%} 
+
+{% block pagelinks %}
+  <div class="boxer">
+    <a href = "{{ urls.home }}">Return to Menu</a>
+  </div>
+{% endblock%} 
+
+{% block pagetools %}
+  <div class="boxer">
+    <div class="toolbar">
+      <a href="{{ urls.chemcsv }}" class="ui-state-default ui-corner-all" title="export">csv</a>
+    </div>
+  </div>
+{% endblock%} 
+
+{% block content %}
+
+<div class="boxer">
+<table class="tablescroll cycletable">
+  <thead>
+   <tr>
+     <th>
+       Model ID
+     </th>
+     
+     <th>
+       Institution
+     </th>
+     
+     <th>
+       Land Surface Carbon Cycle implemented?
+     </th>
+     
+     <th>
+       Ocean Bio Chemistry (Carbon Cycle) implemented?
+     </th>
+     
+     <th>
+       Aerosol Scheme Type
+     </th>
+     
+     <th>
+       Prognostic aerosol treatment
+     </th>
+     
+     <th>
+       List of nutrient species
+     </th>
+     
+   </tr>
+  </thead>
+  
+  <tbody>
+    {% for model in chemtable %}
+	  <tr class="{%cycle 'row2' 'row1'%}">
+	    
+	    <td style="width:240px">
+	      {{ model.abbrev }}
+	    </td>
+	    
+	    <td>
+	      {{ model.centre.name }}
+	    </td>
+	    
+	    <td>
+	       {{ model.lsccimplemented }}
+	    </td>
+	    
+	    <td>
+	       {{ model.occimplemented }}
+	    </td>
+	    
+	    <td>
+	       {{ model.aerscheme }}
+	    </td>
+	    
+	    <td>
+	       {{ model.aermoments }}
+	    </td>
+	    
+	    <td>
+	       {{ model.ocbiotracnuts }}
+	    </td>
+	    	    
+	  </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+<!--  Publication info table section -->
+
+<h2>Simulations associated with {{centre.abbrev}}</h2>
+
+
+<script type="text/javascript">
+	/* <![CDATA[ */
+	$(document).ready(function() {
+	 $('#sims-table').dataTable({
+	  "bJQueryUI": true,
+	  "bAutoWidth": false,
+	  'sPaginationType': 'full_numbers',
+	  'aaSorting': [[ 0, "desc" ]],
+	 });
+	} );
+	/* ]]> */
+</script>
+
+
+<div class="formcontainer">
+
+  <div class="info">
+    The table below allows the user to explore their current Simulation 
+    descriptions. Use the column headings to sort columns and the search box 
+    to filter information. To add a new simulation use the 
+    'Manage/Add Simulations' button below the table. Note that the 'published'
+    column only states whether the current version of the simulation has been 
+    published - previous versions will have been published. 
+  </div>
+  
+  <div class="content">
+  
+    <table>
+      <tr>
+        <td width="100%">
+          <table id="sims-table">
+            <thead>
+              <tr>
+                <th width="20%">
+                  Abbreviation
+                </th>
+                <th width="15%">
+                  Experiment
+                </th>
+                <th width="20%">
+                  Uses Model
+                </th>
+                <th width="10%">
+                  Current Version
+                </th>
+                <th width="10%">
+                  Last Updated
+                </th>
+                <th width="10%">
+                  Published?
+                </th>
+                <th width="5%">
+                  Edit
+                </th><th width="5%">
+                  Copy
+                </th><th width="5%">
+                  Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sim in tablesims %}
+                <tr>
+	                <td>{{sim.abbrev}}</td>
+	                <td>{{sim.experiment}}</td>
+	                <td>{{sim.numericalModel}}</td>
+	                <td>{{sim.documentVersion}}</td>
+	                <td>{{sim.updated}}</td>
+	                <td>{{sim.isComplete}}</td>
+	                <td><a href={{sim.url}}><img src="/static/icons/24x24/Modify.png" title="Edit simulation {{sim.abbrev}}"/></a></td>
+	                <td><a href={{sim.copysimurl}}><img src="/static/icons/24x24/Copy.png" title="Copy simulation {{sim.abbrev}}"/></a></td>
+	                {% if sim.delurl %}
+	                  <td><a class="ask" href={{sim.delurl}}><img src="/static/icons/24x24/Erase.png" title="Delete simulation {{sim.abbrev}}"/></a></td>
+	                {% else %}
+	                  <td><img src="/static/icons/24x24/Erase_Grey.png" title="Unable to delete published (or previously published) simulations"/></a></td>
+	                {% endif %} 
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </table>  
+  
+  </div>
+    
+</div>
+
+<!-- End of publication table info -->
+
+<center>
+  <a class="addnewbut" id="viewSimBut" href="{{viewsimurl}}">Manage/Add Simulations</a>
+</center>
+  
+<script type="text/javascript">
+  var oViewSimBut = new YAHOO.widget.Button("viewSimBut");
+</script>  

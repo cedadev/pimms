@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h1> How "{{s}}" conforms to the requirements of "{{e}}" </h1>
+</div>
+<div class="boxer">
+
+<p> On this page we ask you explain how the experimental requirements are satisfied by
+your simulation. There is a drop down list which gives you a choice between: <br/>
+(1) Not being conformant, (2) Your standard model configuration is conformant (3) You use
+a combination of changes to the model code and inputs, (4) you only change inputs (boundary
+conditions, ancillary files etc), or (5) you only changed the code. (It is possible for someone to satisfy a boundary condition requirement change by changing the code ...). We'd also like to know
+anything else you think might be relevant to how your simulation conformed to the model - which you can
+enter in the text boxes.
+</p>
+
+<p class="red"> Save conformances before navigating away </p>
+
+<div id="data" class="boxer2">
+    <form action="{{urls.self}}" method="POST" onsubmit="myProject.bypassConfirm()">
+    {{cform.management_form}}
+    
+    <!-- Error notification panel -->
+    {% if cform.errors %}
+      <div class="error_boxer">
+        <p>
+          This page contains errors. Please correct these before saving 
+        </p>
+      </div>
+    {% endif %}
+    
+    {% for form in cform.forms %}
+        <div class="boxer">
+        
+        <table>
+            <tr class="{% cycle 'row1' 'row2'%}">
+                <td><b>Experiment Requirement Type: {{form.instance.requirement.ctype}}</b></td>
+                <td>{{form.instance.requirement}}:{{form.instance.requirement.description}}</td>
+                <td>How this simulation conformed: {{form.ctype.errors}} {{form.ctype}}</td>
+            </tr>
+            <tr class="{% cycle 'row1' 'row2'%}">
+                <td>
+				          {% if form.showOptions %} 
+				            Choose the "OR" requirement that applies to this simulation <br>
+				            {{form.option}}
+				            {{form.option.errors}} 
+				          {% endif %}
+				        </td>
+                <td> Notes: {{form.description.errors}}{{form.description}}</td>
+                <td></td>
+            </tr>
+        </table> 
+        {% for hid in form.hidden_fields %} {{hid}}{% endfor %}
+        </div>
+    {% endfor %}
+    <center>
+    <input id="subDatBut" type="submit" value="Save Conformances"></center>
+    </form>
+</div>
+</div>
+<script type="text/javascript">
+var subDatBut = new YAHOO.widget.Button("varSubBut",
+                {value:"varSubButvalue"});
+var oLinkButton1 = new YAHOO.widget.Button("simbut");
+var oLinkButton2 = new YAHOO.widget.Button("codebut");
+</script>
+{% endblock%} 

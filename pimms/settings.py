@@ -111,10 +111,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'guardian',
-    'apps.main',
     'apps.cv',
     'apps.exp',
-    'apps.person'
+    'apps.person',
+    'apps.qn'
 )
 
 
@@ -127,10 +127,18 @@ AUTHENTICATION_BACKENDS = (
 # for django-guardian
 ANONYMOUS_USER_ID = -1
 
+# Location of test files to expose through feed
+TESTDIR = os.path.join (thisDir,'test')
 
+# for dev installation
 try:
     from local_settings import *
 except ImportError:
     pass
+  
+
+# finally import project-specific settings, project name etc
+
+from project_settings import *  
 
 

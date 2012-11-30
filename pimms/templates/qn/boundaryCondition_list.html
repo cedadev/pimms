@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h1> List of Boundary Conditions </h1>
+</div>
+<div class="boxer">
+    {% if objects|length_is:0 %}
+    <p>No boundary condition descriptions loaded at present</p>
+    {% else %} 
+    <table>
+    {% for d in objects %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td><a href="{{d.editURL}}">{{d}}</td></tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+</div>
+<div class="boxer">
+<p> Add boundary condition: </p>
+<div id="data">
+    <form action="{{editURL}}" method="POST" onsubmit="myProject.bypassConfirm()">
+       {% include 'boundaryCondition_snippet.html' %}
+    </form>
+</div>
+</div>
+{% endblock%}

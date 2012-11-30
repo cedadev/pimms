@@ -1,0 +1,20 @@
+<p> Please note that the information collected on this form will be made publicly available and shared on the internet. </p>
+<p> Please only provide information for which that level of publicity is appropriate.</p>
+<table>
+<tr><td>Name: *{{form.name.errors}}</td><td>{{form.name}}</td></tr>
+<tr><td>Abbreviation: *{{form.abbrev.errors}}</td><td>{{form.abbrev}}&nbsp;(Tick if this party is an organisation: {{form.isOrganisation.errors}}{{form.isOrganisation}})</td></tr>
+<tr><td>Email:{{form.email.errors}}</td><td>{{form.email}}</td></tr>
+<tr><td>Web Page:{{form.webpage.errors}}</td><td>{{form.webpage}}</td></tr>
+<tr><td>Address:{{form.address.errors}}</td><td>{{form.address}}</td></tr>
+{% if form.instance.uri %} 
+<tr><td>Identifier</td><td>{{form.instance.uri}}</td></tr>
+{% endif %}
+</table>
+{{form.uri}}{{form.uri.errors}}
+<center>
+    <input id="subDatBut" type="submit" value="Save">
+    <script type="text/javascript">
+    var subDatBut = new YAHOO.widget.Button("subDatBut",
+                  {value:"subDatButvalue"});
+    </script>
+</center>

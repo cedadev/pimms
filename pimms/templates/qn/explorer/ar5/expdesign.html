@@ -1,0 +1,49 @@
+{% extends "explorer/base_explorer.html" %} 
+
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    AR5 Experiment Design
+  </div>
+{% endblock%} 
+
+{% block pagelinks %}
+  <div class="boxer">
+    <a href = "{{ urls.ar5home }}">Return to menu</a>
+  </div>
+{% endblock%} 
+
+{% block content %}
+<div class="boxer">
+  
+  <table class="tablescroll cycletable">
+    <thead>
+      <tr>
+        <th style="width:240px">Experiment</th>
+        {% for req in t2reqlist %}
+          <th width="5%" title="{{req.description}}">{{req.name}}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for exp in t2explist %}
+      <!-- <tr class="{%cycle 'row2' 'row1'%}"> -->
+      <tr> 
+        <td style="width:240px" title="{{exp.title}} - {{exp.description}}">
+          {{ exp.abbrev }}
+        </td>
+        {% for req in exp.reqsinexp %}
+          <td class="truecell" width="5%">
+            {% if req %}
+              <img src="/static/icons/24x24/OK.png" title="This requirement is part of experiment {{ exp }}"/>
+            {% else %}
+              <img src="/static/icons/24x24/No.png" title="This requirement is NOT part of experiment {{ exp }}"/>
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+</div>
+{% endblock %}  

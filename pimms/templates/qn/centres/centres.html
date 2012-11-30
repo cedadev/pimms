@@ -1,0 +1,21 @@
+{% extends "site/one_column_page.html" %}
+
+{% block page_column_one %}
+
+<!-- Centre select Area -->
+<div class="row well">
+{% include 'centres/centreselect.html' %}
+</div>
+ 
+<!-- Atom Feeds section -->
+<div class="row well">
+{% include 'centres/atomfeeds.html' %}
+</div>
+
+<!-- Published CIM documents table -->
+<div class="row well">
+{% include 'centres/pubtable.html' %}
+</div>
+
+
+{% endblock %}

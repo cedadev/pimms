@@ -1,0 +1,28 @@
+  <div class="header">
+    <h2> Metadata Feeds Available </h2>
+  </div>
+
+  <div class="info">
+    These are atom feeds to the xml documents which have been published from 
+    the metadata entry. <p> XML documents are not meant for humans. Links to 
+    catalogues and portals for CMIP5 data and metadata will appear here when 
+    they are available.</p>
+  </div>
+
+  <div class="content">
+	  <table class="linklike" width="100%">
+	    {% for f in feedobjects %}
+	      <tr>
+	      {% for name,url in f %}
+	        <td width="15%">
+	          <p>
+	            <a href="{{url}}">
+	              <img src="/static/icons/atom.png"/>&nbsp;{{name}}
+	            </a>
+	          </p>
+	        </td>
+	      {% endfor %}
+	      </tr>
+	    {% endfor %}
+	  </table>
+  </div>

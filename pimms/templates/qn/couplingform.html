@@ -1,0 +1,160 @@
+<div class="boxer">
+  <div class="msg_list">
+    {% if f.FormError %}
+      <div class="msg_head" id="error">
+    {% else %}
+      {% if f.cf.instance.notInUse %} 
+        <div class="msg_head" id="inactive">
+      {% else %}
+        <div class="msg_head" id="active">
+      {% endif %}
+    {% endif %}
+    
+	    <table>
+	      <tr>
+	        <td>
+	  	      <img src="/static/icons/expand-collapse.gif" title="Click to expand/collapse panel"/>
+	  	    </td>
+	        <td>
+	          <h5>{{f.title}}</h5>
+	        </td>
+	  	  </tr>
+	    </table>
+	  </div>
+	  
+	  <div class="msg_body">
+	    {% if s %}
+	      <table>
+	        
+	        {% if f.FormErrorMsg %}
+	          {% for err in f.FormErrorMsg %}
+	            <tr>
+                 <td class="red">
+	                {{ err }}
+	              </td>
+               </tr>
+	          {% endfor %}
+	        {% endif %}
+	        
+	        <tr>
+	          <td align=right>
+	            {{f.cf.notInUse}} Not applicable 
+	  	        <img src="/static/icons/information-icon.png" title="Although you defined this binding at the model level, it may be that it is not relevant for this particular simulation, in which case you can mark it as 'Not applicable'."/>
+		      </td>
+		    </tr>
+		  </table>
+		{% endif %}
+	
+		{% ifequal f.cf.instance.targetInput.ctype f.bcv %}
+		    <p/>
+		    <p/>
+			<hr>
+			<p><b> Describe the input technique (or coupling) and how often it occurred </b></p>
+			<center>
+			<p>
+			Coupling Type: {{f.cf.inputTechnique.errors}}{{f.cf.inputTechnique}}&nbsp;
+			Coupling Frequency: {{f.cf.couplingFreq.errors}}{{f.cf.couplingFreq}}&nbsp;
+			{{f.cf.FreqUnits.errors}}{{f.cf.FreqUnits}}
+			</p>
+			</center>
+			<hr>
+		{% endifequal %}
+			<p>
+			There are 
+			{% ifequal f.cf.instance.targetInput.ctype f.afv%} two
+			{% else %} three 
+			{% endifequal %} 
+			options: you can bind to one or more of (1) an already defined file 
+			{% ifequal f.cf.instance.targetInput.ctype f.afv %}, or
+			{% else %}, 
+			{% endifequal %} 
+			(2) a new file description
+			{% ifequal f.cf.instance.targetInput.ctype f.afv %}.
+			{% else %}, or (3) another model component.
+			{% endifequal %}	
+			(If you add a new file, edit further details via the "Files" tab.)
+			</p>
+			<table class="boxer" width="100%">
+				{{f.ec.management_form}}{{ f.ic.management_form}} 
+				{% if f.formrows|length %}
+					<tr>
+					<th {% ifequal f.cf.instance.targetInput.ctype f.bcv %} width="50%"{% endifequal %}> From files </th>
+					<th> {% ifequal f.cf.instance.targetInput.ctype f.bcv %}From other model components {% endifequal %}</th>
+					</tr> 
+				{% endif %}
+				{% for row in f.formrows %}
+					<tr class="{% cycle 'row1' 'row2' %}">
+					{% for ff in row %}
+						<td>{% ifnotequal ff '' %}{% include 'closure.html' %}{% endifnotequal %} </td>
+					{% endfor %}
+					</tr>
+				{% endfor %}
+				<tr><th colspan="2" align="left">
+				Add {%if f.formrows|length %}another {% else %} a{% endif %} place from which input is found and describe the spatial
+				{% ifequal f.cf.instance.targetInput.ctype f.bcv%}
+					 and temporal
+				{% endifequal %}
+				sampling.
+				</th></tr>
+				<tr><td colspan="2">
+				<center>
+				<table>
+					{% if f.dc.non_field_errors %} 
+						<tr><td colspan="5"> {{f.dc.non_field_errors}}</td></tr>
+					{% endif %}
+					<tr>
+					<td>Existing file: {{f.dc.efile.errors}}{{f.dc.efile}}</td>
+					<td width="8%" align="center">OR</td>
+					<td>
+					<table>
+						<tr>
+						<td>New file:URL{{f.dc.nurl.errors}}</td>
+						<td>{{f.dc.nurl}}</td>
+						</tr>
+						<tr>
+						<td>mnemonic: {{f.dc.nfname.errors}}</td>
+						<td>{{f.dc.nfname}}</td>
+						</tr>
+					</table>
+					</td>
+					{% ifnotequal f.cf.instance.targetInput.ctype f.afv %}
+						<td width="8%" align="center">OR</td>
+						<td>internal component {{f.dc.component.errors}}{{f.dc.component}}</td>
+					{% endifnotequal %}			
+					</tr>
+					<tr>
+					<td colspan="5">
+					<center> 
+					Spatial Regridding: {{f.dc.spatialRegrid}}&nbsp;&nbsp; 
+					{% ifequal f.cf.instance.targetInput.ctype f.bcv %}
+						Time Mapping: {{f.dc.temporalTransform}}
+					{% endifequal %}
+					</center>
+					</td>
+					</tr>
+				</table>
+				</center>
+				</td>
+				</tr>
+			</table>
+			<hr>
+			<center>
+			<p> 
+			Describe how these input(s) were manipulated and/or combined for input  <em>{{f.cf.instance.targetInput.abbrev}}</em> 
+			in component <em>{{ f.cf.instance.targetInput.owner}}</em> 
+			{% if s %} for simulation <em>{{s}}</em> {% endif %}
+			{{f.cf.manipulation.errors}}{{f.cf.manipulation}} 
+			</p>
+			{{ f.cf.targetInput }} {{f.cf.original}} {{f.cf.parent}}
+			</center>
+		</div>
+	</div>
+</div>
+		
+		
+<script type="text/javascript">
+        YAHOO.namespace("e{{f.cf.instance.id}}.container");
+	{% for ff in f.ec.forms %}
+            YAHOO.e{{f.cf.instance.id}}.container.ytt{{f.cf.instance.id}} = new YAHOO.widget.Tooltip("ytt{{f.cf.instance.id}}", { context:"tt{{f.cf.instance.id}}", text:"You can shorten the variable list to only those in the relevant file by saving your file choice, then choosing a variable."});
+        {% endfor %}
+</script>

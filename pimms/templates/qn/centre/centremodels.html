@@ -1,0 +1,60 @@
+<div class="boxer">
+  
+  <h2>Models associated with {{centre.abbrev}}</h2>
+  
+  <table width="80%">
+    
+    <tbody> 
+      {% for m in models %}
+		      <tr class="{% cycle 'row2' 'row1'%}">
+		        <td width="85%">
+		          {{m.abbrev}}
+		        </td>
+		        <td width="5%">
+		          {% if m.isComplete %}
+		            <center>
+		              <img src="/static/icons/icon-tick.png" title="This has been successfully published at version {{ m.documentVersion }}">
+		            </center>
+		          {% endif %}
+		        </td>
+		        <td width="5%">
+		          <center> 
+		              <a href="{{m.url}}">
+		                <img src="/static/icons/24x24/Modify.png" title="Edit model {{m.abbrev}}"/>
+		              </a>
+		          </center>
+		        </td>
+		        <td width="5%">
+            <center> 
+                <a href="{{m.cpURL}}">
+                  <img src="/static/icons/24x24/Copy.png" title="Copy model {{m.abbrev}}"/>
+                </a>
+            </center>
+		          <center>
+		        </td>
+		      </tr>
+		      <script type="text/javascript">
+		        var oLinkButtonEdMod{{forloop.counter}} = 
+		        	 new YAHOO.widget.Button("edModButton{{forloop.counter}}");
+		        var oSubButtom{{forloop.counter}}= 
+		        	 new YAHOO.widget.Button("copySubmit{{forloop.counter}}",
+		            {value:"copySubmit{{forloop.counter}}value"});
+		      </script>    
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <center>
+    <a id="newModButton" href="{{newmod}}">Add a new Model</a>
+  </center>
+  
+  <div class="helper_boxer">
+    It can take some time (minutes) to create a new model or copy an 
+    existing one ... be patient!   
+  </div>
+  
+  <script type="text/javascript">
+    var newmodButton = new YAHOO.widget.Button("newModButton");
+  </script>
+  
+</div>

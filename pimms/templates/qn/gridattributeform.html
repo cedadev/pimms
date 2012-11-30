@@ -1,0 +1,94 @@
+<!-- This template works with the ParamGroupForm from forms.py -->
+
+{% for pg in pform.pgset %}
+  <div class="boxer">
+		  {% if pg.name %}
+		    <h4> 
+		      {{pg.name}}
+		    </h4> 
+		  {% endif %}
+		
+		  {% for cg in pg.cgset %} 
+		    <table>
+		      <tr>
+				      <td>
+				        {{cg.constraint}}
+				      </td>
+				      <td>
+				        <table width="100%">
+				          {% for r in cg.forms %}
+				            <tr class="{% cycle 'row1' 'row2'%}">
+				              <td>
+				                {% if r.showname %}
+				                  <em id="tt{{r.instance.id}}">{{r.instance.name}}</em>
+				                {% endif %}
+				                {{r.name}} {{r.name.errors}}
+				              </td>
+				              <td>
+				                {% ifequal r.model 'Keyboard' %}
+				                  {% if r.units %}
+				                    Enter 
+				                      {% if r.numeric %}numeric{% endif %} value in <em>{{r.units}}</em>:&nbsp;
+				                  {% else %}
+				                    Enter {% if r.numeric %}numeric{% else%}string{%endif%} value:&nbsp;
+				                  {% endif %}
+				                {% endifequal %}
+				                {% ifequal r.model 'OR' %} 
+				                  Choose one or more of: 
+				                {% endifequal %}
+				                {% ifequal r.model 'XOR' %} 
+				                  Choose one of: 
+				                {% endifequal %} 
+				              </td>
+				              <td>
+				                {{r.value.errors}}{{r.value}}
+				              </td>
+				            </tr>
+				          {% endfor %}
+				        </table>
+				      </td>
+		      </tr>
+		    </table>
+		    
+		    <script type="text/javascript">
+		      YAHOO.namespace("e{{pg.id}}{{cg.id}}.container");
+			     {% for r in cg.forms %}
+		        YAHOO.e{{pg.id}}{{cg.id}}.container.ytt{{r.instance.id}} = 
+		        	new YAHOO.widget.Tooltip("ytt{{r.instance.id}}", 
+		        			{ context:"tt{{r.instance.id}}", 
+		        		   text:"{{r.instance.name}}:&nbsp;{{r.instance.definition}}" });
+		      {% endfor %}
+		    </script>
+		    
+		    <div style="display:none">
+		      {% if forloop.last %}
+		        <p>Use the <b>Name</b> and <b>Value</b> boxes to enter 
+			       {% if cg.forms|length %} 
+			         an additional 
+			       {% else %} 
+			         a
+			       {% endif %} 
+			       parameter or attribute and it's value. 
+			       The "Save" button below will generate entry boxes for another parameter/attribute.</p>
+		        <table>
+		          {{ cg.userforms.management_form }}
+		          <tr>
+		            <th>Name</th>
+		            <th>Value</th>
+		          </tr>
+		          {% for f in cg.userforms.forms %}
+		            <tr>
+		              <td>{{f.name.errors}}{{f.name}}</td>
+		              <td>{{f.value.errors}}{{f.value}}</td>
+		              <td>Delete{{f.DELETE}}?{%for h in f.hidden_fields %} {{h}} {%endfor%}</td>
+		            </tr>
+		          {% endfor %}
+		        </table>
+		      {% endif %}
+		    </div>
+		    
+		  {% endfor %}
+
+  </div>
+
+{% endfor %}

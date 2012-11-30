@@ -1,0 +1,26 @@
+{% extends "explorer/base_explorer.html" %}     
+  
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    AR5 Metadata Explorer
+  </div>
+{% endblock%}
+    
+{% block content %}
+  <!-- loading icon for ajax calls -->
+  <div id="loading">
+    <p><img src="/static/icons/ajax-loader.gif" /> Please Wait</p>
+  </div>
+  
+  <div class="boxer">          
+    <div>
+	  <!-- Navigation among ar5 pages -->
+      <ul>
+	    <li><a href="/cmip5/explorer/ar5/modeldesc">Model Description</a></li>
+	    <li><a href="/cmip5/explorer/ar5/expdesign">Experiment Design</a></li>
+  	    <li><a href="/cmip5/explorer/ar5/ch09">Chapter 09 information</a></li>
+  	    <li><a href="/cmip5/explorer/ar5/chem">Chemistry information</a></li>
+	  </ul>
+    </div>
+  </div>
+{% endblock %}

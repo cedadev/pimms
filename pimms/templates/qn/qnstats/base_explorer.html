@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" >
+
+  <head>
+    {% block title %}
+      <title>CMIP5 Metadata Explorer</title>
+    {% endblock %}
+  
+    {% include "explorer/ar5/explorerscripts.html" %}
+    
+    {% block pagescripts %}
+    {% endblock %}
+  </head>
+      
+  <body> 
+    <div id="header" class="stfc">
+      <table>
+	    <tr>
+		  <td width="100px" align="center"><img height="60" src="/static/icons/eu_fw7_logo.jpg"/></td>
+	      <td width="900px" align="center">
+		    <center>
+			  <h1>CMIP5 Metadata Questionnaire (1.5.0)</h1>
+		    </center>
+		    <p> Completed data will be sent to the Earth System Grid for inclusion in all official CMIP5 catalogues.</p>
+	      </td>
+		  <td width="100px" align="center"><img height="60" src="/static/icons/enes_logo.png"/></td>
+		</tr>
+      </table>
+	</div>
+        
+    <div class="main">
+      <div class="tabcontent">       
+        {% block pagetitle %}
+        {% endblock %}
+        
+        {% block pagelinks %}
+        {% endblock %}
+        
+        {% block pagetools %}
+        {% endblock %}
+        
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>  
+    
+    <div id="footer" class="stfc" >
+      <table width="100%"> 
+        <tr>
+            <td>Produced by</td>
+            <td><img height="60" src="/static/icons/metafor_logo.png"/></td>
+            <td> and</td>
+            <td><img height="60" src="/static/icons/curator.gif"/></td>
+            <td>
+              <table>
+                <tr>
+                  <td>hosted at the</td>
+                </tr> 
+                <tr>
+                  <td> <a class="blue" href="http://badc.nerc.ac.uk">British Atmospheric Data Centre</a></td>
+                </tr>
+              </table>
+            </td>
+            <td>for the </td>
+            <td align="right"><img  src="/static/icons/CEDA_RightButton60.png" /></td>
+          </tr> 
+        </table>
+    </div>  
+  </body>
+
+</html>

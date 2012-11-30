@@ -1,0 +1,88 @@
+<table>
+	<tr>
+		<th>File Description</th>
+		<th>Variable Description 
+		  <img src="/static/icons/information-icon.png"
+			title="This column may not be necessary for files being used for ancillary files, but it will be necessary to identify variables for binding to boundary and initial conditions" />
+	    </th>
+	</tr>
+	<td width="45%">
+	<table width="45%">
+		<tr>
+			<td>Abbrev: *{{form.cform.abbrev.errors}}</td>
+			<td>{{form.cform.abbrev}}</td>
+		</tr>
+		<tr>
+			<td width="20%">Name: *{{form.cform.title.errors}}</td>
+			<td>{{form.cform.title}}</td>
+		</tr>
+		<tr>
+			<td>Link:&nbsp;{{form.cform.link.errors}}<img
+				src="/static/icons/information-icon.png"
+				title="This should point either to a downloadable version of the file, or to a page from which the file can be obtained" /></td>
+			<td>{{form.cform.link}}</td>
+		</tr>
+
+		<tr>
+			<td>File Format:&nbsp;{{form.cform.format.errors}}<img
+				src="/static/icons/information-icon.png"
+				title="This is the ultimate file format not the format of the object returned if you dereference the link" /></td>
+			<td>{{form.cform.format}}</td>
+		</tr>
+
+		<tr>
+			<td>Description:{{form.cform.description.errors}}</td>
+			<td>{{form.cform.description}}</td>
+		</tr>
+		<tr>
+			<td>Mostly used in<br />
+			experiments:{{form.cform.experiments.errors}}</td>
+			<td>{{form.cform.experiments}}</td>
+		</tr>
+		<tr>
+			<td>Reference:{{form.cform.reference.errors}}</td>
+			<td>{{form.cform.reference}}</td>
+		</tr>
+		{% if form.cform.non_field_errors %}
+		<p>{{form.cform.non_field_errors}}</p>
+		{% endif %}
+
+	</table>
+	</td>
+	
+	<td width="45%">
+	  <table width="45%">
+		{{ form.oform.management_form }} 
+		{% for f in form.oform.forms %}
+		  <tr class="{%cycle 'row1' 'row2'%}">
+		    <td>Variable:{{f.variable.errors}}</td>
+		    <td>{{f.variable}}</td>
+		  </tr>
+		  <tr class="{%cycle 'row1' 'row2'%}">
+			<td>CF Std Name {{f.cfname.errors}}<img
+			  src="/static/icons/information-icon.png"
+			  title="Enter first 3 letters to expose drop-down box" />
+		    </td>
+			<td>{{f.cfname}}</td>
+		  </tr>
+		  <tr class="{%cycle 'row1' 'row2'%}">
+			<td>Description:{{f.description.errors}}</td>
+			<td>{{f.description}}</td>
+		  </tr>
+		  <tr class="{%cycle 'row1' 'row2'%}">
+			<td>Reference:{{f.reference.errors}}</td>
+			<td>{{f.reference}}&nbsp; Delete:{{f.DELETE.errors}}{{f.DELETE}}</td>
+		  </tr>
+		  {% for hid in f.hidden_fields %} 
+		    {{hid}}
+		  {% endfor %} 
+		{% endfor %}
+	  </table>
+	</td>
+  </tr>
+</table>
+<center><input id="subDatBut" type="submit" value="Save">
+<script type="text/javascript">
+    var subDatBut = new YAHOO.widget.Button("subDatBut",
+                        {value:"subDatButvalue"});
+</script></center>

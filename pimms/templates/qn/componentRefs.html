@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="inner">
+<h1> Model Component {{c.abbrev}}: References </h1>
+        <div class="guidance">
+            <p> To add a new reference to this component, you need to select it from the available list, and it will 
+            be attached to the component (and appear in the left hand column below). You may need to create a
+            reference first, then select it from the available list <p>
+        </div> 
+        <div class="boxer">
+            <table width="100%">
+            <tr><td width="25%" style="vertical-align:top">
+                <div class="boxer">
+                    <h4> Component References </h4>
+                    <p class="guidance"> Click on a reference to remove from component list <p>
+                        <table width="100%">
+                        {% for r in refs %}
+                        <tr> <td><a href="{{baseURLr}}{{c.id}}/{{r.id}}/">{{r.name}}</a></td><td>show</td></tr>
+                        {% endfor %}
+                        </table>
+                        </div>
+                </td>
+                <td width="25%" style="vertical-align:top">
+                <div class="boxer"><h4>Select References </h4>
+                <p class="guidance"> Click on a reference to add to component list </p>
+                <table width="100%">
+                    {% for r in available %}
+                    <tr> <td><a href="{{baseURLa}}{{c.id}}/{{r.id}}/">{{r.name}}</a></td><td>shown</td></tr>
+                    {% endfor %}
+                </table>
+                </div>
+                </td>
+                
+                <td width="50%" style="vertical-align:top">
+                <div class="boxer"><h4>Add new reference</h4>
+                {{refset}}
+                <form action="{{refu}}" method="POST" onsubmit="myProject.bypassConfirm()">
+                    {{rform.as_p}}
+                    <input type="submit" value="Add Reference"/>
+                    </form>
+                 </div></td>
+            </tr>
+            </table>
+            </div>
+            <div class="boxer">
+            <p class="cmip5q"> Search references to find mnemonics to be implemented </p>
+            </div>
+     <a href="{{c.editURL}}"> Return to [{{c}}]</a></div> <!-- inbox -->
+</div>
+{% endblock %}

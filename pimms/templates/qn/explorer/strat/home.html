@@ -1,0 +1,23 @@
+{% extends "explorer/base_explorer.html" %}     
+  
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    DynVar Metadata Explorer
+  </div>
+{% endblock%}
+    
+{% block content %}
+  <!-- loading icon for ajax calls -->
+  <div id="loading">
+    <p><img src="/static/icons/ajax-loader.gif" /> Please Wait</p>
+  </div>
+  
+  <div class="boxer">          
+    <div>
+	  <!-- Navigation among strat pages -->
+      <ul>
+	    <li><a href="/cmip5/explorer/strat/modeldesc">Model Description</a></li>
+	  </ul>
+    </div>
+  </div>
+{% endblock %}

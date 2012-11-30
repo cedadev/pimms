@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+  <h1> 
+    Experiments and Simulations 
+  </h1>
+  <p> 
+    This page holds the master index of all the simulations run by 
+    {{c.abbrev}}, and relates them to the appropriate CMIP5 experiment.
+  </p>
+  <p> 
+    You are expected to use the add simulation button to add simulations, 
+    after which you can edit their descriptions. You can choose to add 
+    placeholders for all simulations now, or add them over time, and either 
+    way, come back and edit the simulation descriptions at a later date. Each 
+    simulation can have multiple ensemble members (initial condition or 
+    physical model variants), which can be described from within the 
+    simulation description pages. 
+  </p>
+  <p> 
+    If you choose to copy a simulation using the copy button on this page, the 
+    copy will NOT copy ensemble member descriptions (if they exist), we assume 
+    that the new simulation will have different ensemble characteristics. 
+    Alternatively, to copy all details of a current simulation, use the copy 
+    function on the simulation table on the main summary page 
+  </p>
+  <p>
+    Note that a number of experiments, e.g 1.1 decadal and 1.2 decadal, fall 
+    under the same experiment DRS group, i.e. decadal. Simulations that share 
+    the same model and that fall under a similar group must use different rip
+    values (at both the simulation and ensemble member level). This will allow a 
+    direct mapping to data files that are named according to DRS syntax (note 
+    this is not the case for the rcp/-L experiments where rip values can be 
+    reused - in this case the start year will allow mapping to an individual 
+    data file).    
+  </p>
+   <div class="backgrey">
+     <table width="100%">
+       <tr>
+         <th width="15%">Exp Name</th>
+         <th width="10%">Exp DRS group</th>
+         <th width="10%">Add New Simulation</th>
+         <th width="35%">Current Simulations </th>
+         <th width="30%">Copy Simulation</th>
+       </tr>
+       {% for e in experiments %}
+         <tr>
+           <td>
+             <center>
+               <a href="{{e.url}}">
+                 {{e.abbrev}}
+               </a>
+             </center>
+           </td>
+           <td>
+             <center>
+               {{e.group}}
+             </center>
+           </td>
+           <td>
+             <center>
+               <a id="simAddButton{{forloop.counter}}" href="{{e.new}}">
+                 New
+               </a> 
+             </center>
+           </td>
+           <td >
+             <table width="100%">
+               {% for s in e.values %}
+                 <tr>
+                   <td>
+                     <center>
+                       <a href="{{s.url}}">
+                         {{ s.abbrev }}
+                       </a>
+                     </center>
+                   </td>
+                 </tr>
+               {% endfor %}
+             </table>
+           </td> 
+           <td> 
+             <table>
+               <tr>
+                 <td>
+                   <center>
+                     From simulation:
+                   </center>
+                 </td>
+                 <td>
+                   <center>
+                     <form action="{{cpurl}}" method="POST" 
+                       onsubmit="myProject.bypassConfirm()">
+                       <input type="hidden" name="targetExp" value="{{e.id}}"/>
+                         <select name="targetSim" size="1" style="width:120px;">
+                           <option value="---" selected="true" style="width=120px;">-------</option>
+                           {% for s in e.values %}
+                             <option value="{{s.id}}" style="min-width:150px;">
+                               {{s.abbrev}}
+                             </option> 
+                           {% endfor %}
+                         </select>
+                       <input type="submit" id="cp4_{{e.id}}button" value="Copy"/>
+                     </form>
+                   </center>
+                 </td>
+               </tr>
+             </table>
+           </td>    
+           <script type="text/javascript"> 
+             var oLinkButton{{forloop.counter}} = 
+                 new YAHOO.widget.Button("simAddButton{{forloop.counter}}");
+             var oCopyButton{{forloop.counter}} = 
+                 new YAHOO.widget.Button("cp4_{{e.id}}button",
+                {value:"cp4_{{e.id}}button"});
+           </script>
+         </tr>
+       {% endfor %}
+     </table>
+   </div>
+
+</div>
+{% endblock %}

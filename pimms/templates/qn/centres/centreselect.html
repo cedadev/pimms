@@ -1,0 +1,34 @@
+  <div class="header">
+    <h2> Login </h2>
+  </div>
+    
+  <div class="info">
+    <p>Choose your centre from below:</p>
+  </div>
+    
+  <div class="content">
+    <form action="{{curl}}" method='post' onsubmit="myProject.bypassConfirm()">
+        <table class="linklike" width="100%">
+          {% for row in objects %}
+            <tr>
+              {% for choice in row %}
+                <td width="15%">
+                  <p>
+                    <input type="radio" name="choice" id="{{forloop.counter}}" value="{{choice.id}}"/>
+                    <label id="tt{{choice.id}}" for="choice{{forloop.counter}}">
+                      {{choice.abbrev}}
+                    </label>
+                  </p>
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </table>
+  </div>
+    
+  <div class="buttonbar">  
+    <input type="submit" class="submitBut" value="Choose"/>
+  </div>
+    
+  </form>
+  

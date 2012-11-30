@@ -1,0 +1,36 @@
+<table width="100%">
+  <tr>
+    <td width="75%">
+      <table>
+        {% with form.master as f %}
+          <tr>
+            <td> Mnemonic {{f.mnemonic.errors}}</td>
+            <td>{{f.mnemonic}} for inputs to simulation {{f.simulation}}</td>
+          </tr>
+          <tr>
+            <td>Input type modified {{f.inputTypeModified.errors}}</td>
+            <td>{{f.inputTypeModified}}</td>
+          </tr>
+          <tr>
+            <td> Enter realisation start date {{f.memberStartDate.errors}}</td>
+            <td>{{f.memberStartDate}}</td>
+          </tr>
+          <tr> 
+            <td> Describe what has been done in this modification {{f.description.errors}}</td>
+            <td>{{f.description}}</td>
+          </tr> 
+        {% endwith %}
+      </table>
+    </td>
+    <td>
+    </td>
+  </tr>
+</table>
+
+<center>
+  <input id="subDatBut" type="submit" value="Save">
+    <script type="text/javascript">
+      var subDatBut = new YAHOO.widget.Button("subDatBut",
+                  {value:"subDatButvalue"});
+    </script>
+</center>

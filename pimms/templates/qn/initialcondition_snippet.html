@@ -1,0 +1,14 @@
+<p> Note that we assume the actual initial condition data appear in the output record. What we need to collect here is a description of how that initial condition was created, particularly if this
+initial condition is assciated with an ensemble.</p>
+<table>
+<tr><td>Date:{{form.date.errors}}</td><td>{{form.date}} (YYYY-MM-DD)</td></tr>
+<tr><td>Variables:{{form.variables.errors}}</td><td>{{form.variables}}</td></tr>
+<tr><td>Description:{{form.description.errors}}</td><td>{{form.description}}</td></tr>
+</table>
+<center>
+    <input id="subDatBut" type="submit" value="Save">
+    <script type="text/javascript">
+    var subDatBut = new YAHOO.widget.Button("subDatBut",
+                  {value:"subDatButvalue"});
+    </script>
+</center>

@@ -1,0 +1,129 @@
+<!-- This template works with the ParamGroupForm from forms.py -->
+{% for pg in pform.pgset %}
+	  <div class="innerboxer">
+	    
+	    {% if pg.name %} 
+	      <h3> 
+	        {{pg.name}}
+	      </h3> 
+	    {% endif %}
+	
+	    {% for cg in pg.cgset %}
+	      
+	        {% if cg.constraint %}
+	          <table>
+	          <tr>
+	            <td>
+	              {{cg.constraint}}
+	            </td>
+	          </table>
+	          <table>
+	          </tr>
+	          <tr>
+	            <td width="5%"/>
+	        {% else %}
+	        <table>
+	        <tr>
+	        {% endif %}
+	          <td>
+	            <table width="100%">
+	            {% for r in cg.forms %}
+	              <tr class="{% cycle 'row1' 'row2'%}">
+	                <td width="3%"> 
+	                  <center>
+	                    <img src="/static/icons/information-icon.png" id="tt{{r.instance.id}}" title="">
+	                  </center>
+	                </td>                
+	                <td width="20%">
+	                  {% if r.showname %}
+	                    <em id="tt{{r.instance.id}}">{{r.instance.name}}</em>
+	                  {% endif %}
+	                  {{r.name}}{{r.name.errors}}
+	                </td>
+	                <td width="20%">
+	                  {% ifequal r.model 'Keyboard' %}
+	                    {% if r.units %}
+	                      Enter {% if r.numeric %}numeric{% endif %} value in <em>{{r.units}}</em>:&nbsp;
+	                    {% else %}
+	                      Enter {% if r.numeric %}numeric{% else%}string{%endif%} value:&nbsp;
+	                    {% endif %}
+	                  {% endifequal %}
+	                  {% ifequal r.model 'OR' %} 
+	                    Choose one or more of: 
+	                  {% endifequal %}
+	                  {% ifequal r.model 'XOR' %} 
+	                    Choose one of: 
+	                  {% endifequal %} 
+	                </td>               
+	                <td width="57%">
+	                  {{r.value}}
+	                </td>    
+	              </tr>
+	            {% endfor %}
+	            </table>
+	          </td>
+	        </tr>
+	      </table>
+	      
+	      <script type="text/javascript">
+	        YAHOO.namespace("e{{pg.id}}{{cg.id}}.container");
+		    {% for r in cg.forms %}
+	          YAHOO.e{{pg.id}}{{cg.id}}.container.ytt{{r.instance.id}} = new YAHOO.widget.Tooltip("ytt{{r.instance.id}}", { context:"tt{{r.instance.id}}", text:"{{r.instance.name}}:&nbsp;{{r.instance.definition}}" });
+	        {% endfor %}
+	      </script>
+	      
+	      {% if forloop.last %}
+	        <p class="subheading">
+	          Use the Name and Value boxes to enter 
+		      {% if cg.forms|length %} 
+	            an additional 
+		      {% else %} 
+	            a
+		      {% endif %} 
+		      parameter or attribute and it's value. The "Save" button below will 
+	          generate entry boxes for another parameter/attribute.
+	        </p> 
+	        <table>
+	          {{ cg.userforms.management_form }}
+	          <tr>
+	            <th width="10%"></th>
+	            <th width="20%">
+	              <center>
+	                Name
+	              </center>
+	            </th>
+	            <th width="50%">
+	              <center>
+	                Value
+	              </center>
+	            </th>
+	            <th width="20%"></th>
+	          </tr>
+	          {% for f in cg.userforms.forms %}
+	            <tr>
+	              <td width="10%"></td>
+	              <td width="20%"><center>{{f.name}}</center></td> 
+	              <td width="50%"><center>{{f.value}}</center></td>
+	              <td width="20%">
+	                <center>
+	                  Delete? {{f.DELETE}}
+	                  {%for h in f.hidden_fields %} 
+	                    {{h}} 
+	                  {%endfor%}
+	                </center>
+	              </td>
+	            </tr>
+	            {% if f.name.errors or f.value.errors  %}
+	              <tr>
+	                <td width="10%"></td>
+	                <td width="20%">{{f.name.errors}}</td> 
+	                <td width="50%">{{f.value.errors}}</td>
+	                <td width="20%"></td>
+	              </tr>
+	            {% endif %}
+	          {% endfor %}
+	        </table>
+	      {% endif %}
+	    {% endfor %}
+	  </div>
+{% endfor %}

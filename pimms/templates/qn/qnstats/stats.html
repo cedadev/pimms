@@ -1,0 +1,123 @@
+{% extends "qnstats/base_explorer.html" %} 
+
+{% block pagetitle %}
+  <div class="boxer titlerow">
+    Questionnaire Statistics
+  </div>
+{% endblock%}
+
+
+{% block content %}
+
+<div class="boxer">
+  
+  <table>
+    <tr>
+      <td>
+        Date generated
+      </td>
+      <td>
+        {{ date_created }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Total number of simulations published
+      </td>
+      <td>
+        {{ total_pub_sims }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Total number of models published
+      </td>
+      <td>
+        {{ total_pub_mods }}
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+
+<div class="boxer">
+    <table class="tablescroll cycletable">
+      <thead>
+        <tr>
+          <th>
+            Institute Name
+          </th>
+          
+          <th>
+            Number of simulations being described 
+          </th>
+          
+          <th>
+            Number of simulations published
+          </th>
+         
+          <th>
+            Number of models being described 
+          </th>
+          
+          <th>
+            Number of models published
+          </th>
+          
+          <th>
+            List of models published
+          </th>
+          
+          <th>
+            Completeness of unpublished models<br/>
+            (Model Name (errors/number of checks))
+          </th>
+         
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for stat in centre_stats %}
+          <tr class="{%cycle 'row2' 'row1'%}">
+        
+            <td style="width:240px">
+              {{ stat.centrename }}
+            </td>
+         
+            <td>
+              {{ stat.numsims }}
+            </td>
+            
+            <td>
+              {{ stat.numsimspub }}
+            </td>
+         
+            <td>
+              {{ stat.nummods }}  
+            </td>
+            
+            <td>
+              {{ stat.nummodspub }}  
+            </td>
+            
+            <td>
+              {% for mod in stat.modslist %}
+                {{ mod.abbrev }}<br/>
+              {% endfor %}  
+            </td>
+            
+            <td>
+              {% for mod in stat.unpubmods %}
+                {{ mod.modelname }} ({{mod.numerrors}} / {{ mod.numchecks}}) <br/>
+              {% endfor %}  
+            </td>
+               
+          </tr>
+        {% endfor %}
+      </tbody>
+    
+    </table>
+</div>
+
+{% endblock %}

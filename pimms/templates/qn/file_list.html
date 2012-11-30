@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="boxer">
+<h1> List of Files </h1>
+</div>
+<div class="boxer">
+    {% if objects|length_is:0 %}
+    <p>No data file descriptions loaded at present</p>
+    {% else %} 
+    <table>
+    <tr><th> Name </th><th> CF Type </th><th> Link </th><th>Description</th></tr>
+    {% for d in objects %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td><a href="{{d.editURL}}">{{d.name}}</td>
+        <td>{{d.cftype}}</td>
+        <td>{{d.link}}</td>
+        <td>{{d.description}}</td></tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+</div>
+
+<div class="boxer">
+  <p> Add new file description: </p>
+  <div id="data">
+	<table>
+	  <tr>
+	    <td>
+	      <form action="{{editURL}}" method="POST" onsubmit="myProject.bypassConfirm()">
+	        <table>
+	          {% include 'data_snippet.html' %}
+	        </table>
+	      </form>
+	      <td>
+	        <p class="cmip5q"> Explain terms </p>
+	      </td>
+	    </td>
+	  </tr>
+	</table>
+  </div>
+</div>
+
+{% endblock %}

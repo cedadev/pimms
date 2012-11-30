@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<h1> Input Requirements for component: "{{c.abbrev}}"</h1>
+<p> This page is for entering <b>requirements</b> for any of three different sorts of
+inputs:<ul><li>spatially varying <b>"initial conditions"</b> for prognostic variables,</li>
+<li> spatio-temporally or temporally varying <b>"boundary conditions"</b>, and</li>
+<li> static <b>"ancillary files"</b> (e.g. land/sea masks etc).</li></ul></p>
+
+<p> You can enter multiple inputs here, each time you add a new input save it, and a new entry form will appear for subsequent inputs. </p>
+
+<p> You can "bind" each of these input requirements to variable(s) in file(s) (or in the case of a boundary condition, if desired, another component) in two different places: on the "Resolve Inputs" pages at the top level components within your model (to establish default coupling), and on the "Resolve Inputs" page of the simulation description, where you can establish new bindings or override the default behaviour. Only the latter is saved to output - the first option is simply a convenience to reduce having to enter the same information.</p> 
+</div>
+
+<div class="boxer">
+    <div class="boxer2">
+        <form action="{{urls.ok}}" method="POST" onsubmit="myProject.bypassConfirm()">
+            {{ form.management_form }}
+            {% for f in form.forms %}
+            {% if forloop.last %} <p> Add a new input: </p> {% endif %}
+            <div class="boxer">
+                <table>
+                    <tr class="{% cycle 'row1' 'row2'%}">
+                        <td>Short Name: {{f.abbrev.errors}}</td><td> {{f.abbrev}}</td>
+                        <td>Input Type: {{f.ctype.errors}} {{f.ctype}} </td>
+                        <td>{% if not forloop.last %} (delete: {{f.DELETE.errors}}{{f.DELETE}}){% endif %}</td>
+                    </tr>
+                    <tr class="{% cycle 'row1' 'row2'%}">
+                    <td>Description:{{f.description.errors}}</td><td colspan="3">{{f.description}}</td>
+                    </tr>
+                    <tr><td colspan="4">In some cases an input corresponds to an actual variable, if so, please enter the units OR if possible the CF standard name (enter the first 3 letters to expose drop-down box):</td></tr>
+                     <tr><td>Units:{{f.units.errors}}</td><td>{{f.units}}</td>
+                        <td colspan="2">CF Name:{{f.cfname.errors}}{{f.cfname}}</td>
+                    </tr>
+                    {% for hid in f.hidden_fields %} {{hid}} {% endfor %}       
+                </table> 
+            </div> 
+            {% endfor %}
+            <!--{ { form.as_table } }-->
+        <center><input id="internalBut" type="submit" value="Save"></center>
+        </form>
+    </div>
+<p><a href="{{urls.self}}" id="returnBut"> Return to {{c.abbrev}}</a></p>
+<script type="text/javascript">
+    var internalBut = new YAHOO.widget.Button("internalBut",
+                  {value:"internalButvalue"});
+    var returnBut = new YAHOO.widget.Button("returnBut");
+</script>
+</div>
+
+{% endblock%} 

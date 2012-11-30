@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <div class="boxer titlerow">
+      Ensemble Characteristics for simulation <b>{{s}}</b>
+  </div>
+
+  <!-- Error notification panel -->
+  {% if eform.errors or eformset.errors %}
+    <div class="boxer">
+      <div class="error_boxer">
+        <p>
+          This page contains errors. Please correct these before saving 
+        </p>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="boxer formbox">
+    <h3>
+      Top level information
+    </h3>
+    <form action={{urls.self}} method="POST" onsubmit="myProject.bypassConfirm()">
+      <table>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Ensemble Type</td>
+          <td width="57%">{{eform.etype}}</td>
+          <td width="20%">{{eform.etype.errors}}</td>
+        </tr>
+        <tr>
+          <td width="3%"></td>
+          <td width="20%">Ensemble Description</td>
+          <td width="57%">{{eform.description}}</td>
+          <td width="20%">{{eform.description.errors}}</td>
+        </tr>
+
+        <tr>
+          <td width="3%"> 
+              <center>
+                <img src="/static/icons/information-icon.png"
+                title="Ticking this box will stop the information given here from being exposed in the rip ensemble information page (accessible throught the questionnaire front page)" />
+              </center>
+          </td>
+          <td width="20%">
+            Do not show on ensemble information page 
+          </td>
+          <td width="52%"> {{ eform.riphidden }} </td>
+          <td width="20%">{{eform.riphidden.errors}}</td>
+        </tr>
+      </table>
+        
+      {% if eform.instance.etype %}
+        {{eformset.management_form}}
+        <br/>
+        <br/>
+        <h3>
+          Ensemble members information         
+        </h3>
+        <p> Now enter the details which explain how the ensemble members differ. </p>
+
+        <table class="riptable">
+          <tr>
+            <td colspan="5">{{eformset.non_form_errors}}</td>
+          </tr>
+          <tr>
+            <th width="3%"></th>
+            <th width="7%"></th>
+            <th width="15%">Code Mod </th>
+            <th width="5%"></th>
+            <th width="15%">Input Mod</th>
+            {% if eform.rset %}
+              <th width="12%">
+                Requirement
+              </th> 
+            {% endif %}
+            <th width="8%"></th>
+            <th width="12%">
+              <a href="http://pcmdi-cmip.llnl.gov/cmip5/output_req.html" target="_blank">DRS member name</a> 
+            </th>
+            <th width="3%"></th>
+          </tr>
+          
+          {% for form in eformset.forms %}
+            <tr class="{%cycle 'row2' 'row1'%}">
+              <td></td>
+              <td>Member {{form.instance.memberNumber}} uses </td>
+              <td>{{form.cmod.errors}}{{form.cmod}}</td>
+              <td>
+                <center>
+                  and/or
+                </center>
+              </td>
+              <td>{{form.imod.errors}}{{form.imod}} </td>
+              {% if eform.rset %}
+                <td> 
+                  conforms to {{form.requirement.errors}}{{form.requirement}} 
+                </td>
+              {% endif %}
+              <td>
+                <center>
+                  and is known as
+                </center>
+              </td>
+              <td>{{form.drsMember.errors}} {{form.drsMember}}</td>
+              <td></td>
+            </tr>
+            {% for hid in form.hidden_fields %} 
+              {{hid}}
+            {% endfor %}
+          {% endfor %}
+          
+          {% for hid in form.hidden_fields %} 
+            {{hid}}
+          {% endfor %}
+        </table>
+  
+      {% else %}
+        <div class="helper_boxer"> 
+          You need to save the form before you can assign details to initial ensemble members.
+        </div>
+      {% endif %}
+      <br/>
+      <center>
+         <input class="saveBut" id="subDatBut" type="submit" value="Save Description">
+      </center>
+      <br/>
+    </form>
+  </div>
+  
+  <div class="boxer">
+    <center>
+      <a id="simbut" href="{{urls.sim}}"> Return to {{s}}</a>
+      <a id="codebut" href="{{urls.mods}}">Manage Code Modifications</a>
+      <a id="icbut" href="{{urls.ics}}">Manage Input Modifications</a>
+    </center>
+  </div>
+
+<script type="text/javascript">
+  var subDatBut = new YAHOO.widget.Button("varSubBut",
+                  {value:"varSubButvalue"});
+  var oLinkButton1 = new YAHOO.widget.Button("simbut");
+  var oLinkButton2 = new YAHOO.widget.Button("codebut");
+  var oLinkButton3 = new YAHOO.widget.Button("icbut");
+</script>
+
+{% endblock%}

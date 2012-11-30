@@ -1,0 +1,31 @@
+{% extends "site/base.html" %}
+
+{% block content %}
+  
+    <div class="row">
+      <div class="span12">
+          {% block page_top_menu %}
+            <!-- top menu content -->
+          {% endblock %}
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="span12">
+	    <div class="row">
+	      <div class="offset1 span7">
+	        {% block page_column_one %}
+	          <!-- column one content -->
+	        {% endblock %}
+	      </div>
+	      <div class="span3">
+	        {% block page_column_two %}
+	          <!-- column two content -->
+	        {% endblock %}
+	    </div>
+	  </div>
+	</div>
+
+{% endblock %}   
+
+
