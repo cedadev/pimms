@@ -5,7 +5,7 @@ from django.template.context import RequestContext
 from pimms.apps.helpers import getsiteurls
 from pimms.apps.exp.helpers import getexpurls
 from pimms.apps.cv.helpers import getcvurls
-from pimms.apps.qn.helpers import getqnurls
+from pimms.apps.qnsetup.helpers import getqnsetupurls
 
 
 def home(request):
@@ -17,7 +17,7 @@ def home(request):
         urls = getsiteurls(urls)
         urls = getexpurls(urls)
         urls = getcvurls(urls)
-        urls = getqnurls(urls)
+        urls = getqnsetupurls(urls)
     except:
         raise Http404
     

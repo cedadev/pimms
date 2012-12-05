@@ -1,16 +1,18 @@
 '''
-helpers for qn application
+Helpers for CV application
 '''
 
 from django.core.urlresolvers import reverse
 
 
 # set up generic urls
-def getqnurls(urls):
-    '''Append qn related urls to master dictionary
+def getqnsetupurls(urls={}):
+    '''Append qnsetup related urls to master dictionary
+    
+    Expects an already existing  
     
     '''
   
-    urls['qnhome'] = reverse('qnhome', args=())
+    urls['qnsetuphome'] = reverse('qnsetuphome', args=())
     
     return urls

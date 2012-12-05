@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+
+import types
+
 from datetime import datetime
 
-#from django.db import models
-#from django.db.models.fields.related import ForeignKey
-#from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db.models.query import QuerySet
 
@@ -11,10 +11,8 @@ from pimms.apps.qn.cimHandling import *
 from pimms.apps.qn.utilities import atomuri
 from pimms.apps.qn.XMLutilities import *
 from pimms.apps.qn.fields import *
-
 from pimms.apps.qn.viewer.view_manager import render_view
 
-import types
 
 logging = settings.LOG
 
@@ -187,7 +185,7 @@ class Doc(Fundamentals):
     
     def xmlobject(self):
         ''' Return an lxml object view of me '''
-        from pimms.apps.qn.webui.Translator import Translator  # needs to be deferred down here to avoid circularity
+        from pimms.apps.qn.Translator import Translator  # needs to be deferred down here to avoid circularity
         translator=Translator()
         if self._meta.module_name=='simulation' :
             # composition defaults to false
