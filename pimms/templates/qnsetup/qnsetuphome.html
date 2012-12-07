@@ -1,55 +1,99 @@
-{% extends "site/two_column_page_wideleft.html" %}
-
-{% block extrahead %}
-<link href="{{ STATIC_URL }}css/fineuploader.css" rel="stylesheet">
-{% endblock %}
+{% extends "site/one_column_page.html" %}
 
 {% block pagetitle %}
-    Metadata questionnaire management 
+    Metadata questionnaires 
 {% endblock %}
-
-{% block page_top_menu %}
-    
-    <div class="page-header">
-      <h3>New Questionnaire Parameters</h3>
+  
+{% block page_column_one %}
+  
+  <div class="page-header">
+    <h3>Questionnaires <small>Table of current questionnaires</small></h3>
+  </div>
+  
+  <div class="row"> 
+    <div class="span3 offset8">
+      <a class="btn btn-primary btn-block" href="{{ urls.qninputs }}">Generate New Questionnaire</a>
     </div>
+  </div>
+  <div class="row">
+    <div class="span10 offset1">
+      <br/>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Abbreviation</th>
+            <th>Project</th>
+            <th>Created by</th>
+            <th>Creation date</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <!-- <tbody data-provides="rowlink"> -->
+        <tbody>
+          {% for qn in allqns %}
+            <tr>
+              <td>{{ qn.abbrev }}</td>
+              <td>{{ qn.project }}</td>
+              <td>{{ qn.creator }}</td>
+              <td>{{ qn.creationDate }}</td>
+              <td><a href="{{ qn.url }}"><i class="icon-search" title="Go"></i></a></td>
+              <td>
+                <a href="#" onclick="return MyDialogs.loadConfirmationModal('my_modal_id', 
+                                                                            '{{ qn.delurl }}', 
+                                                                            'Delete Experiment', 
+                                                                            'Are you sure you want to delete {{ qn.abbrev }}?');"><i class="icon-trash" title="Delete"></i></a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br/>
+  
   
 {% endblock %}
 
-{% block page_column_one %}
-<div id="bootstrapped-fine-uploader"></div>
-{% endblock %} 
-
-{% block page_column_two %} 
-{% endblock %}
 
 {% block extrajs %}
-<script src="{{ STATIC_URL }}js/jquery.fineuploader-3.0.js">
-</script>
+  
+  <!-- jquery to make table row clickable -->
+  <script type="text/javascript">
+    $('tbody.rowlink').rowlink()
+  </script>
+  
+  <!-- end jquery--> 
 
-<script>
-  function createUploader() {
-    var uploader = new qq.FineUploader({
-      element: document.getElementById('bootstrapped-fine-uploader'),
-      request: {
-        endpoint: 'server/handleUploads'
-      },
-      text: {
-        uploadButton: '<i class="icon-upload icon-white"></i> Test me now and upload a file'
-      },
-      template: '<div class="qq-uploader span12">' +
-                '<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +
-                '<div class="qq-upload-button btn btn-success" style="width: auto;">{uploadButtonText}</div>' +
-                '<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
-                '</div>',
-      classes: {
-        success: 'alert alert-success',
-        fail: 'alert alert-error'
-      },
-      debug: true
-    });
-  }
+  <script type="text/javascript">
+  var MyDialogs={
+    loadConfirmationModal:function(modalId, confirmURL, caption, body){
+                        var $modal=jQuery('#'+modalId);
+                        if($modal.size() === 0){
 
-  window.onload = createUploader;
-</script>
+                                var modalString='<div id="'+modalId+'" class="modal hide fade">'+
+                                        '<div class="modal-header">'+
+                                                '<button class="close" data-dismiss="modal">×</button>'+
+                                                '<h3>'+caption+'</h3>'+
+                                        '</div>'+
+                                        '<div class="modal-body">'+body+
+                                                '</div>'+
+                                                '<div class="modal-footer">'+
+                                                        '<button id="cancel" class="btn" data-dismiss="modal" type="button" name="cancel">Cancel</button>'+
+                                                        '<a id="submit" class="btn btn-danger" href="'+confirmURL+'">Delete</a>'+
+                                                '</div>'+
+                                '</div>';
+
+                                $modal=jQuery(modalString);
+
+                        }
+
+                        $modal.modal('show');
+                        return false;
+                }
+
+  };
+  </script>
+
 {% endblock %}

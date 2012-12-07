@@ -9,3 +9,5 @@ class qnSetupForm(forms.ModelForm):
     '''
     class Meta:
         model = Questionnaire
+        
+        exclude = ('author', 'creator', 'cvs', 'creationDate') 
