@@ -11,3 +11,15 @@ class qnSetupForm(forms.ModelForm):
         model = Questionnaire
         
         exclude = ('author', 'creator', 'cvs', 'creationDate') 
+        
+        
+class UploadCVForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    cvfile  = forms.FileField(required=False)
+    
+
+class UploadExpForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    expfile  = forms.FileField(required=False)
+        
+        

@@ -2,13 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class SetupFile(models.Model):
-    setupfile = models.FileField(upload_to='setupfiles')
-
-    def __unicode__(self):
-        return self.setupfile.name
-
-
 class Questionnaire(models.Model):
     ''' Outer layer class representing a questionnaire instance and it's setup 
         parameters
@@ -19,7 +12,8 @@ class Questionnaire(models.Model):
     project         = models.CharField(max_length=32)
     description     = models.TextField(max_length=1024, blank=True, null=True)
     creator         = models.ForeignKey(User)
-    cvs             = models.ManyToManyField('CVfile', blank=True, null=True)
+    cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
+    exps            = models.ManyToManyField('ExpFile', blank=True, null=True)
     creationDate    = models.DateField(auto_now_add=True, editable=False)
     
     # Qn frontend specialiations
@@ -27,14 +21,20 @@ class Questionnaire(models.Model):
          
       
     def __unicode__(self):
+        return self.abbrev    
+      
+      
+class CVFile(models.Model):
+    abbrev          = models.CharField(max_length=64, blank=True, null=True)
+    filename        = models.CharField(max_length=128)
+    
+    def __unicode__(self):
         return self.abbrev
       
 
-class CVfile(models.Model):
-    '''Class to represent a CV file '''
+class ExpFile(models.Model):
+    abbrev          = models.CharField(max_length=64, blank=True, null=True)
+    filename        = models.CharField(max_length=128)
     
-    name          = models.CharField(max_length=64)
-        
     def __unicode__(self):
-        return self.name
-    
+        return self.abbrev  

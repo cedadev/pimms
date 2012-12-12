@@ -1,13 +1,14 @@
+import simplejson
+
 from django.shortcuts import render_to_response
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
+from django.forms.formsets import formset_factory
 
-from pimms.apps.qnsetup.forms import qnSetupForm
+from pimms.apps.qnsetup.forms import qnSetupForm, UploadCVForm, UploadExpForm
 from pimms.apps.qnsetup.helpers import getqnsetupurls
-from pimms.apps.qnsetup.models import SetupFile, Questionnaire
+from pimms.apps.qnsetup.models import Questionnaire
 from pimms.apps.helpers import getsiteurls
-
-import simplejson
 
 
 
@@ -43,58 +44,38 @@ def qninputs(request):
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)  
     
+    CVFileFormSet = formset_factory(UploadCVForm)
+    ExpFileFormSet = formset_factory(UploadExpForm)
+    
     # Deal with response 
     if request.method == 'POST':
         cancel = request.POST.get('cancel', None)
         if cancel:
             return HttpResponseRedirect(urls['qnsetuphome'])
         else:        
-            qnsetupform = qnSetupForm(request.POST, prefix='qnsetup') 
-            if qnsetupform.is_valid(): 
-                qn = qnsetupform.save(commit=False)
-                qn.creator = request.user
-                qn.save()
-                
-                #Run QN setup script
-                
+            cvformset = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
+            expformset = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
+            if cvformset.is_valid() and expformset.is_valid():
+                #make use of the cleaned data lists here to now process the files
+              
                 return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
             else:
-                return render_to_response('qnsetup/qninputs.html', {'qnsetupform': qnsetupform, 'urls':urls}, context_instance=RequestContext(request))
+                return render_to_response('qnsetup/qninputs.html', 
+                                          {'cvformset': cvformset, 
+                                           'expformset': expformset,
+                                           'urls':urls},
+                                          context_instance=RequestContext(request))
     else:
-        #qnsetupform = qnSetupForm(instance=qn, prefix='qn') # An unbound form
-        qnsetupform = qnSetupForm(prefix='qnsetup') # An unbound form
-        
+        cvformset = CVFileFormSet(prefix='cvfile')
+        expformset = ExpFileFormSet(prefix='expfile')
 
     return render_to_response('qnsetup/qninputs.html', 
-                              {'qnsetupform': qnsetupform, 
+                              {'cvformset': cvformset,
+                               'expformset': expformset,
                                'urls':urls},
                                 context_instance=RequestContext(request))
     
-
-def multiple_uploader(request):
-    if request.method == 'POST':
-        if request.FILES == None:
-            raise Http404("No objects uploaded")
-        f = request.FILES['file']
-
-        a = SetupFile()
-        a.setupfile.save(f.name, f)
-        a.save()
-
-        result = [{'name': f.name,
-                   'size': f.size,
-                 },]
-
-        response_data = simplejson.dumps(result)
-        if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
-            mimetype = 'application/json'
-        else:
-            mimetype = 'text/plain'
-        return HttpResponse(response_data, mimetype=mimetype)
-    else:
-        return HttpResponse('Only POST accepted')
-
-
+    
 def qnsetupsuccess(request):
     '''Controller for app home page
     '''
