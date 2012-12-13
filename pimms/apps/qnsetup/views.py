@@ -7,7 +7,7 @@ from django.forms.formsets import formset_factory
 
 from pimms.apps.qnsetup.forms import qnSetupForm, UploadCVForm, UploadExpForm
 from pimms.apps.qnsetup.helpers import getqnsetupurls
-from pimms.apps.qnsetup.models import Questionnaire
+from pimms.apps.qnsetup.models import Questionnaire, CVFile, ExpFile
 from pimms.apps.helpers import getsiteurls
 
 
@@ -44,8 +44,8 @@ def qninputs(request):
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)  
     
-    CVFileFormSet = formset_factory(UploadCVForm)
-    ExpFileFormSet = formset_factory(UploadExpForm)
+    CVFileFormSet = formset_factory(UploadCVForm, extra=2)
+    ExpFileFormSet = formset_factory(UploadExpForm, extra =2)
     
     # Deal with response 
     if request.method == 'POST':
@@ -57,10 +57,20 @@ def qninputs(request):
             cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
             expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
             if qnsetupform.is_valid() and cvformset.is_valid() and expformset.is_valid():
-                #make use of the cleaned data lists here to now process the files
-                #cvs = cvformset.save()
-                #exps = expformset.save()
-                qnsetupform.save()
+                # deal with saving qn details
+                qn = qnsetupform.save()
+                # deal with saving cv file details
+                for entry in cvformset.cleaned_data:
+                    cvfile = CVFile(abbrev=entry['abbrev'], filename=entry['cvfile'].name)
+                    cvfile.save()
+                    # add to qn instance
+                    qn.cvs.add(cvfile)
+                # deal with saving exp file details
+                for entry in expformset.cleaned_data:
+                    expfile = ExpFile(abbrev=entry['abbrev'], filename=entry['expfile'].name)
+                    expfile.save()
+                    # add to qn instance
+                    qn.exps.add(expfile)
               
                 return HttpResponseRedirect(urls['qnsetuphome']) # Redirect to list page 
             else:
