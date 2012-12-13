@@ -53,24 +53,31 @@ def qninputs(request):
         if cancel:
             return HttpResponseRedirect(urls['qnsetuphome'])
         else:        
-            cvformset = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
-            expformset = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
-            if cvformset.is_valid() and expformset.is_valid():
+            qnsetupform = qnSetupForm(request.POST, prefix='qn') 
+            cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
+            expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
+            if qnsetupform.is_valid() and cvformset.is_valid() and expformset.is_valid():
                 #make use of the cleaned data lists here to now process the files
+                #cvs = cvformset.save()
+                #exps = expformset.save()
+                qnsetupform.save()
               
-                return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
+                return HttpResponseRedirect(urls['qnsetuphome']) # Redirect to list page 
             else:
                 return render_to_response('qnsetup/qninputs.html', 
-                                          {'cvformset': cvformset, 
+                                          {'qnsetupform': qnsetupform,
+                                           'cvformset': cvformset, 
                                            'expformset': expformset,
                                            'urls':urls},
                                           context_instance=RequestContext(request))
     else:
-        cvformset = CVFileFormSet(prefix='cvfile')
-        expformset = ExpFileFormSet(prefix='expfile')
+        qnsetupform = qnSetupForm(prefix='qn')
+        cvformset   = CVFileFormSet(prefix='cvfile')
+        expformset  = ExpFileFormSet(prefix='expfile')
 
     return render_to_response('qnsetup/qninputs.html', 
-                              {'cvformset': cvformset,
+                              {'qnsetupform': qnsetupform,
+                               'cvformset': cvformset,
                                'expformset': expformset,
                                'urls':urls},
                                 context_instance=RequestContext(request))

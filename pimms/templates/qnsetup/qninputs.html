@@ -15,9 +15,62 @@
 
 
 {% block page_column_one %}
-    <form id="uploadform" method="post" action="" enctype="multipart/form-data">
+    <!-- <form id="uploadform" method="post" action="" enctype="multipart/form-data"> -->
+    <form method="post" action="" enctype="multipart/form-data">
         
-        <h2> Upload CVs </h2>
+        <h3> Qn Params </h3>
+        <div class="row">
+              <div class="span2">
+                <label for="abbrev"{% if qnsetupform.abbrev.errors %} class="text-error" {% endif %}>Abbreviation {% if qnsetupform.fields.abbrev.required %}*{% endif %}</label>
+              </div>
+              <div class="span3">
+                {{ qnsetupform.abbrev }}
+              </div>
+              <div class="span2">
+              {% if qnsetupform.abbrev.errors %}
+                {% for error in qnsetupform.abbrev.errors %}
+                    <p class="text-error">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+              </div>
+        </div>
+        <br/>
+        
+        <div class="row">
+          <div class="span2">
+            <label for="project"{% if qnsetupform.project.errors %} class="text-error" {% endif %}>Project {% if qnsetupform.fields.project.required %}*{% endif %}</label>
+          </div>
+          <div class="span3">
+            {{ qnsetupform.project }}
+          </div>
+          <div class="span2">
+            {% if qnsetupform.project.errors %}
+              {% for error in qnsetupform.project.errors %}
+                <p class="text-error">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <br/>
+        
+        <div class="row">
+          <div class="span2">
+            <label for="project"{% if qnsetupform.description.errors %} class="text-error" {% endif %}>Description {% if qnsetupform.fields.description.required %}*{% endif %}</label>
+          </div>
+          <div class="span3">
+            {{ qnsetupform.description }}
+          </div>
+          <div class="span2">
+            {% if qnsetupform.description.errors %}
+              {% for error in qnsetupform.description.errors %}
+                <p class="text-error">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <br/>
+        
+        <h3> Upload CVs </h3>
         <table id="cvuploadform" border="0" cellpadding="0" cellspacing="0">
           <tbody>
             {% for cvform in cvformset.forms %}
@@ -29,7 +82,7 @@
           </tbody>
         </table>
         
-        <h2> Upload Experiments </h2>
+        <h3> Upload Experiments </h3>
         <table id="expuploadform" border="0" cellpadding="0" cellspacing="0">
           <tbody>
             {% for expform in expformset.forms %}

@@ -11,7 +11,7 @@ class Questionnaire(models.Model):
     abbrev          = models.CharField(max_length=32)
     project         = models.CharField(max_length=32)
     description     = models.TextField(max_length=1024, blank=True, null=True)
-    creator         = models.ForeignKey(User)
+    creator         = models.ForeignKey(User, blank=True, null=True)
     cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
     exps            = models.ManyToManyField('ExpFile', blank=True, null=True)
     creationDate    = models.DateField(auto_now_add=True, editable=False)
