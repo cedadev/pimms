@@ -10,6 +10,8 @@ from pimms.apps.qnsetup.helpers import getqnsetupurls
 from pimms.apps.qnsetup.models import Questionnaire, CVFile, ExpFile
 from pimms.apps.helpers import getsiteurls
 
+from pimms.apps.qnsetup.generateQn import generate_qn
+
 
 
 def qnsetuphome(request):
@@ -60,17 +62,30 @@ def qninputs(request):
                 # deal with saving qn details
                 qn = qnsetupform.save()
                 # deal with saving cv file details
+                cvlist = []
                 for entry in cvformset.cleaned_data:
-                    cvfile = CVFile(abbrev=entry['abbrev'], filename=entry['cvfile'].name)
-                    cvfile.save()
-                    # add to qn instance
-                    qn.cvs.add(cvfile)
+                    if len(entry):
+                        cvfile = CVFile(abbrev=entry['abbrev'], filename=entry['cvfile'].name)
+                        cvfile.save()
+                        # add to qn instance
+                        qn.cvs.add(cvfile)
+                        #add the files to a list to pass to the qn generator
+                        cvlist.append(entry['cvfile'])
+                    
                 # deal with saving exp file details
+                explist = []
                 for entry in expformset.cleaned_data:
-                    expfile = ExpFile(abbrev=entry['abbrev'], filename=entry['expfile'].name)
-                    expfile.save()
-                    # add to qn instance
-                    qn.exps.add(expfile)
+                    if len(entry):
+                        expfile = ExpFile(abbrev=entry['abbrev'], filename=entry['expfile'].name)
+                        expfile.save()
+                        # add to qn instance
+                        qn.exps.add(expfile)
+                        #add the files to a list to pass to the qn generator
+                        explist.append(entry['expfile'])
+                
+                #Now run the questionnaire setup script
+                generate_qn(cvlist, explist)
+                
               
                 return HttpResponseRedirect(urls['qnsetuphome']) # Redirect to list page 
             else:
@@ -79,7 +94,7 @@ def qninputs(request):
                                            'cvformset': cvformset, 
                                            'expformset': expformset,
                                            'urls':urls},
-                                          context_instance=RequestContext(request))
+                                           context_instance=RequestContext(request))
     else:
         qnsetupform = qnSetupForm(prefix='qn')
         cvformset   = CVFileFormSet(prefix='cvfile')

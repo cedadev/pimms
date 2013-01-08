@@ -11,11 +11,11 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'pimms.settings'
 
 from django.conf import settings
 
-from pimms.apps.vocabs.cf import CFtable
+from pimms.apps.qn.vocabs.cf import CFtable
 from pimms.apps.qn.models import *
 from pimms.apps.qn.utilities import atomuri
-from pimms.apps.vocabs.InputTransformations import properties
-from pimms.apps.vocabs.centres import loadCentres 
+from pimms.apps.qn.vocabs.InputTransformations import properties
+from pimms.apps.qn.vocabs.centres import loadCentres 
 
 # tell the questionnaire that this is a cmip5 configuration.
 # This allows us to do cmip5 specific things in the questionnaire
@@ -112,6 +112,7 @@ def loadCF():
          pp=PhysicalProperty(vocab=v,name=e.name,definition=e.description,units=u)
          pp.save()
 
+
 def loadProperties(args):
     for arg in args:
         defn,values=properties[arg]
@@ -121,6 +122,7 @@ def loadProperties(args):
             rv=Term(vocab=v,name=r,definition=d)
             rv.save()
 
+
 def reloadVocab(key):
     ''' Used to reset vocabulariews '''
     vocab=Vocab.objects.get(name=key)
@@ -128,6 +130,7 @@ def reloadVocab(key):
         v.delete()
     vocab.delete()
     loadvocab(key)
+
 
 def loadvocab(key):
     ''' Used to load vocabularies '''
@@ -138,6 +141,7 @@ def loadvocab(key):
     for r in values:
         rv=Term(vocab=v,name=r)
         rv.save()
+
 
 def initialise():
     '''This routine initialises the CMIP5 questionaire '''

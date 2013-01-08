@@ -114,7 +114,8 @@ INSTALLED_APPS = (
     'apps.cv',
     'apps.exp',
     'apps.person',
-    'apps.qnsetup'
+    'apps.qnsetup',
+    'apps.qn'
 )
 
 

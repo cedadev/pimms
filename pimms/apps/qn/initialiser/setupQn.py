@@ -14,12 +14,12 @@ sys.path.append(os.path.join(settings.PROJECT_ROOT, "apps/qn"))
 sys.path.append(os.path.join(settings.PROJECT_ROOT, "apps/vocabs"))
 
 from pimms.apps.qn.models import Experiment
-from pimms.apps.initialiser.XMLinitialiseQ import initialise
-from pimms.apps.initialiser.ControlledModel import initialiseModel
-from pimms.apps.initialiser.ControlledGrid import initialiseGrid
-from pimms.apps.initialiser.initialiseRefs import initialiseRefs
-from pimms.apps.initialiser.initialiseFiles import initialiseFiles
-from pimms.apps.initialiser.initialiseVars import initialiseVars
+from pimms.apps.qn.initialiser.XMLinitialiseQ import initialise
+from pimms.apps.qn.initialiser.ControlledModel import initialiseModel
+from pimms.apps.qn.initialiser.ControlledGrid import initialiseGrid
+from pimms.apps.qn.initialiser.initialiseRefs import initialiseRefs
+from pimms.apps.qn.initialiser.initialiseFiles import initialiseFiles
+from pimms.apps.qn.initialiser.initialiseVars import initialiseVars
 
 
 # Initialise the Questionnaire
