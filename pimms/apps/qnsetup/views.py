@@ -7,11 +7,9 @@ from django.forms.formsets import formset_factory
 
 from pimms.apps.qnsetup.forms import qnSetupForm, UploadCVForm, UploadExpForm
 from pimms.apps.qnsetup.helpers import getqnsetupurls
-from pimms.apps.qnsetup.models import Questionnaire, CVFile, ExpFile
+from pimms.apps.qn.models import Questionnaire, CVFile, ExpFile
 from pimms.apps.helpers import getsiteurls
-
 from pimms.apps.qnsetup.generateQn import generate_qn
-
 
 
 def qnsetuphome(request):

@@ -43,7 +43,7 @@
               <td>{{ exp.created }}</td>
               <td>{{ exp.updated }}</td>
               <td><a href="{{ exp.url }}"><i class="icon-search" title="View"></i></a></td>
-              <td><a href="{{ exp.cpurl }}"><i class="icon-share-alt" title="Copy"></i></a></td>
+              <td><i class="icon-share-alt" title="Copy (available soon)"></i></td>
               <td>
                 <a href="#" onclick="return MyDialogs.loadConfirmationModal('my_modal_id', 
                                                                             '{{ exp.delurl }}', 
@@ -63,15 +63,8 @@
 
 
 {% block extrajs %}
-  
-  <!-- jquery to make table row clickable -->
-  <script type="text/javascript">
-    $('tbody.rowlink').rowlink()
-  </script>
-  
-  <!-- end jquery--> 
 
-  <script type="text/javascript">
+<script type="text/javascript">
   var MyDialogs={
     loadConfirmationModal:function(modalId, confirmURL, caption, body){
                         var $modal=jQuery('#'+modalId);
@@ -99,6 +92,6 @@
                 }
 
   };
-  </script>
+</script>
 
 {% endblock %}

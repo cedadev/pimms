@@ -115,7 +115,7 @@ INSTALLED_APPS = (
     'apps.exp',
     'apps.person',
     'apps.qnsetup',
-    'apps.qn'
+    #'apps.qn'
 )
 
 
@@ -140,6 +140,6 @@ except ImportError:
 
 # finally import project-specific settings, project name etc
 
-from project_settings import *  
+#from project_settings import *  
 
 

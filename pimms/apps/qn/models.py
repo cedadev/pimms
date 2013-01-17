@@ -6,6 +6,8 @@ from datetime import datetime
 
 from django.core.files.base import ContentFile
 from django.db.models.query import QuerySet
+from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 from pimms.apps.qn.cimHandling import *
 from pimms.apps.qn.utilities import atomuri
@@ -19,6 +21,53 @@ logging = settings.LOG
 cimv='http://www.metaforclimate.eu/cim/1.4'
 gmd='http://www.isotc211.org/2005/gmd'
 gco="http://www.isotc211.org/2005/gco"
+
+
+#-----------------------------------------------------
+# Outer layer questionnaire manager class 
+# (essentially a project level questionnaire
+#-----------------------------------------------------
+
+class Questionnaire(models.Model):
+    ''' Outer layer class representing a questionnaire instance and it's setup 
+        parameters
+    '''
+    
+    # Top layer attributes
+    abbrev          = models.CharField(max_length=32)
+    project         = models.CharField(max_length=32)
+    description     = models.TextField(max_length=1024, blank=True, null=True)
+    creator         = models.ForeignKey(User, blank=True, null=True)
+    cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
+    exps            = models.ManyToManyField('ExpFile', blank=True, null=True)
+    creationDate    = models.DateField(auto_now_add=True, editable=False)
+    
+    # Qn frontend specialiations
+    idontknows      = models.BooleanField(default = False)
+         
+      
+    def __unicode__(self):
+        return self.abbrev    
+      
+      
+class CVFile(models.Model):
+    abbrev          = models.CharField(max_length=64, blank=True, null=True)
+    filename        = models.CharField(max_length=128)
+    
+    def __unicode__(self):
+        return self.abbrev
+      
+
+class ExpFile(models.Model):
+    abbrev          = models.CharField(max_length=64, blank=True, null=True)
+    filename        = models.CharField(max_length=128)
+    
+    def __unicode__(self):
+        return self.abbrev 
+
+#-------------------------------------------------------------------------------
+
+
 
 
 class ChildQuerySet(QuerySet):
@@ -647,7 +696,7 @@ class Experiment(Doc):
         E=Experiment()
        
         etree=ET.parse(filename)
-        txt=open(filename,'r').read()
+        #txt=open(filename,'r').read()
         logging.debug('Parsing experiment filename %s'%filename)
         root=etree.getroot()
         getter=etTxt(root)
@@ -690,7 +739,8 @@ class Experiment(Doc):
         cfile=CIMObject(**attrs)
         cfile.cimtype=E._meta.module_name
         cfile.xmlfile.save('%s_%s_v%s.xml'%(cfile.cimtype,E.uri,E.documentVersion),
-                               ContentFile(txt),save=False)
+                               #ContentFile(txt),save=False)
+                               ContentFile(filename),save=False)
         cfile.title='%s (%s)'%(E.abbrev,E.title)
         cfile.save()
 

@@ -12,17 +12,7 @@ from pimms.apps.exp.models import NumericalRequirement
 from pimms.apps.exp.forms import ExperimentForm, RequirementForm
 from pimms.apps.exp.XMLutilities import getCIMXML
 from pimms.apps.exp.helpers import getexpurls
-
 from pimms.apps.helpers import getsiteurls
-
-
-# TODO: link this to the template
-def modalform1(request):
-    '''
-    controller for app about page
-    '''
-    return render_to_response('exp/modalform1.html', {},
-                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -35,7 +25,6 @@ def exphome(request):
         urls = {}
         urls = getsiteurls(urls)
         urls = getexpurls(urls)        
-        #urls['modalform1'] = reverse('pimms.apps.exp.views.modalform1', args=())
         allexps = Experiment.objects.filter(author=request.user)
         for exp in allexps:
             exp.url = reverse('pimms.apps.exp.views.expview', args=(exp.id, ))
@@ -257,6 +246,7 @@ def reqlist(request):
     
     return render_to_response('exp/reqlist.html', {'allreqs':allreqs, 'urls':urls}, 
                                        context_instance=RequestContext(request))
+    
 
 
 @login_required

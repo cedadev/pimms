@@ -6,10 +6,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    
-    
-    (r'^ajax/modalform1$','pimms.apps.exp.views.modalform1', {}, 'modalform1'),
-        
+            
     #----------Experiments-------------------------------------------
     
     # exp 'home' page (experiment list page)                   

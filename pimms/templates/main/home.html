@@ -5,11 +5,18 @@
     {% endblock %}
  
     {% block page_column_one %}
-      <h4>What is PIMMS?</h4>
-      <p class="justify">
-        PIMMS is an infrastructure to manage the metadata requirements of a climate modelling project            
+      <p>
+        <iframe title="YouTube video player" class="youtube-player" type="text/html" 
+			width="350" height="260" src="http://www.youtube.com/embed/W-Q7RMpINVo"
+			frameborder="0" allowFullScreen>
+	    </iframe>
       </p>
-      <a href="{{ urls.about }}" class="btn btn-block"><strong>Read More...</strong></a>
+      <h4>What is PIMMS?</h4>
+      <p>
+        PIMMS is an infrastructure to manage the metadata requirements of a climate modelling project.......
+        <a href="{{ urls.about }}">(read more)</a>
+      </p>
+      
     
     {% endblock %}
     
@@ -60,4 +67,4 @@
           </div>
       {% endif %}
       
-    {% endblock %}
+{% endblock %}

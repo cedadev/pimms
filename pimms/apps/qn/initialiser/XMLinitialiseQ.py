@@ -95,7 +95,7 @@ VocabList={'Realms':
     }
     
 def loadCF():
-     p=os.path.join(settings.PROJECT_ROOT, 'apps', 'vocabs', 'cf-standard-name-table.xml')
+     p=os.path.join('apps', 'qn', 'vocabs', 'cf-standard-name-table.xml')
      cf=CFtable(p)
      v=Vocab(uri='cf-standard-name-table.xml',name='CFStandardNames',version=cf.version)
      v.save()
@@ -147,12 +147,12 @@ def initialise():
     '''This routine initialises the CMIP5 questionaire '''
     
     #start with initialising the centres:
-    loadCentres()
+    ##loadCentres()
             
     for k in VocabList: loadvocab(k)
     
     # now get the specialist vocabs
     # currently just coupling
-    loadProperties(('InputTechnique','SpatialRegrid','TimeTransformation'))
-    loadCF()
+    ##loadProperties(('InputTechnique','SpatialRegrid','TimeTransformation'))
+    ##loadCF()
     

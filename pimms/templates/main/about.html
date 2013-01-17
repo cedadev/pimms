@@ -1,23 +1,170 @@
-{% extends "site/two_column_page.html" %}
+{% extends "site/one_column_page.html" %}
     
     {% block pagetitle %}
       About PIMMS
     {% endblock %}
     
-    {% block page_column_one %}
-        <h4>1. What is PIMMS?</h4>
-        <h4>1. What is the CIM?</h4>
-        <h4>1. How is metadata captured?</h4>
-        <h4>1. What happens to my metadata?</h4>
-        <hr/>
-        <p class="justify">
-        <br/>
-        <h4>1. What is PIMMS?</h4>
-        PIMMS is an infrastructure for documenting climate modelling work flow.... Find out more here:
-        Insert web address
-        </p>
-    {% endblock %}
-    
-    {% block page_column_two %}
+    {% block page_column_one %}        
+        <div class="tabbable"> <!-- Only required for left/right tabs -->
+		  <ul class="nav nav-tabs">
+		    <li class="active"><a href="#tab1" data-toggle="tab">What is PIMMS?</a></li>
+		    <li><a href="#tab2" data-toggle="tab">Using PIMMS</a></li>
+		    <li><a href="#tab3" data-toggle="tab">FAQs</a></li>
+		    <li><a href="#tab4" data-toggle="tab">Contact</a></li>
+		  </ul>
+		  
+		  <div class="tab-content">
+		    <div class="tab-pane active" id="tab1">
+		      <h3>What is PIMMS?</h3>
+		      <p>PIMMS provides a method for consistent and comprehensive documentation 
+		      of modelling activities that enables the sharing of simulation data and model 
+		      configuration information. The aim of PIMMS is to package the metadata 
+		      infrastructure developed by Metafor for CMIP5 so that it can be used 
+		      by climate modelling groups in UK Universities.</p>
+		    </div>
+		    
+		    <div class="tab-pane" id="tab2">
+		      <h3>Using PIMMS</h3>
+		      <ul class="nav nav-pills nav-stacked">
+                <li>
+                  <a href="#workflow">1. Typical Workflow</a>
+                </li>
+                <li>
+                  <a href="#numexp">2. Creating a Numerical Experiment</a>
+                </li>
+                <li>
+                  <a href="#cv">3. Create Model Controlled Vocabularies</a>
+                </li>
+                <li>
+                  <a href="#qn">4. Generate your bespoke Metadata Questionnaire</a>
+                </li>
+              </ul>
+              
+              <div id="workflow">
+                <hr/>
+                <h4>1. Typical Workflow</h4>
+                <p>In generating a project-specific metadata questionnaire three primary resources need to be in place before this can 
+                  be done. These are:
+                  <ul>
+                    <li>One or more <a href="#numexp">'Numerical Experiment'</a> documents</li>
+                    <li>One or more <a href="#cv">'Controlled vocabularies'</a> documents</li>
+                    <li>A number of <a href="#qn">project level settings</a> that are define a particular metadata questionnaire implementation</li>
+                  </ul>
+                </p>
+              </div>
+              <div id="numexp">
+                <hr/>
+                <h4>2. Creating a Numerical Experiment</h4>
+                <p>A numerical experiment describes an 'imagined test' that is used to 
+                investigate a scientific hypothesis and defines the constraints associated with such a 
+                hypothesis. A numerical experiment lays the foundation for simulations to be run against it. 
+                In PIMMS, a numerical experiment is composed of some top-level 
+                information describing the experiment. This includes such information as 
+                name, description and experiment rationale. The constraints imposed within an experiment are 
+                defined within a list of associated 'numerical requirements', and can pertain to initial, 
+                boundary and/or spatio-temporal conditions. An example of an experiment described using 
+                PIMMS as well as its associated requirements is outlined below: 
+                
+                
+                A walkthrough of the steps involved in generating a new experiment using PIMMS can be 
+                found on the experiment page help page     
+                </p>
+              </div>
+              <div id="cv">
+                <hr/>
+                <h4>3. Create Model Controlled Vocabularies</h4>
+                <p>In creating a metadata questionnaire for your project there are 
+                  three primary resources that need to be compiled in advance of </p>
+              </div>
+              <div id="qn">
+                <hr/>
+                <h4>4. Generate your bespoke Metadata Questionnaire</h4>
+                <p>In creating a metadata questionnaire for your project there are 
+                  three primary resources that need to be compiled in advance of </p>
+              </div>
+		      <br/>
+		    </div>
+		    
+            <div class="tab-pane" id="tab3">
+              <h3>Frequently Asked Questions</h3>
+              <ul class="nav nav-pills nav-stacked">
+                <h4>General</h4>
+                <li>
+                  <a href="#s1q1">What does PIMMS stand for?</a>
+                  <a href="#s1q2">What has been the motivation for PIMMS?</a>
+                  <a href="#s1q3">Who should use PIMMS?</a>
+			      <a href="#s1q4">Where do I start?</a>
+			    </li>
+                <h4>Numerical Experiments</h4>
+			    <li>
+			      <a href="#s2q1">What is meant by a numerical requirement?</a>
+			    </li>
+                <h4>Controlled Vocabularies</h4>
+                <li>
+                  <a href="#s3q1">What exactly is a controlled vocabulary?</a>
+                </li>
+                <li>
+                  <a href="#s3q2">How do I get a copy of freemind?</a>
+                </li>
+			    <li>
+                  <a href="#s3q3">What do the different colours and symbols mean on a controlled vocabulary mindmap?</a>
+                </li>
+                <li>
+                  <a href="#s3q4">Where should I store my resultant CV xml file?</a>
+                </li>
+                <h4>Metadata Questionnaire Setup</h4>
+                <li>
+                  <a href="#s4q1">What do I need to initialise a new questionnaire?</a>
+                </li>
+			  </ul>
+			  
+			  <div id="s1q1">
+			    <hr/>
+                <h4>What does PIMMS stand for?</h4>
+                <p>PIMMS stands for "Portable Infrastructure for the Metafor Metadata System"</p>
+              </div>
+              
+              <div id="s1q2">
+                <hr/>
+                <h4>What has been the motivation for PIMMS?</h4>
+                <p>PIMMS follows on from the EU funded METAFOR project.........</p>
+              </div>
+              
+              <div id="s1q3">
+                <hr/>
+                <h4>Who should use PIMMS?</h4>
+                <p>PIMMS metadata management system is primarily aimed at Climate scientists who would like to ....</p>
+              </div>
+              
+              <div id="s1q4">
+                <hr/>
+                <h4>Where do I start?</h4>
+                <p>In order to generate a new metadata questionnaire instance, a user must first create some controlled vocabulary files
+                and some numerical experiment documents that act as inputs to a questionnaire setup. Further instructions on generating 
+                these can be found through the links on the front page. </p>
+              </div>
+              
+              <div id="s2q1">
+                <hr/>
+                <h4>What is meant by a numerical experiment, and how does it differ from a numerical simulation?</h4>
+                <p>An numerical 'experiment' defines the purpose behind undertaking a scientific piece of work.....  </p>
+              </div>
+              
+              <div id="s2q2">
+                <hr/>
+                <h4>What is meant by a numerical requirement?</h4>
+                <p>A numerical requirement refers to those requirements that define a numerical 'experiment'. </p>
+              </div>
+            </div>
+            
+            <div class="tab-pane" id="tab4">
+              <h3>Contact PIMMS</h3>
+              <p> If you need help, or have further questions regarding PIMMS, please 
+              contact the BADC helpdesk who will happily redirect your query.
+              <a href="mailto:support@ceda.ac.uk"><h3>support@ceda.ac.uk</h3></a>
+            </div>
+            
+		  </div>
+		</div>
     {% endblock %}
 
