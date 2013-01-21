@@ -94,32 +94,34 @@ VocabList={'Realms':
     'dataRelationships':('using','usingModifiedVersionOf'),
     }
     
-def loadCF():
-     p=os.path.join('apps', 'qn', 'vocabs', 'cf-standard-name-table.xml')
-     cf=CFtable(p)
-     v=Vocab(uri='cf-standard-name-table.xml',name='CFStandardNames',version=cf.version)
+    
+def loadCF(qn):
+     p = os.path.join('apps', 'qn', 'vocabs', 'cf-standard-name-table.xml')
+     cf = CFtable(p)
+     v = Vocab(qn=qn, uri='cf-standard-name-table.xml', name='CFStandardNames', version=cf.version)
      v.save()
-     vu=Vocab(uri='cf-standard-name-table-units',name='CFStandardNameUnits',version=cf.version)
+     vu = Vocab(qn=qn, uri='cf-standard-name-table-units', name='CFStandardNameUnits', version=cf.version)
      vu.save()
      ulist=[]
      for e in cf.names:
          if e.units not in ulist:
-            u=Term(vocab=vu,name=e.units)
+            u = Term(vocab=vu, name=e.units)
             u.save()
             ulist.append(e.units)
          else:
-            u=Term.objects.filter(name=e.units).get(vocab=vu)
-         pp=PhysicalProperty(vocab=v,name=e.name,definition=e.description,units=u)
+            u = Term.objects.filter(name=e.units).get(vocab=vu)
+         pp = PhysicalProperty(vocab=v, name=e.name, definition=e.description, units=u)
          pp.save()
 
 
-def loadProperties(args):
+def loadProperties(qn, args):
     for arg in args:
-        defn,values=properties[arg]
-        v=Vocab(uri=atomuri(),name=arg,definition=defn)
+        defn, values = properties[arg]
+        v = Vocab(qn=qn, uri=atomuri(), name=arg, definition=defn)
         v.save()
-        for r,d in values:
-            rv=Term(vocab=v,name=r,definition=d)
+        
+        for r, d in values:
+            rv = Term(vocab=v, name=r, definition=d)
             rv.save()
 
 
@@ -132,27 +134,28 @@ def reloadVocab(key):
     loadvocab(key)
 
 
-def loadvocab(key):
+def loadvocab(key, qn):
     ''' Used to load vocabularies '''
     
-    v=Vocab(uri=atomuri(),name=key)
+    v=Vocab(uri=atomuri(), name=key, qn=qn)
     v.save()
     values=VocabList[key]
     for r in values:
-        rv=Term(vocab=v,name=r)
+        rv=Term(vocab=v, name=r)
         rv.save()
 
 
-def initialise():
+def initialise(qn):
     '''This routine initialises the CMIP5 questionaire '''
     
     #start with initialising the centres:
     ##loadCentres()
             
-    for k in VocabList: loadvocab(k)
+    for k in VocabList: 
+        loadvocab(k, qn)
     
     # now get the specialist vocabs
     # currently just coupling
-    ##loadProperties(('InputTechnique','SpatialRegrid','TimeTransformation'))
-    ##loadCF()
+    loadProperties(qn, ('InputTechnique', 'SpatialRegrid', 'TimeTransformation'))
+    #loadCF(qn)
     

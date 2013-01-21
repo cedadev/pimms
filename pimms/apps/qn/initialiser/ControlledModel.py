@@ -1,126 +1,114 @@
 from lxml import etree as ET
-import unittest
-import os
-import datetime
+from pimms.apps.qn.models import *
+from pimms.apps.qn.utilities import atomuri
+from pimms.apps.qn.initialiser.XMLinitialiseQ import VocabList
 
 # This file has the NumericalModel class, which is independent of the django views (but not
 # the django strage), used to instantiate numerical models from xml versions of the mindmaps,
 # and to produce xml instances of the django storage.
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.utilities import atomuri
-from pimms.apps.initialiser.XMLinitialiseQ import VocabList
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'pimms.settings'
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'pimms.settings'
 from django.conf import settings
-
 logging=settings.LOG
 
 Realms=VocabList['Realms']
 
 
-def initialiseModel():
-    ''' Setup a template for model copying in the dummy CMIP5 centre '''
-    try:
-        c=Centre.objects.get(abbrev='CMIP5')
-    except:
-        cl=Centre.objects.all().order_by('id')
-        logging.debug('Unable to read dummy CMIP5 centre description, existing centres are %s'%cl)
-        return False
-    m=NumericalModel(c,xml=True)
+def initialiseModel(qn, cvlist):
+    ''' 
+    Setup a dummy template for model copying 
+    '''
+
+    m = NumericalModel(qn, cvlist, xml=True)
     return True
+
 
 class NumericalModel:
     
     ''' Handles the creation of a model instance in the database, either from XML storage
     or from a pre-existing instance '''
     
-    def __init__(self,centre,id=0,xml=False):
+    def __init__(self, qn, cvlist, id=0, xml=False):
         ''' Initialise by copy from django storage, or build a new one from the XML '''
         
-        klass=centre.__class__
-        if klass != Centre:
-            raise ValueError('Need a valid django centre class for NumericalModel, got %s'%klass)
-        self.centre=centre
-        self.joe=ResponsibleParty.objects.filter(centre=centre)[0]
+        self.qn = qn
         
-        if id==0: xml=True
-        if xml and id<>0:
+        if id == 0: 
+            xml=True
+            
+        if xml and id <> 0:
             raise ValueError('Incompatible arguments to numerical model')
-        if id<>0:
-            self.top=Component.objects.get(id=id)
+          
+        if id <> 0:
+            self.top = Component.objects.get(id=id)
         elif xml:
-            self.makeEmptyModel(centre)
-            self.read()
+            self.makeEmptyModel(qn)
+            self.read(cvlist)
         else:
             raise ValueError('Nothing to do in NumericalModel')
         
     def copy(self):
-        
         new=self.top.makeNewCopy(self.centre)
         logging.debug('Made new model %s with id %s in %s'%(new,new.id,self.centre))
         return new
     
     def makeEmptyModel(self,
-                      centre,
+                      qn,
                       author=None,
                       contact=None,
                       funder=None,
                       title='Model Template',
                       abbrev='Model Template'):
         
-        if author is None: author=self.joe
-        if funder is None: funder=self.joe
-        if contact is None: contact=self.joe
+        component = Component(qn=qn, scienceType='model', abbrev='', uri=atomuri(), author=author, contact=contact, funder=funder)
+        component.isModel = True
+        component.isRealm = False
+        component.title = title
+        component.abbrev = abbrev
+        component.save()
+        component.model = component
+        component.controlled = True
+        component.save()
         
-        component=Component(scienceType='model',centre=centre,abbrev='',uri=atomuri(),
-                            author=author,contact=contact,funder=funder)
-        component.isModel=True
-        component.isRealm=False
-        component.title=title
-        component.abbrev=abbrev
-        component.save()
-        component.model=component
-        component.controlled=True
-        component.save()
-        self.top=component
-        logging.debug('Created empty top level model %s'%component)
+        self.top = component
+        logging.debug('Created empty top level model %s' %component)
         # now get a placeholder paramgroup and constraint group
-        p=ParamGroup()
+        p = ParamGroup()
         p.save() 
         component.paramGroup.add(p)
-        cg=ConstraintGroup(constraint='',parentGroup=p)
+        cg = ConstraintGroup(constraint='', parentGroup=p)
         cg.save()
-        
-    def read(self):
-       
-        ''' Read mindmap XML documents to build a complete model description '''
-            
-        mindMapDir = os.path.join(settings.PROJECT_ROOT, "static/data/mindmaps")
-                                
-        logging.debug('Looking for mindmaps in %s'%mindMapDir)
-        mindmaps=[os.path.join(mindMapDir, f) for f in os.listdir(mindMapDir)
-                    if f.endswith('.xml')]
-        mindmaps.sort()  # at least go in alphabetical order.
-                    
-        for m in mindmaps:
-            x=XMLVocabReader(m, self.top)
-            x.doParse()
+
+    def read(self, cvlist):
+        ''' 
+        Read mindmap XML documents to build a complete model description 
+        '''
+      
+        for cv in cvlist:
+            x = XMLVocabReader(cv, self.top) 
+            x.doParse()   
             self.top.components.add(x.component)
-            logging.debug('Mindmap %s added with component id %s'%(m,x.component.id))
-        
+            logging.debug('Mindmap xml file %s added with component id %s' %(cv, x.component.id))
+                
         self.top.save()
-        logging.info('Created new Model %s'%self.top.id)
+        logging.info('Created new Model %s' %self.top.id)
     
 
 class XMLVocabReader:
     # original author, Matt Pritchard
-    ''' Reads XML vocab structure. '''
-    def __init__(self,filename, model):
-        ''' Initialise from mindmap file '''
-        self.etree=ET.parse(filename)
-        self.root=self.etree.getroot() # should be the "vocab" element
-        self.model=model
+    ''' 
+    Reads XML vocab structure. 
+    '''
+  
+    def __init__(self, filename, model):
+        ''' 
+        Initialise from mindmap file 
+        '''
+        
+        self.etree = ET.parse(filename)
+        self.root = self.etree.getroot() # should be the "vocab" element
+        self.model = model
      
     def doParse(self):
         first = self.root.findall('component')[0]
@@ -131,6 +119,7 @@ class XMLVocabReader:
         self.component.metadataVersion='Mindmap Version %s,  Translation Version %s  (using %s). CMIP5 Questionnaire Version alpha10.'%(
         self.root.attrib['mmrevision'],self.root.attrib['transrevision'],
         self.root.attrib['mmlcrevision'])
+        
         
 class ComponentParser:
     ''' class for handling all elements '''
@@ -187,7 +176,7 @@ class ComponentParser:
         if 'units' in keys: units=velem.attrib['units']
         return numeric,units
     
-    def __handleParam(self,elem,pg,cg):
+    def __handleParam(self, elem, pg, cg):
         ''' Add new parameter to cg, if cg none, create one in pg '''
         if cg is None:
             cg=ConstraintGroup(constraint='',parentGroup=pg)
@@ -202,17 +191,17 @@ class ComponentParser:
             return
         if choiceType in ['OR','XOR']:
             #create and load vocabulary
-            v=Vocab(uri=atomuri(),name=paramName+'Vocab')
+            v=Vocab(qn=self.model.qn, uri=atomuri(), name=paramName+'Vocab')
             v.save()
             logging.debug('Created vocab %s'%v.name)
-            co,info=None,None
+            co, info = None, None
             for item in elem:
                 if item.tag=='value':
                     # RF append any value definitions to the parameter definition
                     assert len(item)==0 or len(item)==1, "Parse error: a value should have 0 or 1 children"
                     if len(item)==1 :
                         assert item[0].tag=='definition', "Parse error, the child of a value must be a definition element"
-                        defn+=" "+item.attrib['name']+": "+item[0].text
+                        defn += " "+item.attrib['name']+": "+item[0].text
                     # RF end append
                     value=Term(vocab=v,name=item.attrib['name'])
                     value.save()
@@ -220,8 +209,8 @@ class ComponentParser:
                     defn=item.text
                 else:
                     logging.info('Found unexpected tag %s in %s'%(item.tag,paramName))
-            logging.debug('L %s %s '%(paramName,defn))
-            p=Param(name=paramName,constraint=cg,vocab=v,definition=defn,controlled=True)
+            logging.debug('L %s %s '%(paramName, defn))
+            p=Param(name=paramName, constraint=cg, vocab=v,definition=defn, controlled=True)
             p.save()
         elif choiceType in ['keyboard']:
             defn,units='',''
@@ -265,7 +254,7 @@ class ComponentParser:
                 controlled=True,
                 isParamGroup=self.isParamGroup,
                 uri=u,
-                centre=self.model.centre,
+                qn=self.model.qn,
                 contact=self.model.contact,
                 author=self.model.author,
                 funder=self.model.funder)

@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     (r'', include('pimms.apps.person.urls')),
     (r'^exp/', include('pimms.apps.exp.urls')),
     (r'^cv/', include('pimms.apps.cv.urls')),
-    (r'^qnsetup/', include('pimms.apps.qnsetup.urls')),
+    (r'^qnsetup/', include('pimms.apps.qn.qnsetup.urls')),
 )
 
 

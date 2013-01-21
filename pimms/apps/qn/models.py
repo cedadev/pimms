@@ -29,8 +29,9 @@ gco="http://www.isotc211.org/2005/gco"
 #-----------------------------------------------------
 
 class Questionnaire(models.Model):
-    ''' Outer layer class representing a questionnaire instance and it's setup 
-        parameters
+    ''' 
+    Outer layer class representing a questionnaire instance and it's setup 
+    parameters
     '''
     
     # Top layer attributes
@@ -39,6 +40,7 @@ class Questionnaire(models.Model):
     description     = models.TextField(max_length=1024, blank=True, null=True)
     creator         = models.ForeignKey(User, blank=True, null=True)
     cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
+    gridcv          = models.ForeignKey('GridCVFile', blank=True, null=True)
     exps            = models.ManyToManyField('ExpFile', blank=True, null=True)
     creationDate    = models.DateField(auto_now_add=True, editable=False)
     
@@ -51,19 +53,36 @@ class Questionnaire(models.Model):
       
       
 class CVFile(models.Model):
-    abbrev          = models.CharField(max_length=64, blank=True, null=True)
+    '''
+    Represents an uploaded model cv file for questionnaire setup purposes
+    '''
+   
     filename        = models.CharField(max_length=128)
     
     def __unicode__(self):
-        return self.abbrev
+        return self.filename
+      
+      
+class GridCVFile(models.Model):
+    '''
+    Represents an uploaded grid cv file for questionnaire setup purposes
+    '''
+   
+    filename        = models.CharField(max_length=128)
+    
+    def __unicode__(self):
+        return self.filename
       
 
 class ExpFile(models.Model):
-    abbrev          = models.CharField(max_length=64, blank=True, null=True)
+    '''
+    Represents an uploaded experiment cim file for questionnaire setup purposes
+    '''
+   
     filename        = models.CharField(max_length=128)
     
     def __unicode__(self):
-        return self.abbrev 
+        return self.filename 
 
 #-------------------------------------------------------------------------------
 
@@ -190,6 +209,8 @@ class CIMObject(Fundamentals):
 class Doc(Fundamentals):
     ''' Abstract class for general properties of the CIM documents handled in the questionnaire '''
     
+    # Managing documents on a per project questionnaire level
+    qn = models.ForeignKey('Questionnaire')
     # Parties (all documents are associated with a centre)
     centre            = models.ForeignKey('Centre', blank=True, null=True)
     author            = models.ForeignKey('ResponsibleParty', blank=True, null=True, related_name='%(class)s_author', on_delete=models.SET_NULL)
@@ -466,6 +487,9 @@ class Vocab(BaseTerm):
     ''' Holds a vocabulary '''
     uri=models.CharField(max_length=64)
     url=models.CharField(max_length=128,blank=True,null=True)
+    #-- Vocabs can be specific to a particular questionnaire
+    qn = models.ForeignKey('Questionnaire')
+    
     def recache(self,update=None):
         '''Obtain a new version from a remote url or the argument and load into database cache'''
         pass
@@ -675,111 +699,123 @@ def Calendar(elem):
     return r
 
 class Experiment(Doc):
-    ''' A CMIP5 ***Numerical*** Experiment '''
-    rationale=models.TextField(blank=True,null=True)
-    requirements=models.ManyToManyField('GenericNumericalRequirement',blank=True,null=True)
-    requiredDuration=DateRangeField(blank=True,null=True)
-    requiredCalendar=models.ForeignKey('Term',blank=True,null=True,related_name='experiment_calendar')
+    ''' 
+    A CMIP5 ***Numerical*** Experiment 
+    '''
+  
+    rationale         = models.TextField(blank=True, null=True)
+    requirements      = models.ManyToManyField('GenericNumericalRequirement', blank=True, null=True)
+    requiredDuration  = DateRangeField(blank=True, null=True)
+    requiredCalendar  = models.ForeignKey('Term', blank=True, null=True, related_name='experiment_calendar')
     #used to identify groups of experiments
-    memberOf=models.ForeignKey('Experiment',blank=True,null=True)
-    requirementSet=models.ForeignKey('RequirementSet',blank=True,null=True,related_name='ensembleRequirements')
+    memberOf          = models.ForeignKey('Experiment', blank=True, null=True)
+    requirementSet    = models.ForeignKey('RequirementSet', blank=True, null=True, related_name='ensembleRequirements')
     # To mark a simulation as deleting without actually removing it from the database
-    isDeleted=models.BooleanField(default=False)
+    isDeleted         = models.BooleanField(default=False)
+    
     def __unicode__(self):
         return self.abbrev
    
     @staticmethod   
-    def fromXML(filename):
-        '''Experiments are defined in XML files, so need to be loaded into django, and
-        a copy loaded into the document database as well '''
+    def fromXML(qn, expfile):
+        '''
+        Experiments are uploaded into django
+        '''
         
-        E=Experiment()
+        E = Experiment(qn=qn)
        
-        etree=ET.parse(filename)
-        #txt=open(filename,'r').read()
-        logging.debug('Parsing experiment filename %s'%filename)
-        root=etree.getroot()
-        getter=etTxt(root)
+        etree = ET.parse(expfile)
+        logging.debug('Parsing experiment filename %s' %expfile)
+        root = etree.getroot()
+        getter = etTxt(root)
+        
         #basic document stuff, note q'naire doc not identical to experiment bits ...
-        doc={'description':'description','shortName':'abbrev','longName':'title','rationale':'rationale'}
+        doc = {'description':'description', 
+               'shortName':'abbrev', 
+               'longName':'title', 
+               'rationale':'rationale'}
+        
         for key in doc:
-            E.__setattr__(doc[key],getter.get(root,key))
+            E.__setattr__(doc[key], getter.get(root, key))
 
         # load the calendar type
-        calendarName=root.find("{%s}calendar"%cimv)[0].tag.split('}')[1]
-        vocab=Vocab.objects.get(name="CalendarTypes")
-        term=Term(vocab=vocab,name=calendarName)
+        calendarName = root.find("{%s}calendar" %cimv)[0].tag.split('}')[1]
+        vocab = Vocab.objects.filter(qn=qn).get(name="CalendarTypes")
+        term = Term(vocab=vocab, name=calendarName)
         term.save()
-        E.requiredCalendar=term
+        E.requiredCalendar = term
        
         # bypass reading all that nasty gmd party stuff ...
-        E.metadataMaintainer=ResponsibleParty.fromXML(root.find('{%s}author'%cimv))
+        E.metadataMaintainer = ResponsibleParty.fromXML(root.find('{%s}author' %cimv))
         
         # do some quick length checking
         if len(E.abbrev)>25:
-            old=E.abbrev
-            E.abbrev=old[0:24]
-            logging.info('TOOLONG: Truncating abbreviation %s to %s'%(old,E.abbrev))
+            old = E.abbrev
+            E.abbrev = old[0:24]
+            logging.info('TOOLONG: Truncating abbreviation %s to %s' %(old, E.abbrev))
 
-        E.uri=atomuri()
+        E.uri = atomuri()
         E.save()
         
-        for r in root.findall('{%s}numericalRequirement'%cimv):
+        for r in root.findall('{%s}numericalRequirement' %cimv):
             #pass the constructor me and the element tree element
-            n=instantiateNumericalRequirement(E,r)
+            n = instantiateNumericalRequirement(qn, E, r)
             if n is not None: # n should only be None for a RequirementSet
                 n.save()
                 E.requirements.add(n)
       
         # we can save this most expeditiously, directly, here.
-        keys=['uri','metadataVersion','documentVersion','created','updated','author','description']
-        attrs={}
-        for key in keys: attrs[key]=E.__getattribute__(key)
+        keys=['uri', 'metadataVersion', 'documentVersion', 'created', 'updated', 'author', 'description']
+        attrs = {}
+        for key in keys: 
+            attrs[key] = E.__getattribute__(key)
         
-        cfile=CIMObject(**attrs)
-        cfile.cimtype=E._meta.module_name
-        cfile.xmlfile.save('%s_%s_v%s.xml'%(cfile.cimtype,E.uri,E.documentVersion),
-                               #ContentFile(txt),save=False)
-                               ContentFile(filename),save=False)
-        cfile.title='%s (%s)'%(E.abbrev,E.title)
-        cfile.save()
+        ## ----  Removing the creation of a CIM document as this should no longer be necessary
+#        cfile=CIMObject(**attrs)
+#        cfile.cimtype=E._meta.module_name
+#        cfile.xmlfile.save('%s_%s_v%s.xml'%(cfile.cimtype,E.uri,E.documentVersion),
+#                               #ContentFile(txt),save=False)
+#                               ContentFile(filename),save=False)
+#        cfile.title='%s (%s)'%(E.abbrev,E.title)
+#        cfile.save()
 
     def toXML(self, parent='numericalExperiment', startyear = None):
-        expElement=ET.Element(parent)
+        expElement = ET.Element(parent)
         ''' responsibleParty [0..inf] '''
         ''' fundingSource [0..inf] '''
         ''' rationale [0..1] '''
         if self.rationale: 
-            ET.SubElement(expElement,'rationale').text=self.rationale
+            ET.SubElement(expElement, 'rationale').text = self.rationale
         ''' project [0..inf] '''
         ''' measurementCampaign [0..inf] '''
         ''' requires [0..inf] '''
         ''' generates [0..inf] '''
         ''' shortName [1] '''
+      
         # short name is currently a concatenation of the experiment id
         # and the short name so separate these out
-        expName,sep,expShortName=self.abbrev.partition(' ')
-        assert sep!="", "Error, experiment short name does not conform to format 'id name'"
-        if expShortName and expShortName!='' :
+        expName, sep, expShortName = self.abbrev.partition(' ')
+        assert sep != "", "Error, experiment short name does not conform to format 'id name'"
+        if expShortName and expShortName != '':
             if startyear:
-                ET.SubElement(expElement,'shortName').text = expShortName + startyear
+                ET.SubElement(expElement, 'shortName').text = expShortName + startyear
             else:
-                ET.SubElement(expElement,'shortName').text=expShortName
+                ET.SubElement(expElement, 'shortName').text = expShortName
         ''' longName [1] '''
-        if self.title and self.title!='' :
-            dummy1,dummy2,longName=self.title.partition(' ')
-            assert dummy2!="", "Error, experiment long name does not conform to format 'id name'"
-            ET.SubElement(expElement,'longName').text=longName
+        if self.title and self.title != '':
+            dummy1, dummy2, longName = self.title.partition(' ')
+            assert dummy2 != "", "Error, experiment long name does not conform to format 'id name'"
+            ET.SubElement(expElement, 'longName').text = longName
         ''' description [0..1] '''
-        if self.description :
-            ET.SubElement(expElement,'description').text=self.description
+        if self.description:
+            ET.SubElement(expElement, 'description').text = self.description
         ''' experimentID [0..1] '''
-        if expName and expName!='' :
-            ET.SubElement(expElement,'experimentID').text=expName
+        if expName and expName != '':
+            ET.SubElement(expElement, 'experimentID').text = expName
         ''' calendar [1] '''
-        if self.requiredCalendar :
-            calendarElement=ET.SubElement(expElement,'calendar')
-            calTypeElement=ET.SubElement(calendarElement,str(self.requiredCalendar.name))
+        if self.requiredCalendar:
+            calendarElement = ET.SubElement(expElement, 'calendar')
+            calTypeElement = ET.SubElement(calendarElement, str(self.requiredCalendar.name))
         else :
             assert False, "Error, a calendar must exist"
         ''' numericalRequirement [1..inf] '''
@@ -788,33 +824,41 @@ class Experiment(Doc):
         ''' supports [0..inf] '''
         return expElement
     
-def instantiateNumericalRequirement(experiment,elem):
-    ''' This provides an interface to return any sort of numerical requirement, given
-    an element '''
+    
+def instantiateNumericalRequirement(qn, experiment, elem):
+    ''' 
+    This provides an interface to return any sort of numerical requirement, given
+    an element 
+    '''
+  
     typekey='{http://www.w3.org/2001/XMLSchema-instance}type'
     if typekey in elem.attrib.keys():
-        ctype=elem.attrib[typekey]
-    else: ctype='NumericalRequirement'
-    v=Vocab.objects.get(name='NumReqTypes')
+        ctype = elem.attrib[typekey]
+    else: 
+        ctype = 'NumericalRequirement'
+    
+    v = Vocab.objects.filter(qn=qn).get(name='NumReqTypes')
     ctypeVals=Term.objects.filter(vocab=v).order_by('id')
+    
     try:
-        ctype=ctypeVals.get(name=ctype)
+        ctype = ctypeVals.get(name=ctype)
     except:
-        raise ValueError('Invalid numerical requirement type [%s]'%ctype)
-    if ctype.name in ['NumericalRequirement','InitialCondition','BoundaryCondition']:
-        return NumericalRequirement.fromXML(experiment,elem,ctype)
-    elif ctype.name=='SpatioTemporalConstraint':
-        return SpatioTemporalConstraint.fromXML(experiment,elem,ctype)
-    elif ctype.name=='RequirementSet':
+        raise ValueError('Invalid numerical requirement type [%s]' %ctype)
+      
+    if ctype.name in ['NumericalRequirement', 'InitialCondition', 'BoundaryCondition']:
+        return NumericalRequirement.fromXML(experiment, elem, ctype)
+    elif ctype.name == 'SpatioTemporalConstraint':
+        return SpatioTemporalConstraint.fromXML(experiment, elem, ctype)
+    elif ctype.name == 'RequirementSet':
         if experiment.requirementSet:
             raise ValueError('Questionnaire only supports one requirement set per expt')
-        experiment.requirementSet=RequirementSet.fromXML(experiment,elem,ctype)
+        experiment.requirementSet = RequirementSet.fromXML(experiment, elem, ctype)
         experiment.save()
         return None
-    elif ctype.name=='OutputRequirement':
+    elif ctype.name == 'OutputRequirement':
         logging.info('Output Requirements Not Implmented')
     else:
-        raise ValueError('%s not yet implemented'%ctype.name)
+        raise ValueError('%s not yet implemented' %ctype.name)
     
     
 class GenericNumericalRequirement(ParentModel):
@@ -1831,16 +1875,14 @@ class Grid(Doc):
     '''
     A model Grid
     '''
-    topGrid = models.ForeignKey('self', blank=True, null=True,
-                                related_name="parent_grid")
-    istopGrid = models.BooleanField(default=False)
-
+  
+    topGrid          = models.ForeignKey('self', blank=True, null=True, related_name="parent_grid")
+    istopGrid        = models.BooleanField(default=False)
     # direct children components:
-    grids = models.ManyToManyField('self', blank=True, null=True,
-                                   symmetrical=False)
-    paramGroup = models.ManyToManyField('ParamGroup')
-    references = models.ManyToManyField(Reference, blank=True, null=True)
-    isDeleted = models.BooleanField(default=False)
+    grids            = models.ManyToManyField('self', blank=True, null=True, symmetrical=False)
+    paramGroup       = models.ManyToManyField('ParamGroup')
+    references       = models.ManyToManyField(Reference, blank=True, null=True)
+    isDeleted        = models.BooleanField(default=False)
 
     #to support paramgroups dressed as components/grids
     isParamGroup = models.BooleanField(default=False)

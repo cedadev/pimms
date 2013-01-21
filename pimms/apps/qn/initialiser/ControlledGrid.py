@@ -1,54 +1,45 @@
-
 # This file really needs to be joined up with ControlledModel to avoid repeated code. 
-
+from lxml import etree as ET
 from pimms.apps.qn.models import *
 from pimms.apps.qn.utilities import atomuri
-from pimms.apps.initialiser.XMLinitialiseQ import VocabList
+from pimms.apps.qn.initialiser.XMLinitialiseQ import VocabList
 
 # move from ElementTree to lxml.etree
 #from xml.etree import ElementTree as ET
-from lxml import etree as ET
-import unittest
-import os
-import datetime
 
 from django.conf import settings
 logging=settings.LOG
 
 
-def initialiseGrid():
-    ''' Setup a template for grid copying in the dummy CMIP5 centre '''
-    try:
-        c=Centre.objects.get(abbrev='CMIP5')
-    except:
-        cl=Centre.objects.all().order_by('id')
-        logging.debug('Unable to read dummy CMIP5 centre description, existing centres are %s'%cl)
-        return False
-    m=NumericalGrid(c,xml=True)
+def initialiseGrid(qn, gridcvfile):
+    ''' 
+    Setup a template for grid copying in the dummy CMIP5 centre 
+    '''
+  
+    m = NumericalGrid(qn, gridcvfile, xml=True)
     return True
+
 
 class NumericalGrid:
     
     ''' Handles the creation of a grid instance in the database, either from XML storage
     or from a pre-existing instance '''
     
-    def __init__(self,centre,id=0,xml=False):
+    def __init__(self, qn, gridcvfile, id=0, xml=False):
         ''' Initialise by copy from django storage, or build a new one from the XML '''
         
-        klass=centre.__class__
-        if klass != Centre:
-            raise ValueError('Need a valid django centre class for NumericalGrid, got %s'%klass)
-        self.centre=centre
-        self.joe=ResponsibleParty.objects.filter(centre=centre)[0]
+        self.qn = qn
         
-        if id==0: xml=True
-        if xml and id<>0:
+        if id == 0: 
+            xml=True
+            
+        if xml and id <> 0:
             raise ValueError('Incompatible arguments to numerical model')
-        if id<>0:
-            self.top=Grid.objects.get(id=id)
+        if id <> 0:
+            self.top = Grid.objects.get(id=id)
         elif xml:
-            self.makeEmptyGrid(centre)
-            self.read()
+            self.makeEmptyGrid(qn)
+            self.read(gridcvfile)
         else:
             raise ValueError('Nothing to do in NumericalGrid')
         
@@ -59,26 +50,22 @@ class NumericalGrid:
         return new
     
     def makeEmptyGrid(self,
-                      centre,
+                      qn,
                       author=None,
                       contact=None,
                       funder=None,
                       title='Grid Template',
                       abbrev='Grid Template'):
         
-        if author is None: author=self.joe
-        if funder is None: funder=self.joe
-        if contact is None: contact=self.joe
+        grid=Grid(qn=qn, abbrev='', uri=atomuri(), author=author, contact=contact, funder=funder)
+        grid.istopGrid = True
+        grid.title = title
+        grid.abbrev = abbrev
+        grid.save()
+        grid.topgrid = grid
+        grid.save()
         
-        grid=Grid(centre=centre,abbrev='',uri=atomuri(),
-                            author=author,contact=contact,funder=funder)
-        grid.istopGrid=True
-        grid.title=title
-        grid.abbrev=abbrev
-        grid.save()
-        grid.topgrid=grid
-        grid.save()
-        self.top=grid
+        self.top = grid
         logging.debug('Created empty top level grid %s'%grid)
         # now get a placeholder paramgroup and constraint group
         p=ParamGroup()
@@ -87,26 +74,16 @@ class NumericalGrid:
         cg=ConstraintGroup(constraint='',parentGroup=p)
         cg.save()
         
-    def read(self):
-       
-        ''' Read mindmap XML document(s) to build a complete grid description '''
-            
-        mindMapDir = os.path.join(settings.PROJECT_ROOT, "static/data/mindmaps/grid")
-                                
-        logging.debug('Looking for grid mindmaps in %s'%mindMapDir)
-        mindmaps=[os.path.join(mindMapDir, f) for f in os.listdir(mindMapDir)
-                    if f.endswith('.xml')]
+    def read(self, gridcvfile):
+        ''' 
+        Read mindmap XML document to build a complete grid description 
+        '''
         
-        #TODO: should only ever have to deal with one grid mindmap? 
+        x = XMLVocabReader(gridcvfile, self.top)
+        x.doParse()
         
-        mindmaps.sort()  # at least go in alphabetical order.
-                    
-        for m in mindmaps:
-            x=XMLVocabReader(m, self.top)
-            x.doParse()
-            #self.top.grids.add(x.component)
-            self.top=x.component
-            logging.debug('Mindmap %s added with grid id %s'%(m,x.component.id))
+        self.top = x.component
+        logging.debug('Mindmap %s added with grid id %s'%(gridcvfile, x.component.id))
         
         self.top.save()
         logging.info('Created new grid %s'%self.top.id)
@@ -115,21 +92,22 @@ class NumericalGrid:
 class XMLVocabReader:
     # original author, Matt Pritchard
     ''' Reads XML vocab structure. '''
-    def __init__(self,filename, grid):
+    def __init__(self, filename, grid):
         ''' Initialise from mindmap file '''
-        self.etree=ET.parse(filename)
-        self.root=self.etree.getroot() # should be the "vocab" element
-        self.grid=grid
+        self.etree = ET.parse(filename)
+        self.root = self.etree.getroot() # should be the "vocab" element
+        self.grid = grid
      
     def doParse(self):
         first = self.root.findall('component')[0]
         logging.info("New component: %s for grid %s"%(first.attrib['name'],self.grid))
         # Initiate new top-level component in django:
         modelParser = GridParser(first, self.grid)
-        self.component=modelParser.add(True,True)
-        self.component.metadataVersion='Mindmap Version %s,  Translation Version %s  (using %s). CMIP5 Questionnaire Version alpha10.'%(
-        self.root.attrib['mmrevision'],self.root.attrib['transrevision'],
+        self.component = modelParser.add(True,True)
+        self.component.metadataVersion = 'Mindmap Version %s,  Translation Version %s  (using %s). CMIP5 Questionnaire Version alpha10.'%(
+        self.root.attrib['mmrevision'], self.root.attrib['transrevision'],
         self.root.attrib['mmlcrevision'])
+
 
 class GridParser:
     ''' class for handling all elements '''
@@ -200,7 +178,7 @@ class GridParser:
             return
         if choiceType in ['OR','XOR']:
             #create and load vocabulary
-            v=Vocab(uri=atomuri(),name=paramName+'Vocab')
+            v=Vocab(qn=self.grid.qn, uri=atomuri(), name=paramName+'Vocab')
             v.save()
             logging.debug('Created vocab %s'%v.name)
             co,info=None,None
@@ -255,6 +233,7 @@ class GridParser:
                     abbrev=nameWithSpaces,
                     isParamGroup=self.isParamGroup,
                     uri=u,
+                    qn=self.grid.qn,
                     centre=self.grid.centre,
                     contact=self.grid.contact,
                     author=self.grid.author,

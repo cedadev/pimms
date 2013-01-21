@@ -5,11 +5,11 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
 
-from pimms.apps.qnsetup.forms import qnSetupForm, UploadCVForm, UploadExpForm
-from pimms.apps.qnsetup.helpers import getqnsetupurls
-from pimms.apps.qn.models import Questionnaire, CVFile, ExpFile
+from pimms.apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
+from pimms.apps.qn.qnsetup.helpers import getqnsetupurls
+from pimms.apps.qn.qnsetup.generateQn import generate_qn
+from pimms.apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
 from pimms.apps.helpers import getsiteurls
-from pimms.apps.qnsetup.generateQn import generate_qn
 
 
 def qnsetuphome(request):
@@ -55,34 +55,42 @@ def qninputs(request):
         else:        
             qnsetupform = qnSetupForm(request.POST, prefix='qn') 
             cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
+            gridcvform   = UploadGridCVForm(request.POST, request.FILES, prefix='gridcvfile')
             expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
-            if qnsetupform.is_valid() and cvformset.is_valid() and expformset.is_valid():
+            if qnsetupform.is_valid() and gridcvform.is_valid() and cvformset.is_valid() and expformset.is_valid():
                 # deal with saving qn details
                 qn = qnsetupform.save()
+                
                 # deal with saving cv file details
                 cvlist = []
                 for entry in cvformset.cleaned_data:
                     if len(entry):
-                        cvfile = CVFile(abbrev=entry['abbrev'], filename=entry['cvfile'].name)
+                        cvfile = CVFile(filename=entry['cvfile'].name)
                         cvfile.save()
                         # add to qn instance
                         qn.cvs.add(cvfile)
                         #add the files to a list to pass to the qn generator
                         cvlist.append(entry['cvfile'])
+                
+                # handle grid cvupload
+                gridcvfile = GridCVFile(filename=gridcvform.cleaned_data['gridcvfile'].name)
+                gridcvfile.save()
+                qn.gridcv = gridcvfile
+                gridupload = gridcvform.cleaned_data['gridcvfile']
                     
                 # deal with saving exp file details
                 explist = []
                 for entry in expformset.cleaned_data:
                     if len(entry):
-                        expfile = ExpFile(abbrev=entry['abbrev'], filename=entry['expfile'].name)
+                        expfile = ExpFile(filename=entry['expfile'].name)
                         expfile.save()
                         # add to qn instance
                         qn.exps.add(expfile)
                         #add the files to a list to pass to the qn generator
                         explist.append(entry['expfile'])
                 
-                #Now run the questionnaire setup script
-                generate_qn(cvlist, explist)
+                #Now run the questionnaire setup script with the uploaded files/settings
+                generate_qn(qn, cvlist, gridupload, explist)
                 
               
                 return HttpResponseRedirect(urls['qnsetuphome']) # Redirect to list page 
@@ -90,17 +98,20 @@ def qninputs(request):
                 return render_to_response('qnsetup/qninputs.html', 
                                           {'qnsetupform': qnsetupform,
                                            'cvformset': cvformset, 
+                                           'gridcvform': gridcvform,
                                            'expformset': expformset,
                                            'urls':urls},
                                            context_instance=RequestContext(request))
     else:
         qnsetupform = qnSetupForm(prefix='qn')
         cvformset   = CVFileFormSet(prefix='cvfile')
+        gridcvform   = UploadGridCVForm(prefix='gridcvfile')
         expformset  = ExpFileFormSet(prefix='expfile')
 
     return render_to_response('qnsetup/qninputs.html', 
                               {'qnsetupform': qnsetupform,
                                'cvformset': cvformset,
+                               'gridcvform': gridcvform,
                                'expformset': expformset,
                                'urls':urls},
                                 context_instance=RequestContext(request))

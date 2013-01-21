@@ -149,7 +149,7 @@ body {
   line-height: 21px;
   color: #2d2d2d;
   background: url("../../images/background.jpg");
-  background-repeat:repeat
+  background-repeat:repeat;
 }
 a {
   color: #558bc4;

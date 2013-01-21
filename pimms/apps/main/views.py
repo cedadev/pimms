@@ -5,7 +5,7 @@ from django.template.context import RequestContext
 from pimms.apps.helpers import getsiteurls
 from pimms.apps.exp.helpers import getexpurls
 from pimms.apps.cv.helpers import getcvurls
-from pimms.apps.qnsetup.helpers import getqnsetupurls
+from pimms.apps.qn.qnsetup.helpers import getqnsetupurls
 
 
 def home(request):
