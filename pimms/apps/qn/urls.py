@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 from django.conf.urls.defaults import *
-##from django.conf import settings
+from django.conf import settings
 ##from django.views.generic.simple import direct_to_template
 
 # Uncomment the next two lines to enable the admin:
@@ -12,12 +11,13 @@ admin.autodiscover()
 # this is not actually correct, since strictly we need hexadecimal following this pattern
 ##uuid='\w\w\w\w\w\w\w\w-\w\w\w\w-\w\w\w\w-\w\w\w\w-\w\w\w\w\w\w\w\w\w\w\w\w'
 
-##script_path=settings.DEPLOYED_SCRIPT_PATH
+script_path=settings.DEPLOYED_SCRIPT_PATH
 
 urlpatterns = patterns('',
     # Example:
     # (r'^cmip5q/', include('cmip5q.foo.urls')),
-    (r'^$','pimms.apps.qn.views.centres', {}, 'qnhome'),
+    #(r'^$','pimms.apps.qn.views.centres', {}, 'qnhome'),
+    (r'^(?P<qnproj>\D+)/home$','pimms.apps.qn.views.qnhome', {}, 'qnhome'),
 #    (r'^$','pimms.apps.qn.views.centres'),
 #    (r'^cmip5/$','pimms.apps.qn.views.centres'),
 #    (r'^cmip5/centres/$','pimms.apps.qn.views.centres'),
@@ -34,7 +34,7 @@ urlpatterns = patterns('',
 #    #
 #    # generic document handling
 #    # 
-#    (r'^cmip5/(?P<cid>\d+)/(?P<docType>\D+)/doc/(?P<pkid>\d+)/(?P<method>\D+)/$','pimms.apps.qn.views.genericDoc'),  
+    (r'^(?P<qnproj>\D+)/(?P<docType>\D+)/doc/(?P<pkid>\d+)/(?P<method>\D+)/$', 'pimms.apps.qn.views.genericDoc'),  
 #    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/$'%uuid,'pimms.apps.qn.views.persistedDoc'),
 #    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/(?P<version>\d+)/$'%uuid,'pimms.apps.qn.views.persistedDoc'),                     
 #    # 
@@ -74,18 +74,18 @@ urlpatterns = patterns('',
 #    # 
 #    # GRIDS:
 #    #   
-#    (r'^cmip5/(?P<centre_id>\d+)/grid/add/$','pimms.apps.qn.views.gridAdd'),
+    (r'^(?P<qnproj>\D+)/grid/add/$','pimms.apps.qn.views.gridAdd'),
 #    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/copy/$','pimms.apps.qn.views.gridCopy'),
-#    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/edit/$','pimms.apps.qn.views.gridEdit'),
+    (r'^(?P<qnproj>\D+)/grid/(?P<grid_id>\d+)/edit/$', 'pimms.apps.qn.views.gridEdit'),
 #    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/refs/$','pimms.apps.qn.views.gridRefs'),             
-#    #           
-#    # platforms/add/centre_id
-#    # platforms/edit/platform_id
-#    #
-#    (r'^cmip5/(?P<centre_id>\d+)/platform/add/$',
-#            'pimms.apps.qn.views.platformEdit'),
-#    (r'^cmip5/(?P<centre_id>\d+)/platform/(?P<platform_id>\d+)/edit/$',
-#            'pimms.apps.qn.views.platformEdit'),
+
+
+    # 
+    # PLATFORMS:
+    # 
+    (r'^(?P<qnproj>\D+)/platform/add/$', 'pimms.apps.qn.views.platformEdit'),
+    (r'^(?P<qnproj>\D+)/platform/(?P<platform_id>\d+)/edit/$', 'pimms.apps.qn.views.platformEdit'),
+    
 #    #
 #    # experiment/view/experiment_id
 #    (r'^cmip5/(?P<cen_id>\d+)/experiment/(?P<experiment_id>\d+)/$',
@@ -191,4 +191,4 @@ urlpatterns = patterns('',
 #
 ## finally if necessary, throw it down a level
 #
-#urlpatterns=patterns('',(r'^%s'%script_path,include(urlpatterns)))
+urlpatterns=patterns('',(r'^%s'%script_path,include(urlpatterns)))

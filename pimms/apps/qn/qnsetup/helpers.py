@@ -15,6 +15,5 @@ def getqnsetupurls(urls={}):
   
     urls['qnsetuphome'] = reverse('qnsetuphome', args=())
     urls['qninputs'] = reverse('qninputs', args=())
-    urls['qnsetupsuccess'] = reverse('qnsetupsuccess', args=())
     
     return urls

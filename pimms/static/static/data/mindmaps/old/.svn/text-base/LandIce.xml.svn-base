@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vocab mmversion="based on r813 (mariepierre, 2009-08-19) of LandIce.mm" defnversion="">
+  <component name="LandIce">
+    <component name="LandGlaciers">
+      <parameter name="DynamicArealExtent" choice="XOR">
+        <value name="yes"/>
+        <value name="no"/>
+      </parameter>
+      <component name="SnowTreatment">
+        <parameter name="Method" choice="XOR">
+          <value name="same as Snow in LandSurface"/>
+          <value name="different from Snow in LandSurface"/>
+        </parameter>
+        <parameter name="Properties" choice="OR">
+          <constraint>Only required if "different from Snow in LandSurface" is selected for "Method".</constraint>
+          <value name="prognostic snow albedo"/>
+          <value name="prognostic snow density"/>
+          <value name="prognostic snow water equivalent"/>
+          <value name="prognostic snow heat content"/>
+          <value name="prognostic snow temperature"/>
+          <value name="prognostic snow liquid water content"/>
+          <value name="snow melting"/>
+          <value name="snow refreezing"/>
+          <value name="blowing snow"/>
+        </parameter>
+      </component>
+    </component>
+    <component name="LandIceSheet">
+      <component name="Dynamics">
+        <info>Dynamics deals with geometry changes.</info>
+        <component name="Model/Numerics">
+          <parameter name="Approximation" choice="XOR">
+            <value name="shallow ice"/>
+            <value name="higher order"/>
+            <value name="full stokes"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <parameter name="CouplingMethod (with atmosphere)" choice="couple"/>
+      </component>
+      <component name="SnowTreatment">
+        <parameter name="Method" choice="XOR">
+          <value name="same as Snow in LandSurface"/>
+          <value name="different from Snow in LandSurface"/>
+        </parameter>
+        <parameter name="Properties" choice="OR">
+          <constraint>Only required if "different from Snow in LandSurface" is selected for "Method".</constraint>
+          <value name="prognostic snow albedo"/>
+          <value name="prognostic snow density"/>
+          <value name="prognostic snow water equivalent"/>
+          <value name="prognostic snow heat content"/>
+          <value name="prognostic snow temperature"/>
+          <value name="prognostic snow liquid water content"/>
+          <value name="snow melting"/>
+          <value name="snow refreezing"/>
+          <value name="blowing snow"/>
+        </parameter>
+      </component>
+    </component>
+    <component name="IceShelves">
+      <parameter name="Bottom" choice="XOR">
+        <value name="basal melting"/>
+        <value name="other"/>
+      </parameter>
+      <component name="Dynamics">
+        <component name="Model/Numerics">
+          <parameter name="Approximation" choice="XOR">
+            <value name="shallow shelf"/>
+            <value name="full stokes"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <parameter name="CouplingMethod (with ocean)" choice="couple"/>
+      </component>
+      <component name="SnowTreatment">
+        <parameter name="Method" choice="XOR">
+          <value name="same as Snow in LandSurface"/>
+          <value name="different from Snow in LandSurface"/>
+        </parameter>
+        <parameter name="Properties" choice="OR">
+          <constraint>Only required if "different from Snow in LandSurface" is selected for "Method".</constraint>
+          <value name="prognostic snow albedo"/>
+          <value name="prognostic snow density"/>
+          <value name="prognostic snow water equivalent"/>
+          <value name="prognostic snow heat content"/>
+          <value name="prognostic snow temperature"/>
+          <value name="prognostic snow liquid water content"/>
+          <value name="snow melting"/>
+          <value name="snow refreezing"/>
+          <value name="blowing snow"/>
+        </parameter>
+      </component>
+    </component>
+    <parameter name="CouplingIceSheet-IceShelves" choice="XOR">
+      <value name="grounding line interactive"/>
+      <value name="grounding line prescribed"/>
+    </parameter>
+    <parameter name="Model/Numerics" choice="XOR">
+      <constraint> Only required if "grounding line interactive" is selected for "CouplingIceSheet-IceShelves".</constraint>
+      <value name="flux prescribed (Schoof)"/>
+      <value name="fixed grid size"/>
+      <value name="moving grid"/>
+    </parameter>
+    <parameter name="LandIceAlbedo" choice="XOR">
+      <value name="prognostic"/>
+      <value name="prescribed"/>
+    </parameter>
+    <parameter name="AlbedoFunctionOf" choice="OR">
+      <constraint>Only required if "prognostic" is selected for "LandIceAlbedo".</constraint>
+      <value name="ice age"/>
+      <value name="ice density"/>
+      <value name="other"/>
+    </parameter>
+  </component>
+</vocab>

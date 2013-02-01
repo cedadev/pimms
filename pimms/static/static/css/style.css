@@ -1,0 +1,631 @@
+/* CSS numbers reminder 0,0,0,0 corresponds to top right bottom left */
+
+/* -------------------------------------------------------------------------- */
+/* Generic css */
+
+* {
+    margin: 0;
+	   padding: 0;
+	   font-family: �Trebuchet MS�,Helvetica,sans-serif;
+    line-height: 1.7;
+    color: #333;
+    font-size: 12px;
+    }
+
+h1 {
+	font-size: 16px;
+	}
+
+h2 {
+	font-size: 14px;
+	}
+
+h3 {
+	font-size: 12px;
+	}
+
+body {
+    background-color: #AAAAAA;
+    width: 1120px; 
+    margin: auto; 
+    height: 100%;
+    }
+    
+table, form {
+	margin: 0; 
+	padding: 0; 
+	width:100%;
+	}
+	
+p {
+	padding: 2px; 
+	}
+	
+ol {
+	padding-left: 20px;
+	}
+	
+ul {
+	padding-left:20px;
+	}
+/* -------------------------------------------------------------------------- */
+
+  
+/* Metafor page layout follows, ie. header and footer */
+/* 5 px margin needed in header if we dont have the nifty corners, 
+otherwise 0 (first one on the margin list */
+
+#header {
+	text-align: center; 
+	padding: 5px 5px 5px 0px;
+    margin: 5px 5px 5px 5px;  
+    border-left: 1px solid #3c78b5; 
+    border-right: 1px solid  #3c78b5; 
+    border-bottom: 1px solid #3c78b5;
+    clear: both; 
+    }
+
+#subtitle {
+	font-size: 14px
+	}
+
+#banner {
+	text-align: center; 
+	border: 1px; 
+	padding: 2px; 
+	margin: 5px;
+    background-color: #FFFFFF;
+    }
+    
+#banner p {
+	font-size: 14px
+	}
+    
+#footer {
+	text-align: center; 
+	padding: 0px 0px 0px 0px;
+    margin: 5px 5px 0px 5px; 
+    clear: both; 
+	/*
+	border-left: 1px solid #3c78b5; 
+	border-right: 1px solid #3c78b5; 
+	border-top: 1px solid #3c78b5; 
+	*/
+    font-weight: italic;
+    }
+    
+.titlerow {
+    font-size: 18px;
+    text-align: center;
+    }
+
+.titlerow b {
+    font-size: 22px;
+    font-weight: 600;
+    }
+
+.tabcontent {
+	background-color: #FFFFFF;
+	}
+
+.stfc {
+	background-color: #003153
+	}    
+
+.stfc td {
+	color: white;
+	}
+
+.stfc a.blue:link, a.blue:visited {
+	color: white;
+	border-bottom: 0px
+	}
+
+.stfc a.blue:hover {
+	color: black;
+	}
+
+.stfc h1 {
+	color: white;
+	}
+
+.stfc p {
+	color:white
+	}
+
+#footer td {
+	font-weight: bold;
+	padding: 5px;
+	}
+
+.main {
+    background-color: #003153;
+    border: 1px solid #3C78B5;
+    clear: both;
+    margin: 5px;
+    padding: 2px 2px 7px 2px;
+    }
+
+.inner {
+    background-color: #FFFFFF;
+    clear: both;
+    margin: 5px;
+    padding: 5px 5px 5px 15px;
+    }
+
+.twocol {
+    background-color: #FFFFFF; 
+    padding: 0px;
+    margin: 0px;
+    }
+
+
+/* Two equal column options */
+.tableft {
+    float: left;
+    width: 520px; 
+    background-color: #FFFFFF;
+    margin:5px;
+    }
+    
+.tabright {
+    float: right; 
+    width: 520px;
+    background-color: #FFFFFF;
+    margin: 5px;
+    }
+    
+.twocol td, .threecol td, .backgrey td { 
+    background-color: #E1E1E1;
+    }
+
+td.space {
+    background-color: #FFFFFF;
+    }
+    
+/* Two columns, with the left as a sidebar */
+.sidebar {
+    float: left;
+    width: 130px;
+    background-color: #FFFFFF;
+    margin: 5px
+    }
+    
+.sidebarPage {
+    float: right; 
+    width: 910px; 
+    background-color: #FFFFFF;
+    margin:5px
+    }
+    
+/* Two columns, with left roughly 1/3 of right and fitting in 790 px */
+.tab300 {
+    float: left;
+    width: 275px; 
+    background-color: #FFFFFF; 
+    margin:5px;
+    }
+    
+.tab500{ 
+    float: right; 
+    width: 540px; 
+    background-color: #FFFFFF;
+    margin: 5px;
+    }
+    
+.italic {
+    font-style: italic;
+    }
+    
+.bold {
+    font-weight: bold;
+    }
+
+
+/* 
+  Stylings for the centre summary page
+*/
+
+
+#newModButton,
+#newGridButton,
+#newPlatButton,
+#viewSimBut {
+    width: 30%;
+    text-align: center;
+    margin: 10px;
+    }
+
+
+/* 
+  Stylings for the different types of boxes
+*/
+    
+.boxer {
+	    margin:5px 5px 5px 5px;
+	    padding:5px;
+	    background-color:#FFFFFF; 
+	    border: 1px solid black;
+	    }
+
+.boxer h1, h4 {
+			   margin-left:2px; 
+			   padding:2px;
+			   }
+
+.boxer2  {
+		  margin: 2px;
+		  padding: 5px;
+		  background-color: #CDC9A5; 
+		  border: 1px solid black;
+		  }
+
+.innerboxer {
+	    margin: 2px;
+	    padding: 5px;
+	    background-color: #FFFFFF; 
+	    border: 1px solid #9A9A9A;
+	    } 
+
+.innerboxer h3{
+	    color: #656565 ;
+	    } 
+
+.error_boxer  {
+		  margin:5px;
+		  padding:15px;
+		  background-color:#FFEDED; 
+		  border: 1px solid red;
+		  }
+
+.error_boxer p {
+		  font-size: 16px;
+		  color: red; 
+		  text-align: center;
+		  }
+		  
+.warning_boxer  {
+		  margin:5px;
+		  padding:15px;
+		  background-color:#FFFFAA; 
+		  border: 1px solid #FF8800;
+		  }
+		  
+.warning_boxer p {
+		  font-size: 16px;
+		  color: #FF8800; 
+		  text-align: center;
+		  }
+
+.helper_boxer  {
+		  align:center;
+		  width: 75%;
+		  margin: 0 auto;
+		  padding: 15px 5px 10px 5px; 
+		  font-size: 12px;
+		  font-style: italic;
+		  color: #555555; 
+		  text-align: center;
+		  }
+
+.formbox {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    }
+
+.formbox td {
+    height:25px;
+    }
+
+
+.formtable tr {
+		  margin:15px;
+		  }
+
+.infobox td{
+    padding-left: 10px; 
+    padding-right: 10px;
+    padding-bottom: 3px;
+    padding-top: 3px; 
+    text-align: justify;
+    }
+
+.docButton {
+    align: center;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    }
+    
+.helper_panel  {
+      align:center;
+      width: 75%;
+      margin: 0 auto;
+      padding: 15px 5px 10px 5px; 
+      font-size: 12px;
+      font-style: italic;
+      color: #555555; 
+      text-align: justify;
+      }
+
+
+/* Side panel button styling */
+
+#cimHTMLBut, 
+#cimViewBut, 
+#cimValBut, 
+#cimXMLBut, 
+#cimESGBut,
+#txtlinkbut,
+#subLinkbut,
+#inplinkbut,
+#reflinkbut,
+#cuplinkbut {
+    width: 80%;
+    text-align: center;
+    }
+   
+
+/* In-page button styling */
+.saveBut {
+    font-size: 16px;
+    width: 25%;
+    text-align: center; 
+    }
+
+.submitBut {
+    font-size: 16px;
+    width: 20%;
+    margin: 5px 2px 5px 2px;
+    }
+
+
+/* Text stylings */
+.subheading {
+    font-style: italic;
+    margin-left:2px; 
+	padding:2px;
+    }
+
+
+/* lemonchiffon3 */
+.red {color:red;}
+.errorlist li {color:red;}
+.bad {color:red;}
+.inbox {border:1px solid; margin: 5px 20px 5px 20px;padding:2px 2px 5px 2px;}
+div.guidance {font-size:small; margin-left:20px; margin-right:20px;}
+.cmip5q{font-size:small; margin-left:20px; margin-right:20px;color:green}
+a.button {text-decoration:None;padding:1px 3px 1px 3px;border:1px solid black; background-color:#E1E1E1;}
+
+    
+/* support for tables */
+.row1 {background-color:#FFFAFE }
+.row2 {background-color:#FFF8DC }
+.row3 {background-color:#FFE7BA} /* wheat1 */
+    
+    
+/* support for in page tab navigation, munged from multiple websites */
+ 
+.tabnav ul {                                 /* basic tab set */
+text-align: centre;                            /* left, right or center */
+margin: 0 0 0 0;                                   /* margin */
+ /* font type */
+list-style: none;                            /* IMPORTANT */
+padding: 8px 0px 5px 10px;  /* padding */
+
+}
+.tabnav li { 
+background-color:#FFFFFF;
+font-size: 14px; font-weight: bold; 
+display: inline;                             /* IMPORTANT */
+border: solid;
+border-width: 1px 1px 0 1px;                 /* BOTTOM HAS TO BE ZERO */
+margin: 0 0.5em 0 0 ;                        /* Second one is spacing */
+padding: 2px 0px 5px 0;						/* nb can't pad down any different from the ul down padding */
+width: 500em;
+}
+
+.tabnav a {
+text-decoration: none;
+}
+
+.tabnav a:hover {background: #ddf; }
+
+.tabcontent {
+margin-left: 3px;
+margin-right: 3px;
+border: 1px solid black;
+background-color:#FFFACD; /* lemonchiffon, see http://www.somacon.com/p142.php */
+padding: 2px;
+}        /* tabs sit on this div */
+
+
+.tabnav li a {padding: 0 5px 0 5px;}                /* padd out the addresses in the tabs */
+.tabnav .subdue a {color:#CCCCCC;}
+.tabnav .subdue li a:hover {background:white;}
+.tabnav .subdue li {border-color: gray; border:dotted;}
+.tabnav .selected {
+padding-bottom: 6px;   /* needs to be one more than the ul down padding */
+background: #FFFACD;  /* needs to be the same as tabcontent */
+border-bottom:0px;
+}
+
+/* following used to have inputs in tables look like underlined links rather than buttons */
+.linklike input {border:none;display:inline; background:none; text-decoration:underline;}
+
+/* for component highlighting in yui tree */
+.highlight { background-color:#CDC9A5;} /* colour same as boxer2 */
+
+/* for entry highlighting */
+.inputH1 {font-size:larger;font-weight:bold}
+.valid {color:green}
+.invalid {color:red}
+/* Establish the default (mandatory) widget borders, and override in the forms for the non-mandatory widgets
+This was test code, only partially implemented in platform. Bottom line: couple of days coding ... so
+not for now ...
+.boxer input {background-color:yellow}
+.boxer .optin {background-color:white} */
+
+/* Notes from yui docs:# The style of the text label/href when using TextNode
+    . ygtvlabel[link,visited,hover]
+    Due to a bug in the font smoothing algorithm in Internet Explorer, these styles define a white background 
+    for the labels thus, TreeViews have to be drawn over a white background or the background-color 
+    definition of these styles adjusted to match your background. */
+    
+/* Following used to mark CMIP5 completed simulations on the simulation list */    
+/*.done .yui-button button {background-color:#CCFF99; }
+.undone .yui-button button {background-color:#F5CF85; } */
+.done {background-color:#CCFF99;}
+.undone {background-color:#F5CF85;}
+.simbutton {
+    width: 200px;
+    }
+        
+a.atom {background-image:url(icons/atom.png);background-repeat:no-repeat;}
+
+/* styling for form file browser widget */
+#filebrowse {
+	background:transparent;
+	padding-bottom: 30px;
+	}
+	
+	
+	
+	
+/*
+Table for RIPinfo
+Tema: Soft Table - A Simple table style with the use of the soft brown color
+Author: Newton de G�es Horta
+Site: --
+Country Origin: Brazil
+*/
+
+.riptable table {
+    font-size:0.9em;
+    font-family: Arial, Helvetica, verdana sans-serif;
+    background-color:#fff;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+.riptable caption {
+    font-size: 25px;
+    color: #1ba6b2;
+    font-weight: bold;
+    text-align: left;
+    background: url(header_bg.jpg) no-repeat top left;
+    padding: 10px;
+    margin-bottom: 2px;
+    }
+
+.riptable thead th {
+    border-right: 1px solid #fff;
+    color:#fff;
+    text-align:center;
+    padding:2px;
+    text-transform:uppercase;
+    height:25px;
+    background-color: #a3c159;
+    font-weight: normal;
+    }
+
+.riptable tfoot {
+    color:#1ba6b2;
+    padding:2px;
+    text-transform:uppercase;
+    font-size:1.2em; 
+    font-weigth: bold;
+    margin-top:6px;
+    border-top: 6px solid #e9f7f6;
+    }
+
+.riptable tbody tr {
+    background-color:#fff;
+    border-bottom: 1px solid #f0f0f0;
+    }
+
+.riptable tbody td {
+    color:#414141;
+    padding:5px;
+    text-align:center;
+    }
+
+.riptable tbody th {
+    text-align:center;
+    padding:2px;
+    }
+
+.riptable tbody td a, tbody th a {
+    color:#6C8C37;
+    text-decoration:none;
+    font-weight:normal; 
+    display:block;
+    background: transparent url(links_yellow.gif) no-repeat 0% 50%;
+    padding-left:15px;
+    }
+
+.riptable tbody td a:hover, tbody th a:hover {
+    color:#009193;
+    text-decoration:none;
+    }
+
+/* manually added by GD for alternating table rows */
+.riptable .row1 {
+    background-color:#FFFFFF; 
+    }
+    
+.riptable .row2 {
+    background-color:#F5FFDC; 
+    }
+    
+/* manually added by GD for styling answer box */
+#fillgreen {
+    background-color:#F5FFDC;  
+    }
+
+/* manually added by GD for padding rip boxes */
+.ripbox {
+    margin: 8px; 
+    }
+
+/* End of ripTable stylings */
+
+/* Generic form box styling */
+
+.formcontainer {
+	   width: 100%;
+	   margin: 20px auto; 
+	   }
+
+.formcontainer .info {
+    padding: 10px; 
+    font-style:italic
+    }
+
+.formcontainer .content {
+	   padding: 10px; 
+    }
+    
+.formcontainer .sidebar {
+    }
+
+.formcontainer .buttonbar {
+	   margin: 10px;
+	   text-align: center;
+    }
+	   
+	
+	/* General Positional stylings */
+	
+.topalign {
+    vertical-align:top;
+    }
+     
+
+/* stylings for ajax loader icon */
+#loading { display:none; position:fixed; left:0; top:0; width:100%; height:100%; }
+
+
+
+
+	

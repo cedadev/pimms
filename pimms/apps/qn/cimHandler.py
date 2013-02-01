@@ -4,9 +4,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
-from pimms.apps.qn.webui.cimHandling import viewer
-from pimms.apps.qn.webui.models import Simulation
-from pimms.apps.qn.webui.models import Component
+from pimms.apps.qn.cimHandling import viewer
+from pimms.apps.qn.models import Simulation, Component
 from pimms.apps.qn.vocabs import model_list
 
 
@@ -14,19 +13,12 @@ def commonURLs(obj, dictionary):
     '''
     Add urls for the common methods to a dictionary for use in a template
     '''
+  
     for key in ['validate', 'xml', 'cimView']:
-        dictionary[key] = reverse('pimms.apps.qn.views.genericDoc',
-                                  args=(obj.centre.id,
-                                        obj._meta.module_name,
-                                        obj.id,
-                                        key))
-
-    if str(obj.centre) not in ['1. Example', '2. Test Centre', ]:
-        dictionary['export'] = reverse('pimms.apps.qn.views.genericDoc',
-                                       args=(obj.centre.id,
-                                             obj._meta.module_name,
-                                             obj.id,
-                                             'export'))
+        dictionary[key] = reverse('pimms.apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, key))
+        
+    dictionary['export'] = reverse('pimms.apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, 'export'))
+    
     return dictionary
 
 

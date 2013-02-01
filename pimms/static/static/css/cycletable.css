@@ -1,0 +1,99 @@
+.cycletable table {
+    font-size:0.8em;
+    background: #ffffff;
+    border-collapse: collapse;
+    width: 1000px;
+    table-layout: fixed;
+    overflow: hidden;
+    }
+
+.cycletable caption {
+    font-size: 20px;
+    color: #1ba6b2;
+    font-weight: bold;
+    text-align: left;
+    background: url(header_bg.jpg) no-repeat top left;
+    padding: 10px;
+    margin-bottom: 2px;
+    }
+
+.cycletable thead th {
+    border-right: 1px solid #fff;
+    color:#fff;
+    text-align:center;
+    padding:2px;
+    text-transform:uppercase;
+    background-color: #a3c159;
+    font-weight: normal;
+    }
+
+.cycletable tfoot {
+    color:#1ba6b2;
+    padding:2px;
+    text-transform:uppercase;
+    font-size:1.2em; 
+    font-weigth: bold;
+    margin-top:6px;
+    border-top: 6px solid #e9f7f6;
+    }
+
+.cycletable tbody tr {
+    background-color:#fff;
+    border-bottom: 1px solid #f0f0f0;
+    }
+
+.cycletable tbody td {
+    color:#414141;
+    padding:5px;
+    text-align:center;
+    }
+
+.cycletable tbody th {
+    text-align:center;
+    padding:2px;
+    background-color: #a3c159;
+    border-right: 1px solid #fff;
+    color:#fff;
+    text-align:center;
+    text-transform:uppercase;
+    font-weight: normal;
+    width:300px;
+    }
+
+.cycletable tbody td a, tbody th a {
+    color:#6C8C37;
+    text-decoration:none;
+    font-weight:normal; 
+    display:block;
+    background: transparent url(links_yellow.gif) no-repeat 0% 50%;
+    padding-left:15px;
+    }
+
+.cycletable tbody td a:hover, tbody th a:hover {
+    color:#009193;
+    text-decoration:none;
+    }
+
+/* manually added by GD for alternating table rows */
+.cycletable .row1 {
+    background-color:#FFFFFF; 
+    }
+    
+.cycletable .row2 {
+    background-color:#F5FFDC; 
+    }
+
+/* manually added by GD for fixer script
+.cycletable .fixed {
+    background-color:#a3c159;
+    }
+    
+/* manually added by GD for ar5 tables true
+.cycletable .truecell {
+    bgcolor:#55ff55;
+    }
+    
+.cycletable .falsecell {
+    bgcolor:#ff5555;
+    }        
+    

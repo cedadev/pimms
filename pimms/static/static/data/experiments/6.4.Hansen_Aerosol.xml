@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false" xmlns="http://www.metaforclimate.eu/cim/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<!-- Notes from document:
+
+	Hansen-style diagnosis of “fast” climate system responses to sulfate aerosols (ca. 2000)
+
+	As in expt. 6.2a above, but with aerosols consistent with conditions in year 2000 of the historical run (expt. 3.2)
+
+	-->
+
+	<rationale>Pescribed SST experiment for Hansen-style diagnosis of the "fast" responses to aerosols (ca. 2000).</rationale>
+	<description>AMIP-style experiment with control run climatological SSTs and sea ice (as in expt. 6.2a) but with aerosols consistent with conditions in year 2000 of the historical run (expt. 3.2)</description>
+	
+    
+   <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+		<id xsi:type="Identifier">ic.001</id>
+        <name xsi:type="Identifier">6.4a.ic</name>
+        <description> Initial conditions are from experiment 3.1_pi-control </description>
+    </numericalRequirement>
+    
+    <!-- Boundary Conditions -->
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.001</id>
+        <name xsi:type="Identifier">6.4a.bc.wmg_conc</name>
+        <description>Prescribed atmospheric concentrations of pre-industrial well mixed gases: excluding CO2</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.002</id>
+        <name xsi:type="Identifier">6.4a.bc.CO2_conc</name>
+        <description>Prescribed atmospheric concentrations of pre-industrial well mixed gas: Carbon Dioxide</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.003</id>
+        <name xsi:type="Identifier">6.4a.bc.sls_conc</name>
+        <description>Prescribed atmospheric concentration of pre-industrial short lived (reactive) gas species</description>
+    </numericalRequirement>
+      
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.010</id>
+        <name xsi:type="Identifier">6.4a.bc.LU</name>
+        <description>Unperturbed Pre-Industrial Land Use</description>
+    </numericalRequirement>
+ 	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.099a</id>
+        <name xsi:type="Identifier">6.4a.bc.2000_aer</name>
+        <description>Aerosols should be consistant with year 2000 of expt 3.2 (Historical run)</description>
+    </numericalRequirement>
+        
+            
+    <shortName>
+		6.4a sstClimAerosol
+	</shortName>
+    <longName> 
+		6.4a all aerosol forcing
+	</longName>
+     
+    <calendar>
+   		<perpetualPeriod/>
+	</calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint"><name xsi:type="Identifier">6.4a.stc.1850_30yr</name><id xsi:type="Identifier">stc.036</id><description>Begin in 1850 and run for 30 years </description><requiredDuration xsi:type="ClosedDateRange">
+		<startDate> 1850-01-01T00:00:00Z</startDate>
+		<endDate> 1850-12-30T00:00:00Z</endDate>
+    	<length units="years">30</length>
+	</requiredDuration></numericalRequirement>
+    <author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>
+					Gerard Devine
+				</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>
+					NCAS-CMS, University of Reading
+				</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>
+									g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+	<documentID xsi:type="Identifier">b62209c8-d3a5-11df-837f-00163e9152a5</documentID>
+    <creationDate>
+		2009-06-26T12:34:00Z
+	</creationDate>   
+</numericalExperiment>

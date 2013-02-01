@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false"
+    xmlns="http://www.metaforclimate.eu/cim/1.4"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gco="http://www.isotc211.org/2005/gco">
+
+
+
+    <rationale>Aqua-planet : cloud response to an imposed 4xCO2 (Hansen-style diagnosis).</rationale>
+    <description>Consistent with CFMIP requirements, impose a 4xCO2 on zonally uniform SSTs of expt.
+        6.7a (which is the control for this run).</description>
+
+    <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.001</id>
+        <name xsi:type="Identifier">6.7b.ic</name>
+        <description>A description of initial condition for the control run </description>
+    </numericalRequirement>
+
+    <!-- Boundary/Forcing Conditions -->
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.011</id>
+        <name xsi:type="Identifier">6.7b.bc.ant_wmg_conc</name>
+        <description>Imposed changing concentrations of historical anthropogenic well mixed gases,
+            including CO2</description>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.012</id>
+        <name xsi:type="Identifier">6.7b.bc.volc_wmg_conc</name>
+        <description>Imposed changing concentrations of historical volcanic well mixed gases,
+            including CO2</description>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">6.7b.bc.sls</name>
+        <description>Imposed changing concentrations or emissions of historical short lived gas
+            species</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.013</id>
+            <name xsi:type="Identifier">6.7b.bc.sls_conc</name>
+            <description>Concentrations</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.018</id>
+            <name xsi:type="Identifier">6.7b.bc.sls_em</name>
+            <description>Emissions</description>
+        </requirementOption>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">6.7b.bc.nat_aer</name>
+        <description>Imposed changing concentrations or emissions of historical natural aerosols</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.014</id>
+            <name xsi:type="Identifier">6.7b.bc.nat_aer_conc</name>
+            <description>Concentrations</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.019</id>
+            <name xsi:type="Identifier">6.7b.bc.nat_aer_em</name>
+            <description>Emissions</description>
+        </requirementOption>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">6.7b.bc.ant_aer</name>
+        <description>Imposed changing concentrations or emissions of historical anthropogenic
+            aerosols</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.015</id>
+            <name xsi:type="Identifier">6.7b.bc.ant_aer_conc</name>
+            <description>Concentrations</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.020</id>
+            <name xsi:type="Identifier">6.7b.bc.ant_aer_em</name>
+            <description>Emissions</description>
+        </requirementOption>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.016</id>
+        <name xsi:type="Identifier">6.7b.bc.nat_aer_pre_conc</name>
+        <description>Imposed changing concentrations of historical natural aerosol
+        precursors</description>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.017</id>
+        <name xsi:type="Identifier">6.7b.bc.ant_aer_pre_conc</name>
+        <description>Imposed changing concentrations of historical anthropogenic aerosol
+        precursors</description>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.021</id>
+        <name xsi:type="Identifier">6.7b.bc.solar</name>
+        <description>Imposed historical changing solar forcing</description>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.065</id>
+        <name xsi:type="Identifier">6.7b.bc.aquaplanet_sst</name>
+        <description> Imposed zonally uniform SSTs on an aquaplanet</description>
+    </numericalRequirement>
+
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.066</id>
+        <name xsi:type="Identifier">6.7b.bc.4X_CO2_conc</name>
+        <description> Imposed 4XCO2 on the control experiment 6.7a</description>
+    </numericalRequirement>
+
+    <shortName> 6.7b aqua4xCO2 </shortName>
+    <longName> 6.7b 4xCO2 aqua planet </longName>
+
+    <calendar>
+        <perpetualPeriod/>
+    </calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint">
+        <name xsi:type="Identifier">6.7b.stc.1850_5yr</name>
+        <id xsi:type="Identifier">stc.038</id><description>Begin in 1850 and run for 5 years </description>
+        <requiredDuration xsi:type="ClosedDateRange">
+            <!-- Idealised run so dates given here are only dummy values -->
+            <startDate> 1850-01-01T00:00:00Z</startDate>
+            <endDate> 1850-12-30T00:00:00Z</endDate>
+            <length units="years">5</length>
+        </requiredDuration>
+    </numericalRequirement>
+    <author>
+        <gmd:CI_ResponsibleParty>
+            <gmd:individualName>
+                <gco:CharacterString> Gerard Devine </gco:CharacterString>
+            </gmd:individualName>
+            <gmd:organisationName>
+                <gco:CharacterString> NCAS-CMS, University of Reading </gco:CharacterString>
+            </gmd:organisationName>
+            <gmd:contactInfo>
+                <gmd:CI_Contact>
+                    <gmd:address>
+                        <gmd:CI_Address>
+                            <gmd:electronicMailAddress>
+                                <gco:CharacterString> g.m.devine@reading.ac.uk
+                                </gco:CharacterString>
+                            </gmd:electronicMailAddress>
+                        </gmd:CI_Address>
+                    </gmd:address>
+                </gmd:CI_Contact>
+            </gmd:contactInfo>
+            <gmd:role>
+                <gmd:CI_RoleCode
+                    codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                    codeList="originator"/>
+            </gmd:role>
+        </gmd:CI_ResponsibleParty>
+    </author>
+    <documentID xsi:type="Identifier">cbb77688-d3a5-11df-837f-00163e9152a5</documentID>
+    <creationDate> 2009-06-26T12:34:00Z </creationDate>
+</numericalExperiment>

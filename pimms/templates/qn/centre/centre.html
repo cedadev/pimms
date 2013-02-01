@@ -1,48 +1,56 @@
-{% extends "base.html" %}
+{% extends "qn/base.html" %}
 
 {% block content %}
 
 <div class="boxer titlerow">
-  Summary page for <b>{{centre.name}} ({{centre.abbrev}})</b>
+  Summary page for <b>{{ project }}</b>
 </div>
 
 <!-- Page help section -->
-{% include 'centre/centrehelp.html' %}
+{% include 'qn/centre/centrehelp.html' %}
 
 <div class="boxer">
   <table>
     <tr>
       <td width="33%">
 	       <!-- Platform summary section -->
-        {% include 'centre/centreplats.html' %}
+        {% include 'qn/centre/centreplats.html' %}
       </td>
     </tr>
     <tr>
       <td width="33%">
         <!-- Grid summary section -->
-        {% include 'centre/centregrids.html' %}
+        {% include 'qn/centre/centregrids.html' %}
       </td>
     </tr>
     <tr>
       <td width="33%">    
         <!-- Model summary section -->
-        {% include 'centre/centremodels.html' %}
+        {% include 'qn/centre/centremodels.html' %}
       </td>
-    </tr>
-    <tr>
-      <td>
-        <!-- Files/Refs summary section -->
-        {% include 'centre/centrefilesrefs.html' %}
-        
-      </td>        
-    </tr>
+    </tr>    
   </table>
   
   <!-- Simulations summary section -->
   <div class="boxer">
-    {% include 'centre/centresimtable.html' %}
+    {% include 'qn/centre/centresimtable.html' %}
   </div>
   
 </div>
 
 {% endblock %}
+
+{% block pagejs %}
+<script type="text/javascript">
+    /* <![CDATA[ */
+    $(document).ready(function() {
+     $('#sims-table').dataTable({
+      "bJQueryUI": true,
+      "bAutoWidth": false,
+      'sPaginationType': 'full_numbers',
+      'aaSorting': [[ 0, "desc" ]],
+     });
+    } );
+    /* ]]> */
+</script>
+{% endblock %} 

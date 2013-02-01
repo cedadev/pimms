@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vocab mmversion="based on r524 (mariepierre, 2009-05-29) of SeaIce.mm" defnversion="">
+  <component name="SeaIce">
+    <parameter name="SeaIceRepresentation" choice="XOR">
+      <value name="2 levels"/>
+      <value name="Multi levels"/>
+      <value name="Ice types"/>
+    </parameter>
+    <component name="SeaIceThermodynamics">
+      <component name="Snow">
+        <parameter name="HeatDiffusion" choice="XOR">
+          <value name="multi-layer"/>
+          <value name="one layer"/>
+        </parameter>
+        <parameter name="Properties" choice="OR">
+          <value name="Snow-aging scheme"/>
+          <value name="Snow-ice scheme"/>
+        </parameter>
+      </component>
+      <component name="Ice">
+        <component name="VerticalHeatDiffusion">
+          <parameter name="SchemeType" choice="XOR">
+            <value name="multi-layer on an irregular vertical grid"/>
+            <value name="multi-layer on a regular vertical grid"/>
+            <value name="one layer"/>
+          </parameter>
+          <parameter name="NumberOfLayers" choice="XOR">
+            <constraint>Only required if "multi-layer on a regular vertical grid" is selected for "SchemeType".</constraint>
+            <value name="2 layers (Semtner '76 type)"/>
+            <value name="N&gt;2 layers"/>
+          </parameter>
+        </component>
+        <parameter name="OceanToIceBasalHeatFlux" choice="XOR">
+          <value name="prescribed"/>
+          <value name="parametrized (calculated in Ocean)"/>
+          <value name="parametrized (calculated in SeaIce)"/>
+        </parameter>
+        <parameter name="BrineInclusions" choice="XOR">
+          <value name="none"/>
+          <value name="heat reservoir"/>
+          <value name="thermal properties depending on S-T (fixed salinity)"/>
+          <value name="thermal properties depending on S-T (varying salinity)"/>
+        </parameter>
+        <parameter name="Properties" choice="OR">
+          <value name="Sea ice lateral melting"/>
+          <value name="Surface sublimation"/>
+          <value name="Solar radiation transmission"/>
+        </parameter>
+        <parameter name="TransportInThicknessSpace" choice="XOR">
+          <value name="Eulerian"/>
+          <value name="Linear remapping"/>
+          <value name="Other"/>
+        </parameter>
+      </component>
+      <parameter name="WaterPonds" choice="XOR">
+        <value name="yes "/>
+        <value name="no"/>
+      </parameter>
+      <component name="SurfaceAlbedo">
+        <parameter name="Method" choice="keyboard">
+          <value format="string" name=""/>
+        </parameter>
+      </component>
+      <component name="NewIceFormation">
+        <parameter name="Method" choice="keyboard">
+          <value format="string" name=""/>
+        </parameter>
+      </component>
+    </component>
+    <component name="SeaIceDynamics">
+      <parameter name="Rheology" choice="XOR">
+        <value name="free-drift"/>
+        <value name="Mohr-Coulomb"/>
+        <value name="visco-plastic"/>
+        <value name="EVP"/>
+        <value name="granular"/>
+        <value name="Other"/>
+      </parameter>
+      <parameter name="Advection" choice="XOR">
+        <value name="incremental remapping (semi-lagrangian)"/>
+        <value name="prather"/>
+        <value name="Other"/>
+      </parameter>
+      <component name="Redistribution">
+        <parameter name="Type" choice="XOR">
+          <value name="rafting"/>
+          <value name="ridging"/>
+          <value name="Other"/>
+        </parameter>
+        <parameter name="IceStrengthFormulation" choice="keyboard">
+          <value format="string" name=""/>
+        </parameter>
+      </component>
+      <parameter name="HorizontalDiscretization" choice="XOR">
+        <value name="Ocean grid"/>
+        <value name="Atmospheric grid"/>
+        <value name="Other"/>
+      </parameter>
+    </component>
+  </component>
+</vocab>

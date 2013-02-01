@@ -1,0 +1,56 @@
+<div  class="boxer">
+
+  <h2>Grids associated with {{centre.abbrev}}</h2>
+  
+  <table width="80%">
+    <tbody> 
+      {% for g in grids %}
+			     <tr class="{% cycle 'row2' 'row1'%}">
+	         <td width="85%">{{g.abbrev}}</td>
+	         <td width="5%">
+	          {% if g.isComplete %}
+	            <center>
+	              <img src="/static/icons/icon-tick.png" title="This has been 
+	              successfully published at version {{ g.documentVersion }}">
+	            </center>
+	          {% endif %}
+	         </td>
+	         <td width="5%">
+            <center>
+              <span style="width:70%"> 
+                <a href="{{g.url}}">
+                  <img src="/static/icons/24x24/Modify.png" title="Edit grid {{g.abbrev}}"/>
+                </a>
+              </span>
+            </center>
+	         </td>
+	         <td width="5%">
+            <center> 
+                <a href="{{g.cpURL}}">
+                  <img src="/static/icons/24x24/Copy.png" title="Copy grid {{g.abbrev}}"/>
+                </a>
+            </center>
+          </td>
+			     </tr>
+        <script type="text/javascript">
+          var oLinkButtonEdMod{{forloop.counter}} = 
+        	  new YAHOO.widget.Button("edGridButton{{forloop.counter}}");
+          var ogridSubButtom{{forloop.counter}}= 
+        	  new YAHOO.widget.Button("gridcopySubmit{{forloop.counter}}",
+                 {value:"gridcopySubmit{{forloop.counter}}value"});
+        </script>    
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <center>
+    <a class="addnewbut" id="newGridButton" href="{{newgrid}}">
+      Add a new Grid
+    </a>
+  </center>
+   
+  <script type="text/javascript">
+    var newmodButton = new YAHOO.widget.Button("newGridButton");
+  </script>
+  
+</div>

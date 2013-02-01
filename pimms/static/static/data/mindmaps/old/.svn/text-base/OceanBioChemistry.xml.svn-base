@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vocab mmversion="based on r888 (mariepierre, 2009-09-16) of OceanBioGeoChemistry.mm" defnversion="">
+  <component name="OceanBiogeoChemistry">
+    <component name="OceanBioTransport">
+      <parameter name="Method" choice="XOR">
+        <info> If method for transport calculations is different from the one for Ocean Tracers, then please describe these differences in the frame for free-text. </info>
+        <value name="offline"/>
+        <value name="online, same as Ocean Tracers"/>
+        <value name="online, different from Ocean Tracers"/>
+      </parameter>
+    </component>
+    <component name="OceanBioBoundaryForcing">
+      <parameter name="AtmosphericDeposition" choice="couple"/>
+      <parameter name="RiverInput" choice="couple"/>
+      <parameter name="SedimentInteractions" choice="couple"/>
+    </component>
+    <component name="OceanBioGazExchange">
+      <parameter name="Species" choice="OR">
+        <value name="CO2"/>
+        <value name="O2"/>
+        <value name="DMS"/>
+        <value name="N2"/>
+        <value name="N2O"/>
+        <value name="CO"/>
+      </parameter>
+      <parameter name="SchemeName" choice="XOR">
+        <info>Provide a Gaz Exchange Scheme for each of the selected Species.</info>
+        <value name="Liss &amp; Merlivat"/>
+        <value name="Wanninkhof"/>
+        <value name="Nightingale"/>
+        <value name="other"/>
+      </parameter>
+    </component>
+    <component name="OceanBioTracers">
+      <component name="Nutrients">
+        <parameter name="ListOfSpecies" choice="OR">
+          <value name="Nitrogen N"/>
+          <value name="Phosphorus P"/>
+          <value name="Silicium Si"/>
+          <value name="Iron Fe"/>
+          <value name="other"/>
+        </parameter>
+        <component name="NitrogenN">
+          <constraint>Only required if "Nitrogen N" is selected for "ListOfSpecies".</constraint>
+          <parameter name="NitrousSpecies" choice="OR">
+            <value name="Nitrates (NO3)"/>
+            <value name="Amonium (NH4)"/>
+          </parameter>
+          <parameter name="Processes" choice="OR">
+            <value name="denitrification"/>
+            <value name="N fixation"/>
+          </parameter>
+        </component>
+      </component>
+      <component name="Ecosystem">
+        <component name="Phytoplancton">
+          <parameter name="Type" choice="XOR">
+            <value name="none"/>
+            <value name="generic"/>
+            <value name="list"/>
+          </parameter>
+          <parameter name="ListOfSpecies" choice="OR">
+            <constraint>Only required if "list" is selected for "Type".</constraint>
+            <value name="diatoms"/>
+            <value name="Nfixers"/>
+            <value name="calcifiers"/>
+            <value name="picophytoplancton"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <component name="Zooplancton">
+          <parameter name="Type" choice="XOR">
+            <value name="none"/>
+            <value name="generic"/>
+            <value name="list"/>
+          </parameter>
+          <parameter name="ListOfSpecies" choice="OR">
+            <constraint>Only required if "list" is selected for "Type".</constraint>
+            <value name="microzooplancton"/>
+            <value name="mesozooplancton"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <parameter name="UpperTrophicLevels" choice="XOR">
+          <value name="yes"/>
+          <value name="no"/>
+        </parameter>
+      </component>
+      <component name="DisolvedOrganicMatter">
+        <parameter name="Lability" choice="XOR">
+          <value name="yes"/>
+          <value name="no"/>
+        </parameter>
+        <parameter name="BacteriaRepresentation" choice="XOR">
+          <value name="yes"/>
+          <value name="no"/>
+        </parameter>
+      </component>
+      <component name="Particules">
+        <definition>Export of carbon.</definition>
+        <parameter name="Method" choice="XOR">
+          <value name="diagnostic"/>
+          <value name="diagnostic (Martin profile)"/>
+          <value name="diagnostic (other)"/>
+          <value name="prognostic"/>
+        </parameter>
+        <parameter name="TypesOfParticules" choice="OR">
+          <constraint>Only required if "prognostic" is selected for "Method".</constraint>
+          <value name="POC"/>
+          <value name="PIC Calcite"/>
+          <value name="PIC Aragonite"/>
+          <value name="BSi"/>
+        </parameter>
+        <parameter name="SizeSpectrum" choice="XOR">
+          <constraint>Only required if "prognostic" is selected for "Method".</constraint>
+          <value name="yes"/>
+          <value name="no"/>
+        </parameter>
+        <parameter name="SinkingSpeed" choice="OR">
+          <constraint>Only required if "prognostic" is selected for "Method".</constraint>
+          <value name="function of particule size"/>
+          <value name="function of particule type (balast)"/>
+        </parameter>
+      </component>
+      <parameter name="SulfurCycle" choice="XOR">
+        <value name="yes"/>
+        <value name="no"/>
+      </parameter>
+    </component>
+    <component name="OcenBioChemistry">
+      <component name="CarbonChemistry">
+        <parameter name="pH-scale" choice="XOR">
+          <value name="sea water"/>
+          <value name="free"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+    </component>
+    <component name="OceanBioTracerDamping">
+      <component name="SpatialExtent">
+        <parameter name="Depth" choice="keyboard">
+          <value format="numerical" name="min, max" units="m"/>
+        </parameter>
+        <parameter name="Latitude" choice="keyboard">
+          <value format="numerical" name="min, max" units="degN"/>
+        </parameter>
+        <parameter name="Longitude" choice="keyboard">
+          <value format="numerical" name="min, max" units="degW"/>
+        </parameter>
+      </component>
+    </component>
+    <component name="OceanBioTimeStepping">
+      <parameter name="PassiveTracersTransportTimeStep" choice="XOR">
+        <value name="use ocean transport time step"/>
+        <value name="delta_t"/>
+      </parameter>
+      <parameter name="BiologicalTimeStep" choice="XOR">
+        <value name="use ocean transport time step"/>
+        <value name="delta_t"/>
+      </parameter>
+    </component>
+  </component>
+</vocab>

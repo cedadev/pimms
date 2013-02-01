@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false"
+	xmlns="http://www.metaforclimate.eu/cim/1.4"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+	xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<!-- Notes from document:
+	As in 1.1 and 1.1-E, but initialized near the end of 2001, 2002, 2003, 2004, 2006 (2007, and beyond) to take advantage of the better ocean data of the Argo float era
+	-->
+
+	<rationale>  Ensemble of 10-year hindcasts and predictions. 
+		Assess model skill in forecasting climate change on time-scales when the initial climate may exert
+		some influence.</rationale>
+	<description>Initialize 10-year simulations from additional start dates annually in 2000s.
+		As in experiments 1.1 and 1.1-E, but initialized after the end of year 2001 to take
+		advantage of the better ocean data of the Argo float era. 
+		The atmospheric composition (and other conditions) should be prescribed as in the
+		historical run (expt. 3.2) and the RCP4.5 scenario (expt. 4.1) of the long-term suite of
+		experiments. Ocean initial conditions should be in some way representative of the observed
+		anomalies or full fields for the start date. Land, sea-ice and atmosphere initial conditions
+		are left to the discretion of each group. 
+		Simulations should be initialized towards the end of 2001, 2002, 2003, 2004, 2006 (2007, and beyond)
+		Calendar start date can be 1st September, 1st November, 1st December or 1st January, according to the convenience of the modeling group. 
+		Dates should allow complete years/decades to be analyzed.
+	</description>
+
+	<!-- Initial Conditions -->
+	<numericalRequirement xsi:type="InitialCondition">
+		<id xsi:type="Identifier">ic.007</id>
+		<name xsi:type="Identifier">1.1I.ic.oc</name>
+		<description>Ocean Initial Conditions must represent in some measure the observed anomolies
+			for the start date used</description>
+	</numericalRequirement>
+
+	<!-- Boundary/Forcing Conditions -->
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.011</id>
+		<name xsi:type="Identifier">1.1I.bc.ant_wmg</name>
+		<description>Imposed changing concentrations of well mixed gases
+			(anthropogenic)</description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.012</id>
+		<name xsi:type="Identifier">1.1I.bc.volc_wmg</name>
+		<description>Imposed changing concentrations of well mixed gases (volcanic)</description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.sls</name>
+		<description>Imposed changing concentrations or emissions of short lived gas species</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.013</id>
+			<name xsi:type="Identifier">1.1I.bc.sls_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.018</id>
+			<name xsi:type="Identifier">1.1I.bc.sls_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.nat_aer</name>
+		<description>Imposed changing concentrations or emissions of aerosols (natural)</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.014</id>
+			<name xsi:type="Identifier">1.1I.bc.nat_aer_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.019</id>
+			<name xsi:type="Identifier">1.1I.bc.nat_aer_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.ant_aer</name>
+		<description>Imposed changing concentrations or emissions of aerosols (anthropogenic)</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.015</id>
+			<name xsi:type="Identifier">1.1I.bc.ant_aer_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.020</id>
+			<name xsi:type="Identifier">1.1I.bc.ant_aer_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.016</id>
+		<name xsi:type="Identifier">1.1I.bc.nat_aer_prec</name>
+		<description>Imposed changing concentrations of aerosol (natural) precursors</description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.017</id>
+		<name xsi:type="Identifier">1.1I.bc.ant_aer_prec</name>
+		<description>Imposed changing concentrations of aerosol (anthropogenic)
+			precursors</description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.021</id>
+		<name xsi:type="Identifier">1.1I.bc.solar</name>
+		<description>Imposed changing solar forcing</description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.022</id>
+		<name xsi:type="Identifier">1.1I.bc.land</name>
+		<description>Imposed changing land use</description>
+	</numericalRequirement>
+	
+	<!-- Treatment of Volcanic aerosol beyond 2005 (i.e. should assume no volcanic eruptions after 2005) may be able to be checked in software/data but am including here in case -->
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.057</id>
+		<name xsi:type="Identifier">1.1I.bc.NoVolc2005</name>
+		<description> No volcanic aerosol emissions beyond 2005 </description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.058</id>
+		<name xsi:type="Identifier">1.1I.bc.seaice</name>
+		<description>Sea ice observations forcing (unless modelled) must precede start date of
+			simulation </description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.rcp45_wmg</name>
+		<description>Imposed changing concentrations or emissions of RCP4.5 well mixed gases,
+			including CO2</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.025</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_wmg_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.029</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_wmg_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.rcp45_sls</name>
+		<description>Imposed changing concentrations or emissions of RCP4.5 short lived gas species</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.026</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_sls_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.030</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_sls_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.rcp45_aer</name>
+		<description>Imposed changing concentrations or emissions of RCP4.5 aerosols</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.027</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_aer_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.031</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_aer_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<name xsi:type="Identifier">1.1I.bc.rcp45_aer_pre</name>
+		<description>Imposed changing concentrations or emissions of RCP4.5 aerosol precursors</description>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.028</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_aer_pre_conc</name>
+			<description>Concentrations</description>
+		</requirementOption>
+		<requirementOption>
+			<id xsi:type="Identifier">bc.032</id>
+			<name xsi:type="Identifier">1.1I.bc.rcp45_aer_pre_em</name>
+			<description>Emissions</description>
+		</requirementOption>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.033</id>
+		<name xsi:type="Identifier">1.1I.bc.rcp45_LU</name>
+		<description>Imposed changing RCP4.5 land use</description>
+	</numericalRequirement>
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.034</id>
+		<name xsi:type="Identifier">1.1I.bc.volc_aer_conc</name>
+		<description>Imposed constant background volcanic aerosol</description>
+	</numericalRequirement>
+
+	<shortName> 1.1-I decadal </shortName>
+	<longName> 1.1-I decadal 10-year hindcast/prediction - additional start dates </longName>
+
+	<calendar>
+		<realCalendar/>
+	</calendar>
+	<numericalRequirement xsi:type="SpatioTemporalConstraint">
+		<name xsi:type="Identifier">1.1I.stc.decadal_10yr</name>
+		<id xsi:type="Identifier">stc.001</id>
+		<description>Run for 10 years </description>
+		<requiredDuration xsi:type="OpenDateRange">
+			<length units="years">10</length>
+		</requiredDuration>
+	</numericalRequirement>
+	<author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString> Gerard Devine </gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString> NCAS-CMS, University of Reading </gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString> g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode
+					codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+					codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+	<documentID xsi:type="Identifier">d6801318-d3a5-11df-837f-00163e9152a5</documentID>
+	<creationDate> 2009-06-23T15:00:00Z </creationDate>
+</numericalExperiment>

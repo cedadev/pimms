@@ -1,15 +1,15 @@
-import simplejson
-
 from django.shortcuts import render_to_response
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect
 from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
+from django.core.urlresolvers import reverse
 
 from pimms.apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
 from pimms.apps.qn.qnsetup.helpers import getqnsetupurls
 from pimms.apps.qn.qnsetup.generateQn import generate_qn
 from pimms.apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
 from pimms.apps.helpers import getsiteurls
+from pimms.apps.qn.helpers import getqnurls
 
 
 def qnsetuphome(request):
@@ -23,15 +23,14 @@ def qnsetuphome(request):
         urls = getqnsetupurls(urls)        
         
         allqns = Questionnaire.objects.filter()
-#        for qn in allqns:
-#            qn.url = reverse('pimms.apps.exp.views.expview', args=(exp.id, ))
+        for qn in allqns:
+            qn.url = reverse('pimms.apps.qn.views.qnhome', args=(qn, ))
 #            qn.cpurl = reverse('pimms.apps.exp.views.expcopy', args=(exp.id, ))
 #            qn.delurl = reverse('pimms.apps.exp.views.expdelete', args=(exp.id, ))
     except:
         raise Http404
       
-    return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allqns,
-                                               'urls': urls},
+    return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allqns, 'urls': urls},
                                 context_instance=RequestContext(request))
     
     
@@ -89,11 +88,12 @@ def qninputs(request):
                         #add the files to a list to pass to the qn generator
                         explist.append(entry['expfile'])
                 
-                #Now run the questionnaire setup script with the uploaded files/settings
+                #Now run the questionnaire setup script with the uploaded files/settings and return the generated url
                 generate_qn(qn, cvlist, gridupload, explist)
                 
-              
-                return HttpResponseRedirect(urls['qnsetuphome']) # Redirect to list page 
+                urls['qnsetupsuccess'] = reverse('pimms.apps.qn.qnsetup.views.qnsetupsuccess', args=(qn.project, ))
+                
+                return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
             else:
                 return render_to_response('qnsetup/qninputs.html', 
                                           {'qnsetupform': qnsetupform,
@@ -117,16 +117,24 @@ def qninputs(request):
                                 context_instance=RequestContext(request))
     
     
-def qnsetupsuccess(request):
-    '''Controller for app home page
+def qnsetupsuccess(request, qnproj):
+    '''
+    View controller for successful questionnaire setup
     '''
     try:
         # get my urls
         urls = {}
         urls = getsiteurls(urls)
         urls = getqnsetupurls(urls)
+        # get qn specific url for success page
+        urls['qnsetupsuccess'] = reverse('pimms.apps.qn.qnsetup.views.qnsetupsuccess', args=(qnproj, ))
+        
+        #### Now construct a url using the qnname and the home url for an actual questionnaire
+        urls['qnhome'] = reverse('pimms.apps.qn.views.qnhome', args=(qnproj, ))
+        
+        
     except:
         raise Http404
     
-    return render_to_response('qnsetup/qnsetupsuccess.html', {'urls': urls},
+    return render_to_response('qnsetup/qnsetupsuccess.html', {'urls': urls, 'qnname':qnproj},
                               context_instance=RequestContext(request))

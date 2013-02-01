@@ -1,0 +1,12 @@
+HundsTrompert_1994;"Hundsdorfer, W.  and Trompert, R. A., 1994. Method of lines and direct discretization: a comparison for linear advection, Appl. Numer. Math. 13(6), 469-490";App. Num. Math.
+Janjic_1977;"Janjic, Z. I., 1977. Pressure gradient force and advection scheme used for forecasting with steep and small scale topography. Contrib. Atmos. Phys., 50, 186-199";Contr. Atmos. Phys.
+Janjic_1984;"Janjic, Z. I., 1984. Nonlinear advection schemes and energy cascade on semi_staggered grids. Mon. Wea. Rev., 112, 1234-1245";Mon. Wea. Rev.
+LinRood_1996;"Lin, S.-J. and R. B. Rood, Multidimensional Flux-Form Semi-Lagrangian Scheme, 1996. Mon. Wea. Rev., 124, 2046-2070";Mon. Wea. Rev.
+LipsRingler_2005;"Lipscomb, W. H. and Ringler, T. D., 2005. An incremental remapping transport scheme on a spherical geodesic grid, Monthly Weather Review, 133, 2335-2350";Mon. Wea. Rev.
+Prather_1986;"Prather, M. J., 1986. Numerical advection by conservation of second-order moments. J. Geophys. Res. 91, 6671-6681";J. Geophys. Res.
+PutmanLin_2007;"Putman, W M. and Lin, S.-J., 2007. Finite-volume transport on various cubed-sphere grids. Journal of Computational Physics, 227(1), 55-78";J. Comput. Phys.
+Sadourney_1972;"Sadourny, R., 1972. Conservative finite-difference approximations of the primitive equations on quasi-uniform spherical grids, Mon. Wea. Rev., 100, pp. 136-144";Mon. Wea. Rev.
+Crowley_1967;"Crowley, W. P., 1967. Second order numerical advection, Journal of Computational Physics 1 (4), pp. 471-484";J. Comput. Phys.
+WillRasch_1989;"Williamson, D. L., and Rasch, P. J., 1989: Two-dimensional semi-Lagrangian transport with shape preserving interpolation. Mon. Wea. Rev., 117, 102-129";Mon. Wea. Rev.
+SmolGrabow_1990;"Smolarkiewicz , P. K. and Grabowski, W. W., 1990. The multidimensional positive definite advection transport algorithm: nonoscillatory option, Journal of Computational Physics, 86(2), 355-375";J. Comput. Phys.
+Ahmad_etal_2006;"Ahmad, N. and Boybehi, Z. and Lohner, R. and Sarma, A., 2006. A Godunov-type scheme for atmospheric flows on unstructured grids: Scalar transport, Pure Appl. Geophys. 163(8), 1699-1735";Pure Appl. Geophys.

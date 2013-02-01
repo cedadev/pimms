@@ -39,22 +39,6 @@
     <form method="post" action="" enctype="multipart/form-data">
         
         <h3>Qn Params</h3>
-        <div class="row">
-              <div class="span2">
-                <label for="abbrev"{% if qnsetupform.abbrev.errors %} class="text-error" {% endif %}>Abbreviation {% if qnsetupform.fields.abbrev.required %}*{% endif %}</label>
-              </div>
-              <div class="span3">
-                {{ qnsetupform.abbrev }}
-              </div>
-              <div class="span2">
-              {% if qnsetupform.abbrev.errors %}
-                {% for error in qnsetupform.abbrev.errors %}
-                    <p class="text-error">{{ error }}</p>
-                {% endfor %}
-              {% endif %}
-              </div>
-        </div>
-        <br/>
         
         <div class="row">
           <div class="span2">

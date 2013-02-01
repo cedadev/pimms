@@ -1,0 +1,30 @@
+
+.msg_list {
+margin: 0px;
+padding: 0px;
+width: 100%;
+}
+.msg_head {
+padding: 5px 10px;
+cursor: pointer;
+position: relative;
+background-color:#F5FFDC;
+margin:1px;
+}
+.msg_body {
+padding: 5px 10px 15px;
+background-color:#FFFFFF;
+}
+
+#active {
+background-color:#FFF9AB;
+}
+
+#inactive {
+background-color:#DBDBDB;
+}
+
+#error {
+background-color:#FFEDED;
+}
+

@@ -1,0 +1,97 @@
+{% extends "site/one_column_page.html" %}
+
+{% block pagetitle %}
+  Metadata Questionnaire
+{% endblock %}
+
+{% block page_column_one %}
+
+<div class="page-header">
+    <h3>{{project.name}} - metadata questionnaire</h3>
+    <button type="button" data-toggle="modal" data-target="#myModal">Help</button>
+</div>
+
+<!-- Page help popup section -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Help</h3>
+  </div>
+  <div class="modal-body">
+	      <p>A modelling centre performs <em>Simulations</em> which run <em> 
+	      Models </em> on <em>Platforms</em>. The purpose of this metadata questionnaire is to 
+	      glean information about these platforms, models and simulations and how the 
+	      simulations conformed to the requirements of the associated experiment. Users should 
+	      follow the workflow belowthe workflow listed below: 
+		      <ol>
+		        <li>Describe a Platform</li>
+		        <li>Describe a Model and Grid</li>
+		        <li>Describe some Simulations</li>
+		      </ol>
+	      It is not possible to start entering simulation information until at least one 
+	      model and one platform have been described. <br/>  Each new platform, grid 
+	      and model you create will be given a generic name you will need to give these 
+	      more appropriate short names so they can be distinguished from each other.   
+	      </p>
+	      
+	      <br/>
+	      <p><em>Models</em> are made up of <em>Components</em>.</p>
+	      <p><em>Simulations</em> conform to the <em>Numerical Requirements</em> of 
+	      <em>Experiments</em> via what we call <em>Conformances</em>.</p> 
+	      <p><em> Conformances </em>will consist of either specific code characteristics 
+	      (defined here as <em>model modifications</em>) or the use of specific boundary 
+	      or initial conditions.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+
+
+<div class="row">
+    <div class="span10 offset1">
+	  <table>
+	    <tr>
+	      <td width="33%">
+		       <!-- Platform summary section -->
+	        {% include 'qn/qnmain/centreplats.html' %}
+	      </td>
+	    </tr>
+	    <tr>
+	      <td width="33%">
+	        <!-- Grid summary section -->
+	        {% include 'qn/qnmain/centregrids.html' %}
+	      </td>
+	    </tr>
+	    <tr>
+	      <td width="33%">    
+	        <!-- Model summary section -->
+	        {% include 'qn/qnmain/centremodels.html' %}
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <!-- Files/Refs summary section -->
+	        {% include 'qn/qnmain/centrefilesrefs.html' %}
+	        
+	      </td>        
+	    </tr>
+	  </table>
+	</div>
+</div>
+  
+  <!-- Simulations summary section -->
+<div class="row">
+  <div class="span10 offset1">
+    {% include 'qn/qnmain/centresimtable.html' %}
+  </div>  
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+  $('#myModal').modal(options)
+</script>
+{% endblock %}

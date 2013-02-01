@@ -114,7 +114,6 @@ INSTALLED_APPS = (
     'apps.cv',
     'apps.exp',
     'apps.person',
-    #'apps.qnsetup',
     'apps.qn'
 )
 
@@ -137,7 +136,7 @@ try:
 except ImportError:
     pass
   
-
+DEPLOYED_SCRIPT_PATH=''
 # finally import project-specific settings, project name etc
 
 #from project_settings import *  

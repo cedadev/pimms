@@ -157,13 +157,19 @@ def gracefulNotFound(method):
     return trap
 
 def RemoteUser(request,document):
-    ''' Assign a metadata maintainer if we have one '''
-    key='REMOTE_USER'
+    ''' 
+    Assign a metadata maintainer if we have one 
+    '''
+  
+    key = 'REMOTE_USER'
+    
     #if key in request.META:
         #user=request.META[key]
         #document.metadataMaintainer=ResponsibleParty( ...)
         #document.save()
+    
     return document
+
 
 class RingBuffer:
     def __init__(self, size):

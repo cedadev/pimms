@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="boxer titlerow">
+  Summary page for <b>{{centre.name}} ({{centre.abbrev}})</b>
+</div>
+
+<!-- Page help section -->
+{% include 'centre/centrehelp.html' %}
+
+<div class="boxer">
+  <table>
+    <tr>
+      <td width="33%">
+	       <!-- Platform summary section -->
+        {% include 'centre/centreplats.html' %}
+      </td>
+    </tr>
+    <tr>
+      <td width="33%">
+        <!-- Grid summary section -->
+        {% include 'centre/centregrids.html' %}
+      </td>
+    </tr>
+    <tr>
+      <td width="33%">    
+        <!-- Model summary section -->
+        {% include 'centre/centremodels.html' %}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <!-- Files/Refs summary section -->
+        {% include 'centre/centrefilesrefs.html' %}
+        
+      </td>        
+    </tr>
+  </table>
+  
+  <!-- Simulations summary section -->
+  <div class="boxer">
+    {% include 'centre/centresimtable.html' %}
+  </div>
+  
+</div>
+
+{% endblock %}
+
+{% block pagejs %}
+<script type="text/javascript">
+    /* <![CDATA[ */
+    $(document).ready(function() {
+     $('#sims-table').dataTable({
+      "bJQueryUI": true,
+      "bAutoWidth": false,
+      'sPaginationType': 'full_numbers',
+      'aaSorting': [[ 0, "desc" ]],
+     });
+    } );
+    /* ]]> */
+</script>
+{% endblock %} 

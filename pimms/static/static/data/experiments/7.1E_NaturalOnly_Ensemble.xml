@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false" xmlns="http://www.metaforclimate.eu/cim/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<!-- Notes from document:
+
+	Individual forcing ensembles 
+
+	Create multi-member ensembles for expts. 7.1-7.3, initialized from different points in the control run (expt. 3.1). Natural-only is highest priority with GHG-only next.
+
+	-->
+
+	<rationale>Climate change detection attribution experiment. </rationale>
+	<description>Historical simulation but with natural focing only - ensemble.</description>
+	
+	<!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.002</id>
+        <name xsi:type="Identifier">7.1E.ic</name>
+        <description> Initial conditions are from experiment 3.1 piControl </description>
+    </numericalRequirement>
+        
+    <!-- Boundary/Forcing conditions -->
+	<numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.001</id>
+        <name xsi:type="Identifier">7.1E.bc.wmg_conc</name>
+        <description>Prescribed atmospheric concentrations of pre-industrial well mixed gases:
+            excluding CO2</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.002</id>
+        <name xsi:type="Identifier">7.1E.bc.CO2_conc</name>
+        <description>Prescribed atmospheric concentrations of pre-industrial well mixed gas: Carbon
+            Dioxide</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.003</id>
+        <name xsi:type="Identifier">7.1E.bc.sls_conc</name>
+        <description>Prescribed atmospheric concentration of pre-industrial short lived (reactive)
+            gas species</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.1E.bc.nat_aer</name>
+        <description>Prescribed concentrations or emissions of pre-industrial natural aerosols</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.004</id>
+            <name xsi:type="Identifier">7.1E.bc.nat_aer_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.007</id>
+            <name xsi:type="Identifier">7.1E.bc.nat_aer_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.1E.bc.nat_aer_precur</name>
+        <description>Prescribed concentrations or emissions of pre-industrial natural aerosol precursors</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.005</id>
+            <name xsi:type="Identifier">7.1E.bc.nat_aer_pre_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.008</id>
+            <name xsi:type="Identifier">7.1E.bc.nat_aer_pre_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement> 
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.1E.bc.sl_aer</name>
+        <description>Prescribed concentrations or emissions of pre-industrial short lived (reactive) aerosol species</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.006</id>
+            <name xsi:type="Identifier">7.1E.bc.sl_aer_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.009</id>
+            <name xsi:type="Identifier">7.1E.bc.sl_aer_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.012</id>
+        <name xsi:type="Identifier">7.1E.bc.volc_wmg_conc</name>
+        <description>Imposed changing concentrations of historical volcanic well mixed gases, including CO2</description>
+    </numericalRequirement>
+     
+     <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.021</id>
+        <name xsi:type="Identifier">7.1E.bc.solar</name>
+        <description>Imposed historical changing solar forcing</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.022</id>
+        <name xsi:type="Identifier">7.1E.bc.LU</name>
+        <description>Imposed historical changing land use</description>
+    </numericalRequirement>    
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.100</id>
+        <name xsi:type="Identifier">7.1E.ensemble</name>
+        <description>Create multi-member ensembles initialised from different points in the control run</description>
+    </numericalRequirement>
+        
+   <shortName>
+		7.1-E historicalNat
+	</shortName>
+    <longName> 
+		7.1-E natural-only historical - Ensemble
+	</longName>
+        
+   <calendar>
+       <realCalendar/>
+	</calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint"><name xsi:type="Identifier">7.1E.stc.1850_156yr</name><id xsi:type="Identifier">stc.026</id><description>Begin in 1850 and run for 156 years </description><requiredDuration xsi:type="ClosedDateRange">
+		<startDate> 1850-01-01T00:00:00Z</startDate>
+		<endDate> 2006-01-01T00:00:00Z</endDate>
+        <length units="years">156</length>
+	</requiredDuration></numericalRequirement>
+    <author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>
+					Gerard Devine
+				</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>
+					NCAS-CMS, University of Reading
+				</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>
+									g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+    <documentID xsi:type="Identifier">b7c5a10e-d3a5-11df-837f-00163e9152a5</documentID>
+    <creationDate>
+		2009-06-26T12:34:00Z
+	</creationDate>   
+</numericalExperiment>

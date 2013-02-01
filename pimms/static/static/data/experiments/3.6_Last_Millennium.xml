@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="true" xmlns="http://www.metaforclimate.eu/cim/1.4"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+	xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<rationale>Last millenium. Evaluate the ability of models to capture observed variability on
+		multi-decadal and longer time-scales.</rationale>
+	<description>Consistent with PMIP (Paleo Model Intercomparison Project) requirements, Impose
+		evolving conditions including: Solar Variations and Volcanic Aerosols.</description>
+
+	<!-- Initial Conditions -->
+	<numericalRequirement xsi:type="InitialCondition">
+		<id xsi:type="Identifier">ic.001</id>
+		<name xsi:type="Identifier">3.6.ic</name>
+		<description>A description of initial condition for the control run </description>
+	</numericalRequirement>
+
+	<!-- Boundary/Forcing Conditions -->
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.074</id>
+		<name>3.6.bc.solar</name>
+		<description>Impose evolving solar conditions consistant with PMIP
+			requirements</description>
+	</numericalRequirement>
+
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.075</id>
+		<name>3.6.bc.volc_aer</name>
+		<description>Impose evolving volcanic aerosols consistant with PMIP
+			requirements</description>
+	</numericalRequirement>
+
+	<shortName> 3.6 past1000 </shortName>
+	<longName> 3.6 Last millennium </longName>
+
+	<calendar>
+		<realCalendar/>
+	</calendar>
+	<numericalRequirement xsi:type="SpatioTemporalConstraint">
+		<name xsi:type="Identifier">3.6.stc.0850_1000yr</name>
+		<id xsi:type="Identifier">stc.035</id>
+		<description>Begin in 850 and run for 1000 years </description>
+		<requiredDuration xsi:type="ClosedDateRange">
+			<startDate> 0850-01-01T00:00:00Z</startDate>
+			<endDate> 1851-01-01T00:00:00Z </endDate>
+			<length units="years">1000</length>
+		</requiredDuration>
+	</numericalRequirement>
+	<author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString> Gerard Devine </gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString> NCAS-CMS, University of Reading </gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString> g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode
+					codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+					codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+	<documentID xsi:type="Identifier">b7862baa-d3a5-11df-837f-00163e9152a5</documentID>
+	<creationDate> 2009-06-23T15:00:00Z </creationDate>
+</numericalExperiment>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false" xmlns="http://www.metaforclimate.eu/cim/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<rationale>Cloud response to an imposed 4xCO2 (Hansen-style diagnosis of “fast” climate system responses).</rationale>
+	<description>Identical to expt. 6.2b, but with AMIP SSTs prescribed as in expt. 3.3 (which is the control for this run).</description>
+
+	 <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.002</id>
+        <name xsi:type="Identifier">6.5.ic</name>
+        <description> Initial conditions are from experiment 3.1_pi-control </description>
+    </numericalRequirement>
+    
+    <!-- Boundary Conditions -->
+	<numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.056</id>
+        <name xsi:type="Identifier">6.2b.bc.4X_CO2_conc</name>
+        <description>Prescribed concentration of well mixed Gas: CO2 is quadruple of 3.1_pi-control CO2 concentration</description>
+        <!-- 6.3.bc.4X_CO2_conc -->
+    </numericalRequirement>  
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.053</id>
+        <name xsi:type="Identifier">6.2b.SeaIce.clim</name>
+        <description>Sea ice is the sea ice climatology from the 3.1_pi-control</description>
+    </numericalRequirement>       
+     
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.010</id>
+        <name xsi:type="Identifier">6.2b.bc.LU</name>
+        <description>Unperturbed Land Use - Same as for the 3.1_pi-control</description>
+    </numericalRequirement>      
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.054</id>
+        <name xsi:type="Identifier">6.2b.bc.Ocean_CO2</name>
+        <description>CO2 partial pressure dissolved in ocean, climatology from the 3.1_pi-control</description>
+    </numericalRequirement> 
+	
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.023</id>
+		<name xsi:type="Identifier">6.5.bc.sst_obs</name>
+		<description>Sea surface temperature (SST) imposed from historical observations</description>
+	</numericalRequirement>
+     
+    
+    <shortName>
+		6.5 amip4xCO2
+	</shortName>
+    <longName> 
+		6.5 4xCO2 AMIP
+	</longName>
+
+  <calendar>
+    <realCalendar/>
+  </calendar>
+  <numericalRequirement xsi:type="SpatioTemporalConstraint">
+    <name xsi:type="Identifier">6.5.stc.1979_30yr</name>
+    <id xsi:type="Identifier">stc.027</id>
+    <description>Begin in 1979 and run for 30 years </description>
+    <requiredDuration xsi:type="ClosedDateRange">
+      <!-- Idealised run so dates given here are only dummy values -->
+      <startDate>1979-01-01T00:00:00Z</startDate>
+      <endDate>2008-12-30T00:00:00Z</endDate>
+      <length units="years">30</length>
+    </requiredDuration>
+  </numericalRequirement>	
+   
+    
+    <author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>
+					Gerard Devine
+				</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>
+					NCAS-CMS, University of Reading
+				</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>
+									g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+	<documentID xsi:type="Identifier">d35ecbca-d3a5-11df-837f-00163e9152a5</documentID>
+    <creationDate>
+		2009-06-26T12:34:00Z
+	</creationDate>   
+</numericalExperiment>

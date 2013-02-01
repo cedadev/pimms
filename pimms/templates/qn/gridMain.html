@@ -1,11 +1,11 @@
-{% extends "twopanel.html" %}
+{% extends "qn/twopanel.html" %}
 
 {% block titlerow %}
-<table  width="100%"  class="{{ c.qstatus }}">
+<table  width="100%"  class="{{ g.qstatus }}">
   <tr>
 	<td>
 	  <h1> 
-		Grid {{c.abbrev }} 
+		Grid {{g.abbrev }} 
 	  </h1> 
 	</td> 
   </tr>
@@ -26,11 +26,11 @@
     {{ navtree|safe }}
   </div>
   <h4>
-    Grid {{ c.abbrev }}
+    Grid {{ g.abbrev }}
   </h4>
 </div>
 
-{% if c.istopGrid %}
+{% if g.istopGrid %}
   <div class="boxer"> 
     <p> 
       The button(s) in this box navigate to pages which further describe this <b>grid</b>.
@@ -40,7 +40,7 @@
     </p>
   </div>
   <div class="boxer">  
-    {% include 'docbuttons.html' %}
+    {% include 'qn/docbuttons.html' %}
   </div>
 {% endif %}
 
@@ -52,13 +52,13 @@
     <form action="{{ urls.form }}" method='post' onsubmit="myProject.bypassConfirm()">
       <div class="boxer">    
         <table>
-          {% if c.isParamGroup %}
+          {% if g.isParamGroup %}
             <tr>
               <td class="inputH1">
-                {{ c.abbrev }} 
+                {{g.abbrev }} 
                 <div style="display: none;">                  
                   <h1>
-                    {{ cform.abbrev }} 
+                    {{ gform.abbrev }} 
                   </h1>
                 </div>
               </td>
@@ -66,20 +66,20 @@
           {% else %}
             <tr>
               <td class="inputH1">
-                Short Name:&nbsp;{{ cform.abbrev.errors }}
+                Short Name:&nbsp;{{ gform.abbrev.errors }}
               </td>
               <td colspan="4">
-	            {{ cform.abbrev }}
+	            {{ gform.abbrev }}
               </td>
             </tr>
           {% endif %}
           
           <tr>
             <td>
-              Long Name:&nbsp;{{ cform.title.errors }}
+              Long Name:&nbsp;{{ gform.title.errors }}
             </td>
             <td colspan="3">
-              {{ cform.title }}
+              {{ gform.title }}
             </td>
           </tr>
           <tr>
@@ -87,7 +87,7 @@
         </table>
       </div>
         
-      {% if c.istopGrid %}
+      {% if g.istopGrid %}
         <div style="display:none">
       {% else %}
         <div class="boxer">
@@ -100,11 +100,11 @@
           In this section enter parameters and attributes associated with this grid.  
         </p>
 		
-        {% include 'gridattributeform.html' %}
+        {% include 'qn/gridattributeform.html' %}
    
       </div>
       
-      {% if c.istopGrid %}
+      {% if g.istopGrid %}
         <div class="boxer">
           <h4> 
             Description
@@ -114,7 +114,7 @@
               Please provide a description for this grid.
             </p>
             <p>
-              {{ cform.description }}
+              {{ gform.description }}
             </p> 
           </center>
         </div>
@@ -129,7 +129,7 @@
   
   <!-- boxer2 div -->
     
-  {% if c.istopGrid %}
+  {% if g.istopGrid %}
     <div class="boxer">
       <h4> 
         References (associated with this grid) 

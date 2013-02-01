@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="4" control="false"
+    xmlns="http://www.metaforclimate.eu/cim/1.4"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 C:\Users\clp73\Desktop\Metafor\subversion\CIM\branches\dev0p3\activity.xsd"
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gco="http://www.isotc211.org/2005/gco">
+    
+    <rationale>
+        Diagnostic experiment for understanding the long-term simulations.
+        Hansen experiment to diagnose fast climate system responses to quadrupled CO2.  
+        Perturbed run for comparison to experiment 6.2a_sstClim.
+    </rationale>
+    <description>
+        AMIP-style experiment with control run climatological SSTs and sea ice (as in 6.2a) but with quadrupled 4XCO2 imposed.
+    </description>
+    <!-- * Similar to 6.2a.HansenBaseline  
+        * But [CO2] is quadrupled  -->    
+    
+    <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.002</id>
+        <name xsi:type="Identifier">6.2b.ic</name>
+        <description>Initial conditions are from experiment 3.1_piControl</description>
+    </numericalRequirement>
+    
+    <!-- Boundary Conditions -->
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.056</id>
+        <name xsi:type="Identifier">6.2b.bc.4X_CO2_conc</name>
+        <description>Prescribed concentration of well mixed Gas: CO2 
+            is quadruple of CO2 concentration in experiment 3.1_piControl </description>
+        <!-- 6.3.bc.4X_CO2_conc -->
+    </numericalRequirement>  
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.052</id>
+        <name xsi:type="Identifier">6.2b.sst.clim</name>
+        <description>Sea surface temperature is the climatology SST from experiment 3.1_piControl</description>
+    </numericalRequirement>  
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.053</id>
+        <name xsi:type="Identifier">6.2b.SeaIce.clim</name>
+        <description>Sea ice is the sea ice climatology from experiment 3.1_piControl</description>
+    </numericalRequirement>        
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.010</id>
+        <name xsi:type="Identifier">6.2b.bc.LU</name>
+        <description>Unperturbed Land Use is the same as for experiment 3.1_piControl</description>
+    </numericalRequirement>      
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.054</id>
+        <name xsi:type="Identifier">6.2b.bc.Ocean_CO2</name>
+        <description>CO2 partial pressure dissolved in ocean, climatology from experiment 3.1_piControl</description>
+    </numericalRequirement> 
+    
+    <shortName>
+		6.2b sstClim4xCO2
+	</shortName>
+    <longName>
+		6.2b SST Climatology With 4XCO2 Forcing
+	</longName>
+    
+    <calendar>
+        <perpetualPeriod/>
+    </calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint"><name xsi:type="Identifier">6.2b.stc.1850_30yr</name><id xsi:type="Identifier">stc.036</id><description>Begin in 1850 and run for 30 years </description><requiredDuration xsi:type="ClosedDateRange">
+        <startDate>1850-01-01T00:00:00Z</startDate>
+        <endDate>1850-12-30T00:00:00Z</endDate>
+        <length units="years">30</length>
+    </requiredDuration></numericalRequirement> 
+    <author>
+        <gmd:CI_ResponsibleParty>
+            <gmd:individualName>
+                <gco:CharacterString> Charlotte Pascoe </gco:CharacterString>
+            </gmd:individualName>
+            <gmd:organisationName>
+                <gco:CharacterString> BADC, CEDA, STFC </gco:CharacterString>
+            </gmd:organisationName>
+            <gmd:contactInfo>
+                <gmd:CI_Contact>
+                    <gmd:address>
+                        <gmd:CI_Address>
+                            <gmd:electronicMailAddress>
+                                <gco:CharacterString> charlotte.pascoe@stfc.ac.uk
+                                </gco:CharacterString>
+                            </gmd:electronicMailAddress>
+                        </gmd:CI_Address>
+                    </gmd:address>
+                </gmd:CI_Contact>
+            </gmd:contactInfo>
+            <gmd:role>
+                <gmd:CI_RoleCode
+                    codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                    codeList="originator"/>
+            </gmd:role>
+        </gmd:CI_ResponsibleParty>
+    </author>
+    <creationDate>2009-06-26T12:34:00Z</creationDate>
+    <documentID xsi:type="Identifier">af21208c-d3a5-11df-837f-00163e9152a5</documentID>   
+</numericalExperiment>

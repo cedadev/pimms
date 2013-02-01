@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false" xmlns="http://www.metaforclimate.eu/cim/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<rationale>Climate change detection attribution experiment. </rationale>
+	<description>Historical simulation but with other individual forcing agent.</description>
+	
+	<!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.002</id>
+        <name xsi:type="Identifier">7.3.ic</name>
+        <description> Initial conditions are from experiment 3.1 piControl </description>
+    </numericalRequirement>
+    
+    <!-- Boundary/Forcing conditions -->
+	<numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.001</id>
+        <name xsi:type="Identifier">7.3.bc.wmg_conc</name>
+        <description>Prescribed atmospheric concentrations of pre-industrial well mixed gases:
+            excluding CO2</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.002</id>
+        <name xsi:type="Identifier">7.3.bc.CO2_conc</name>
+        <description>Prescribed atmospheric concentrations of pre-industrial well mixed gas: Carbon
+            Dioxide</description>
+    </numericalRequirement>
+    
+	<numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.003</id>
+        <name xsi:type="Identifier">7.3.bc.sls_conc</name>
+        <description>Prescribed atmospheric concentration of pre-industrial short lived (reactive)
+            gas species</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.3.bc.nat_aer</name>
+        <description>Prescribed concentrations or emissions of pre-industrial natural aerosols</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.004</id>
+            <name xsi:type="Identifier">7.3.bc.nat_aer_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.007</id>
+            <name xsi:type="Identifier">7.3.bc.nat_aer_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.3.bc.nat_aer_precur</name>
+        <description>Prescribed concentrations or emissions of pre-industrial natural aerosol precursors</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.005</id>
+            <name xsi:type="Identifier">7.3.bc.nat_aer_pre_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.008</id>
+            <name xsi:type="Identifier">7.3.bc.nat_aer_pre_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement> 
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.3.bc.sl_aer</name>
+        <description>Prescribed concentrations or emissions of pre-industrial short lived (reactive) aerosol species</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.006</id>
+            <name xsi:type="Identifier">7.3.bc.sl_aer_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.009</id>
+            <name xsi:type="Identifier">7.3.bc.sl_aer_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+            
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">7.3.bc.MiscForcing</name>
+        <description>Individual forcing agent: </description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.058</id>
+            <name xsi:type="Identifier">7.3.bc.SD</name>
+            <description>SD anthropogenic sulfate aerosol, accounting only for direct effects</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.059</id>
+            <name xsi:type="Identifier">7.3.bc.SI</name>
+            <description>SI anthropogenic sulfate aerosol, accounting only for indirect effects</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.060</id>
+            <name xsi:type="Identifier">7.3.bc.SA</name>
+            <description>SA (= SD + SI) anthropogenic sulfate aerosol direct and indirect effects </description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.061</id>
+            <name xsi:type="Identifier">7.3.bc.TO</name>
+            <description>TO tropospheric ozone</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.062</id>
+            <name xsi:type="Identifier">7.3.bc.SO</name>
+            <description>SO stratospheric ozone</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.063</id>
+            <name xsi:type="Identifier">7.3.bc.Oz</name>
+            <description>Oz tropospheric and stratospheric ozone</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.064</id>
+            <name xsi:type="Identifier">7.3.bc.LU</name>
+            <description>LU land-use</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.065</id>
+            <name xsi:type="Identifier">7.3.bc.Sl</name>
+            <description>Sl solar irradiance</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.066</id>
+            <name xsi:type="Identifier">7.3.bc.Vl</name>
+            <description>Vl volcanic aerosol</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.067</id>
+            <name xsi:type="Identifier">7.3.bc.SS</name>
+            <description>SS sea salt</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.068</id>
+            <name xsi:type="Identifier">7.3.bc.Ds</name>
+            <description>Ds dust</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.069</id>
+            <name xsi:type="Identifier">7.3.bc.Bc</name>
+            <description>Bc black carbon</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.070</id>
+            <name xsi:type="Identifier">7.3.bc.MD</name>
+            <description>MD mineral dust</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.071</id>
+            <name xsi:type="Identifier">7.3.bc.OC</name>
+            <description>OC organic carbon</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.072</id>
+            <name xsi:type="Identifier">7.3.bc.AA</name>
+            <description>AA anthropogenic aerosol</description>
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.101</id>
+            <name xsi:type="Identifier">7.3.bc.other</name>
+            <description>Other forcing</description>
+        </requirementOption>
+    </numericalRequirement>
+    <!--   
+        Sd anthropogenic sulfate aerosol, accounting only for direct effects 
+        Si anthropogenic sulfate aerosol, accounting only for indirect effects 
+        Sa (= Sd + Si) anthropogenic sulfate aerosol direct and indirect effects 
+        To tropospheric ozone 
+        So stratospheric ozone 
+        Oz (= To + So) ozone (= tropospheric and stratospheric ozone) 
+        Lu land-use change  
+        Sl solar irradiance (note: Sl is “S” followed by a lower case “L”, not an upper case “I”)  
+        Vl volcanic aerosol (note: Vl is “V” followed by a lower case “L”, not an upper case “I”)  
+        Ss sea salt  
+        Ds Dust  
+        Bc black carbon  
+        Md mineral dust  
+        Oc organic carbon  
+        Aa anthropogenic aerosols (a mixture of aerosols, not explicitly defined here)   
+    -->
+   
+   
+	<shortName>
+		7.3 historicalMisc
+	</shortName>
+    <longName> 
+		7.3 historical miscellaneous forcing agent  
+	</longName>
+     
+   <calendar>
+       <realCalendar/>
+	</calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint"><name xsi:type="Identifier">7.3.stc.1850_156yr</name><id xsi:type="Identifier">stc.026</id>
+        <description>Begin in 1850 and run for 156 years </description><requiredDuration xsi:type="ClosedDateRange">
+		<!-- Idealised run so dates given here are only dummy values -->
+		<startDate> 1850-01-01T00:00:00Z</startDate>
+		<endDate> 2006-01-01T00:00:00Z</endDate>
+        <length units="years">156</length>
+	</requiredDuration></numericalRequirement>
+    <author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>
+					Gerard Devine
+				</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>
+					NCAS-CMS, University of Reading
+				</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>
+									g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+    <documentID xsi:type="Identifier">ac679876-d3a5-11df-837f-00163e9152a5</documentID>
+    <creationDate>
+		2009-06-26T12:34:00Z
+	</creationDate>   
+</numericalExperiment>

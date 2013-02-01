@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vocab mmversion="based on r811 (mariepierre, 2009-08-19) of AtmosphericChemistry.mm" defnversion="">
+  <component name="AtmosChemAndAerosols">
+    <component name="AtmosphericChemistry">
+      <parameter name="ChemSchemeScope" choice="OR">
+        <value name="Troposphere"/>
+        <value name="Stratosphere"/>
+        <value name="Mesosphere"/>
+        <value name="WholeAtmosphere"/>
+        <value name="Other"/>
+      </parameter>
+      <component name="AtmosChemTransport">
+        <parameter name="type" choice="XOR">
+          <value name="eulerian"/>
+          <value name="semi-lagrangian"/>
+          <value name="eulerian and semi-lagrangian"/>
+          <value name="lagrangian"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="MassConservation" choice="OR">
+          <info>"mass adjustment": Adjustment is required to conserve mass.</info>
+          <info>"concentration positivity": Negative concentrations are reset.</info>
+          <info>"gradient monotony": Sharp gradients in concentration are smoothed.</info>
+          <value name="mass adjustment"/>
+          <value name="concentrations positivity"/>
+          <value name="gradients monotony"/>
+        </parameter>
+        <parameter name="Convection" choice="OR">
+          <info>"convective fluxes connected to tracers": Do tracers "see" convection?</info>
+          <info>"vertical velocities connected to tracers": Are the mass flux vertical velocities connected with tracers in the atmos chemistry scheme?</info>
+          <value name="convecive fluxes connected to tracers"/>
+          <value name="vertical velocities connected to tracers"/>
+        </parameter>
+        <component name="Turbulence">
+          <parameter name="Type" choice="XOR">
+            <value name="2D"/>
+            <value name="3D"/>
+          </parameter>
+          <parameter name="CouplingWithChemicalReactivity" choice="XOR">
+            <value name="yes"/>
+            <value name="no"/>
+          </parameter>
+        </component>
+      </component>
+      <component name="Solver">
+        <info>This is related to the time evolution of the chemistry.</info>
+        <parameter name="Type" choice="XOR">
+          <value name="ImpactSolver"/>
+          <value name="BackEuler"/>
+          <value name="NewtonRaphson"/>
+          <value name="Rosenbrok?"/>
+          <value name="semi-analytic"/>
+          <value name="explicit"/>
+          <value name="implicit"/>
+          <value name="semi-implicit"/>
+          <value name="Other"/>
+        </parameter>
+        <parameter name="FamilyApproach" choice="XOR">
+          <info>Is a family approach used by your solver?</info>
+          <value name="yes"/>
+          <value name="no"/>
+        </parameter>
+        <parameter name="TimeStep" choice="keyboard">
+          <value format="numerical" name="time step" units="hours"/>
+        </parameter>
+      </component>
+      <component name="EmissionAndConcentration">
+        <component name="2D-Sources">
+          <parameter name="SpeciesEmitted" choice="keyboard">
+            <value format="string" name="user to provide a list of species"/>
+          </parameter>
+          <parameter name="Method" choice="OR">
+            <value name="prescribed (climatology)"/>
+            <value name="prescribed (spatially uniform)"/>
+            <value name="interactive"/>
+            <value name="other"/>
+          </parameter>
+          <parameter name="ClimatologyType" choice="XOR">
+            <constraint>Only required if "prescribed (climatology)" is selected for "Method".</constraint>
+            <value name="constant"/>
+            <value name="interannual"/>
+            <value name="annual"/>
+            <value name="monthly"/>
+            <value name="daily"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <component name="3D-Sources">
+          <component name="Aircraft">
+            <parameter name="SpeciesEmitted" choice="keyboard">
+              <value format="string" name="user to provide a list of species"/>
+            </parameter>
+            <parameter name="Method" choice="OR">
+              <value name="prescribed (climatology)"/>
+              <value name="prescribed (spatially uniform)"/>
+              <value name="other"/>
+            </parameter>
+            <parameter name="ClimatologyType" choice="XOR">
+              <constraint>Only required if "prescribed (climatology)" is selected for "Method".</constraint>
+              <value name="constant"/>
+              <value name="interannual"/>
+              <value name="annual"/>
+              <value name="monthly"/>
+              <value name="daily"/>
+              <value name="other"/>
+            </parameter>
+          </component>
+          <component name="BiomassBurning">
+            <parameter name="SpeciesEmitted" choice="keyboard">
+              <value format="string" name="user to provide a list of species"/>
+            </parameter>
+            <parameter name="Method" choice="OR">
+              <value name="prescribed (climatology)"/>
+              <value name="prescribed (spatially uniform)"/>
+              <value name="interactive"/>
+              <value name="other"/>
+            </parameter>
+            <parameter name="ClimatologyType" choice="XOR">
+              <constraint>Only required if "prescribed (climatology)" is selected for "Method".</constraint>
+              <value name="constant"/>
+              <value name="interannual"/>
+              <value name="annual"/>
+              <value name="monthly"/>
+              <value name="daily"/>
+              <value name="other"/>
+            </parameter>
+          </component>
+          <component name="Lightning">
+            <parameter name="SpeciesEmitted" choice="keyboard">
+              <value format="string" name="user to provide a list of species"/>
+            </parameter>
+            <parameter name="Method" choice="OR">
+              <value name="prescribed (climatology)"/>
+              <value name="prescribed (spatially uniform)"/>
+              <value name="interactive"/>
+              <value name="other"/>
+            </parameter>
+            <parameter name="ClimatologyType" choice="XOR">
+              <constraint>Only required if "prescribed (climatology)" is selected for "Method".</constraint>
+              <value name="constant"/>
+              <value name="interannual"/>
+              <value name="annual"/>
+              <value name="monthly"/>
+              <value name="daily"/>
+              <value name="oher"/>
+            </parameter>
+          </component>
+          <component name="Volcanic">
+            <parameter name="SpeciesEmitted" choice="keyboard">
+              <value format="string" name="user to provide a list of species"/>
+            </parameter>
+            <parameter name="Method" choice="OR">
+              <value name="prescribed (climatology)"/>
+              <value name="prescribed (spatially uniform)"/>
+              <value name="other"/>
+            </parameter>
+            <parameter name="ClimatologyType" choice="XOR">
+              <constraint>Only required if "prescribed (climatology)" is selected for "Method".</constraint>
+              <value name="constant"/>
+              <value name="interannual"/>
+              <value name="annual"/>
+              <value name="monthly"/>
+              <value name="daily"/>
+              <value name="other"/>
+            </parameter>
+          </component>
+          <component name="Other">
+            <parameter name="SpeciesEmitted" choice="keyboard">
+              <value format="string" name="user to provide a list of species"/>
+            </parameter>
+          </component>
+        </component>
+        <component name="Concentrations">
+          <parameter name="prescribed lower boundary" choice="keyboard">
+            <value format="string" name="user to provide a list of species"/>
+          </parameter>
+          <parameter name="prescribed upper boundary" choice="keyboard">
+            <value format="string" name="user to provide a list of species"/>
+          </parameter>
+        </component>
+      </component>
+      <component name="GasPhaseChemistry">
+        <component name="NumOfReactionsAndSpecies">
+          <parameter name="NumberOfBimolecularReactions" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+          <parameter name="NumberOfTermolecularReactions" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+          <parameter name="NumberOfAdvectedSpecies" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+          <parameter name="NumberOfSteadyStateSpecies" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+        </component>
+        <parameter name="Species" choice="OR">
+          <value name="HOx"/>
+          <value name="NOy"/>
+          <value name="Ox"/>
+          <value name="Cly"/>
+          <value name="SOx"/>
+          <value name="Bry"/>
+          <value name="VOCs"/>
+          <value name="ISOPRENE"/>
+          <value name="H2O"/>
+          <value name="other"/>
+        </parameter>
+        <component name="Processes">
+          <parameter name="DryDeposition" choice="XOR">
+            <value name="prescribed"/>
+            <value name="interactive"/>
+          </parameter>
+          <parameter name="WetDeposition" choice="XOR">
+            <value name="yes"/>
+            <value name="no"/>
+          </parameter>
+          <parameter name="Oxidation" choice="XOR">
+            <value name="yes"/>
+            <value name="no"/>
+          </parameter>
+          <parameter name="WashOut/RainOut" choice="OR">
+            <definition>Downward transport of soluble chemistry species in clouds.</definition>
+            <value name="in-cloud scavenging"/>
+            <value name="below-cloud scavenging"/>
+          </parameter>
+        </component>
+      </component>
+      <component name="HeterogeneousChemistry">
+        <component name="Stratospheric">
+          <component name="NumOfReactionsAndSpecies">
+            <parameter name="NumberOfReactions" choice="keyboard">
+              <value format="numerical" name=""/>
+            </parameter>
+            <parameter name="NumberOfAdvectedSpecies" choice="keyboard">
+              <value format="numerical" name=""/>
+            </parameter>
+            <parameter name="NumberOfSteadyStateSpecies" choice="keyboard">
+              <value format="numerical" name=""/>
+            </parameter>
+          </component>
+          <component name="Species">
+            <parameter name="GasPhase" choice="OR">
+              <value name="Cly"/>
+              <value name="Bry"/>
+              <value name="NOy"/>
+              <value name="other"/>
+            </parameter>
+            <parameter name="Aerosol/PSC" choice="OR">
+              <value name="Ice"/>
+              <value name="NAT"/>
+              <value name="STS"/>
+              <value name="Sulphate"/>
+              <value name="other"/>
+            </parameter>
+          </component>
+          <component name="Processes">
+            <parameter name="Sedimentation" choice="XOR">
+              <value name="yes"/>
+              <value name="no"/>
+            </parameter>
+            <parameter name="Coagulation" choice="XOR">
+              <info>Implies link/coupling with aerosol scheme.</info>
+              <value name="yes"/>
+              <value name="no"/>
+            </parameter>
+          </component>
+        </component>
+        <component name="Tropospheric">
+          <component name="NumOfReactionsAndSpecies">
+            <parameter name="NumberOfReactions" choice="keyboard">
+              <value format="numerical" name=""/>
+            </parameter>
+            <parameter name="NumberOfAdvectedSpecies" choice="keyboard">
+              <value format="numerical" name=""/>
+            </parameter>
+            <parameter name="NumberOfSteadyStateSpecies" choice="keyboard">
+              <value format="numerical" name=""/>
+            </parameter>
+          </component>
+          <component name="Species">
+            <parameter name="GasPhase" choice="keyboard">
+              <value format="string" name="user to provide a list of gas phase species"/>
+            </parameter>
+            <parameter name="Aerosols" choice="OR">
+              <value name="Sulphate"/>
+              <value name="dust"/>
+              <value name="sea salt"/>
+              <value name="organic"/>
+              <value name="nitrate"/>
+              <value name="other"/>
+            </parameter>
+          </component>
+          <component name="Processes">
+            <parameter name="DryDeposition" choice="XOR">
+              <value name="Prescribed"/>
+              <value name="Interactive"/>
+            </parameter>
+            <parameter name="WetDeposition" choice="XOR">
+              <value name="yes"/>
+              <value name="no"/>
+            </parameter>
+            <parameter name="WashOut/RainOut" choice="OR">
+              <definition>Downward transport of soluble chemistry species in clouds.</definition>
+              <value name="in-cloud scavenging"/>
+              <value name="below-cloud scavenging"/>
+            </parameter>
+            <parameter name="coagulation" choice="XOR">
+              <info>Implies link/coupling with aerosol scheme.</info>
+              <value name="yes"/>
+              <value name="no"/>
+            </parameter>
+          </component>
+        </component>
+      </component>
+      <component name="PhotoChemistry">
+        <component name="NumOfReactionsAndSpecies">
+          <parameter name="NumberOfReactions" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+          <parameter name="NumberOfSpecies" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+        </component>
+        <component name="Photolysis">
+          <parameter name="Method" choice="XOR">
+            <info>Offline: does the look up table take clouds into account with respect to effective photolysis rate for photodissociation?</info>
+            <value name="Offline (clearsky)"/>
+            <value name="Offline (with clouds)"/>
+            <value name="Online"/>
+          </parameter>
+          <parameter name="ReactionsData" choice="OR">
+            <value name="updated reaction absorption cross sections"/>
+            <value name="updated reaction quantum yields"/>
+          </parameter>
+        </component>
+      </component>
+    </component>
+    <component name="Aerosols">
+      <parameter name="SizeRepresentation" choice="XOR">
+        <info>Must be less than or equal to number of reactions.</info>
+        <value name="Bin Scheme"/>
+        <value name="Bulk Scheme"/>
+        <value name="Other"/>
+      </parameter>
+      <parameter name="ConcentrationOrEmission" choice="XOR">
+        <value name="Concentrations"/>
+        <value name="Emissions"/>
+      </parameter>
+      <component name="Anthropogenic">
+        <parameter name="AersolSpecies" choice="OR">
+          <value name="Sulphates"/>
+          <value name="Dust"/>
+          <value name="BlackCarbon"/>
+          <value name="Nitrates"/>
+          <value name="POM"/>
+          <value name="Other"/>
+        </parameter>
+        <parameter name="AerosolPrecursors" choice="keyboard">
+          <value format="string" name="user to provide a list of precursors"/>
+        </parameter>
+      </component>
+      <component name="Natural">
+        <parameter name="AersolSpecies" choice="OR">
+          <value name="Sulphates"/>
+          <value name="Dust"/>
+          <value name="SOA"/>
+          <value name="SeaSalt"/>
+          <value name="Nitrates"/>
+          <value name="PSC"/>
+          <value name="Other"/>
+        </parameter>
+        <parameter name="AerosolPrecursors" choice="keyboard">
+          <value format="string" name="user to provide a list of precursors"/>
+        </parameter>
+      </component>
+      <parameter name="Processes" choice="OR">
+        <value name="Dry Deposition"/>
+        <value name="Sedimentation"/>
+        <value name="Wet Deposition-ImpactionScavenging"/>
+        <value name="Wet Deposition-NucleationScavenging"/>
+        <value name="Coagulation"/>
+        <value name="Nucleation"/>
+        <value name="Oxidation-GasPhase"/>
+        <value name="Oxidation-InCloud"/>
+        <value name="Condensation"/>
+        <value name="Aging"/>
+        <value name="Advection-Horizontal"/>
+        <value name="Advection-Vertical"/>
+      </parameter>
+      <parameter name="Coupling" choice="OR">
+        <value name="Radiation"/>
+        <value name="LandSurface"/>
+        <value name="Clouds"/>
+      </parameter>
+    </component>
+  </component>
+</vocab>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false" xmlns="http://www.metaforclimate.eu/cim/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco">
+
+
+	<rationale>Ensemble of runs to improve the estimate of the “fast” climate response diagnosed with the Gregory method.</rationale>
+	<description>Generate an ensemble of runs as in expt. 6.3, but terminated after year 5. Each ensemble member must be initialized in a different month of the year. [The initial segment of
+		expt. 6.3 will serve as the 12th member of this ensemble.]</description>
+	
+    
+    <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+		<id xsi:type="Identifier">ic.001</id>
+        <name xsi:type="Identifier">6.3E.ic</name>
+        <description> Initial conditions are from experiment 3.1_pi-control </description>
+    </numericalRequirement>
+    <numericalRequirement xsi:type="InitialCondition">
+		<id>ic.023</id>
+		<name xsi:type="Identifier">6.3E.ic.months</name>
+		<description> Each of the 11 ensemble members must be initialised in a different month of the year	</description>
+	</numericalRequirement>
+    
+    <!-- Boundary Conditions -->
+    <numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.056</id>
+		<name xsi:type="Identifier">6.3E.bc.4X_CO2_conc</name>
+		<description>CO2 Instantaneous quadrupling of 3.1_pi-control concentration</description>
+    </numericalRequirement> 
+    
+	<shortName>
+		6.3-E abrupt4xCO2
+	</shortName>
+    <longName> 
+		6.3-E Abrupt 4XCO2 - Ensemble
+	</longName>
+     
+    <calendar>
+   		<perpetualPeriod/>
+	</calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint"><name xsi:type="Identifier">6.3E.stc.1850_5yr</name><id xsi:type="Identifier">stc.038</id><description>Begin in 1850 and run for 5 years </description><requiredDuration xsi:type="ClosedDateRange">
+		<startDate> 1850-01-01T00:00:00Z</startDate>
+		<endDate> 1850-12-30T00:00:00Z</endDate>
+    	<length units="years">5</length>
+	</requiredDuration></numericalRequirement>
+    <author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>
+					Gerard Devine
+				</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>
+					NCAS-CMS, University of Reading
+				</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>
+									g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+	<documentID xsi:type="Identifier">ba2f41e8-d3a5-11df-837f-00163e9152a5</documentID>
+    <creationDate>
+		2009-06-26T12:34:00Z
+	</creationDate>   
+</numericalExperiment>

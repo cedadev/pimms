@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<numericalExperiment documentVersion="3" control="false"
+    xmlns="http://www.metaforclimate.eu/cim/1.4"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 C:\Users\clp73\Desktop\Metafor\subversion\CIM\branches\dev1.4\activity.xsd"
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:gmd="http://www.isotc211.org/2005/gmd"
+    xmlns:gco="http://www.isotc211.org/2005/gco">
+    
+    <rationale>Climate change detection/attribution study and evaluation of model performance against present climate and observed climate change. </rationale>
+    <description>Extend the CMIP5 historical runs to the near-present (as we have for AMIP), rather than ending them in 2005.  
+        Simulations extended to at least the end of 2012 using some estimate of recent and future forcing.  
+        Groups are free to use whatever concentrations, solar forcing, SO2 emissions etc. they want to use in extending these runs.
+        It is also o.k. for detection/attribution studies to simply splice one of the RCP runs to the end of the historical simulations.
+        
+        It is recommended that if an ensemble of "all-forcings" historical simulations have been run, then *each* member of the ensemble should be carried to the end of 2012.  
+        For all-forcing (anthro + natural) historical runs, the extended portions of these runs should be treated as a new runs spawned from the parent historical runs at 
+        the end of year 2005.  If this run is forced by an RCP that extends at least to the end of the 21st century, then nothing special needs to be done.  
+        If, however, some other forcing is used or if the run is an RCP run that is truncated after a few years (say ending in 2012), then the run should be considered a 
+        "historical extension" experiment with its output placed in a directory named historicalExt.  The "forcing" attribute (a netCDF global attribute) should describe what 
+        forcing is used to extend the run, and this information will also need to be recorded here in the questionnaire.     
+        For these historicalExt experiments, the ensemble member (designated by the "rip" value appearing in the filename and recorded as netCDF global attributes) 
+        will be identical to the historical run it extends.  
+        
+        If one chooses to do historical runs with only a subset of forcing (e.g., GHG only, natural forcing only, single-forcing experiments, etc.), then all the data for 
+        the complete historical period and in the extended portion (from 2006-2012) would be kept together, no matter what forcing was used (in the historicalNat, historicalGHG, 
+        or historicalMisc directories). 
+    </description>
+    
+    
+    <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.102</id>
+        <name xsi:type="Identifier">7.4.ic</name>
+        <description>Initial conditions are from the historical experiment, number 3.2</description>
+    </numericalRequirement>
+    
+    <!-- Boundary/Forcing Conditions -->
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name>7.4.bc.historicalForcingExtension</name>
+        <description>Forcing applied to the historical extension simulation</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.103</id>
+            <name xsi:type="Identifier">7.4.bc.RCP</name>
+            <description>Truncated RCP forcing</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.104</id>
+            <name xsi:type="Identifier">7.4.bc.otherForcing</name>
+            <description>Other forcing agents</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <shortName>
+		7.4 historicalExt 
+	</shortName>
+    <longName>
+		7.4 Historical Extension
+	</longName>
+    
+    <calendar>
+        <realCalendar/>
+    </calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint">
+        <name xsi:type="Identifier">7.4.stc.2005_7yr</name>
+        <id xsi:type="Identifier">stc.040</id>
+        <description>Begin near the end of 2005 and run for 7 years </description>
+        <requiredDuration xsi:type="ClosedDateRange">
+            <startDate>2005-12-31T00:00:00Z</startDate>
+            <endDate>2012-12-31T00:00:00Z</endDate>
+            <length units="years">7</length>
+        </requiredDuration>
+    	<description></description></numericalRequirement>
+    
+    <author>
+        <gmd:CI_ResponsibleParty>
+            <gmd:individualName>
+                <gco:CharacterString> Charlotte Pascoe </gco:CharacterString>
+            </gmd:individualName>
+            <gmd:organisationName>
+                <gco:CharacterString> BADC, CEDA, STFC </gco:CharacterString>
+            </gmd:organisationName>
+            <gmd:contactInfo>
+                <gmd:CI_Contact>
+                    <gmd:address>
+                        <gmd:CI_Address>
+                            <gmd:electronicMailAddress>
+                                <gco:CharacterString> charlotte.pascoe@stfc.ac.uk
+                                </gco:CharacterString>
+                            </gmd:electronicMailAddress>
+                        </gmd:CI_Address>
+                    </gmd:address>
+                </gmd:CI_Contact>
+            </gmd:contactInfo>
+            <gmd:role>
+                <gmd:CI_RoleCode
+                    codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                    codeList="originator"/>
+            </gmd:role>
+        </gmd:CI_ResponsibleParty>
+    </author>
+    
+    <creationDate>2011-02-07T14:48:00Z</creationDate>
+    <documentID xsi:type="Identifier">b72876d6-d3a5-11df-837f-00163e9152a5</documentID>
+    
+</numericalExperiment>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="true" xmlns="http://www.metaforclimate.eu/cim/1.4"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+	xmlns:gco="http://www.isotc211.org/2005/gco">
+
+	<rationale>Last glacial maximum. Compare paleodata with the model response to ice age boundary
+		conditions.</rationale>
+	<description> Consistent with PMIP (Paleo Model Intercomparison Project) requirements. Impose
+		Last Glacial Maximum (21 kyrs ago) conditions including ice sheets and atmospheric
+		concentrations of well-mixed greenhouse gasses. </description>
+
+	<!-- Initial Conditions -->
+	<numericalRequirement xsi:type="InitialCondition">
+		<id xsi:type="Identifier">ic.001</id>
+		<name xsi:type="Identifier">3.5.ic</name>
+		<description>A description of initial condition for the control run</description>
+	</numericalRequirement>
+
+	<numericalRequirement xsi:type="InitialCondition">
+		<id xsi:type="Identifier">ic.022</id>
+		<name xsi:type="Identifier">3.5.ic.pmip_oc</name>
+		<description>Ocean initiialised from a cold spun-up state provided by PMIP</description>
+	</numericalRequirement>
+
+
+	<!-- Boundary/Forcing Conditions -->
+
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.072</id>
+		<name>3.5.bc.LGM_wmg</name>
+		<description>Impose last glacial maximum conditions of well-mixed gases</description>
+	</numericalRequirement>
+
+	<numericalRequirement xsi:type="BoundaryCondition">
+		<id xsi:type="Identifier">bc.073</id>
+		<name>3.5.bc.LGM_ice</name>
+		<description>Impose last glacial maximum ice sheet conditions supplied by PMIP (requiring
+			changes to surface elevation, land surface type, and land fraction)</description>
+	</numericalRequirement>
+
+
+	<shortName> 3.5 lgm </shortName>
+	<longName> 3.5 Last glacial maximum </longName>
+
+	<calendar>
+		<perpetualPeriod/>
+	</calendar>
+	<numericalRequirement xsi:type="SpatioTemporalConstraint">
+		<name xsi:type="Identifier">3.5.stc.-19000_100yr</name>
+		<id xsi:type="Identifier">stc.029</id>
+		<description>Begin around 19000 BC and run for 100 years</description>
+		<requiredDuration xsi:type="ClosedDateRange">
+		<!--Dates to reflect 100 yrs of simulation 21K yrs ago - to be verified -->
+		<startDate> -19000-01-01T00:00:00Z</startDate>
+		<endDate> -19000-01-01T00:00:00Z </endDate>
+		<length units="years">100</length>
+		</requiredDuration>
+	</numericalRequirement>
+	<author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString> Gerard Devine </gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString> NCAS-CMS, University of Reading </gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString> g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode
+					codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+					codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+	<documentID xsi:type="Identifier">d23811e8-d3a5-11df-837f-00163e9152a5</documentID>
+	<creationDate> 2009-06-23T15:00:00Z </creationDate>
+</numericalExperiment>

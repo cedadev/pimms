@@ -25,7 +25,7 @@ gco="http://www.isotc211.org/2005/gco"
 
 #-----------------------------------------------------
 # Outer layer questionnaire manager class 
-# (essentially a project level questionnaire
+# (essentially a project level questionnaire)
 #-----------------------------------------------------
 
 class Questionnaire(models.Model):
@@ -35,8 +35,7 @@ class Questionnaire(models.Model):
     '''
     
     # Top layer attributes
-    abbrev          = models.CharField(max_length=32)
-    project         = models.CharField(max_length=32)
+    project         = models.CharField(max_length=32, unique=True)
     description     = models.TextField(max_length=1024, blank=True, null=True)
     creator         = models.ForeignKey(User, blank=True, null=True)
     cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
@@ -49,7 +48,7 @@ class Questionnaire(models.Model):
          
       
     def __unicode__(self):
-        return self.abbrev    
+        return self.project   
       
       
 class CVFile(models.Model):
@@ -412,15 +411,18 @@ class ResponsibleParty(models.Model):
     ''' 
     So we have the flexibility to use this in future versions 
     '''
+  
     isOrganisation = models.BooleanField(default=False)
-    name = models.CharField(max_length=256,blank=True)
-    webpage = models.CharField(max_length=128,blank=True)
-    abbrev = models.CharField(max_length=25)
-    email = models.EmailField(blank=True)
-    address = models.TextField(blank=True)
-    uri = models.CharField(max_length=64,unique=True)
+    name           = models.CharField(max_length=256,blank=True)
+    webpage        = models.CharField(max_length=128,blank=True)
+    abbrev         = models.CharField(max_length=25)
+    email          = models.EmailField(blank=True)
+    address        = models.TextField(blank=True)
+    uri            = models.CharField(max_length=64,unique=True)
+    qn             = models.ForeignKey('Questionnaire')
+    
     # for access control
-    centre = models.ForeignKey('Centre',blank=True,null=True) 
+    #centre = models.ForeignKey('Centre',blank=True,null=True) 
     
     def __unicode__(self):
         return self.abbrev
@@ -432,28 +434,28 @@ class ResponsibleParty(models.Model):
         ordering=['abbrev', 'name', 'email']
     
     @staticmethod
-    def fromXML(elem):
+    def fromXML(elem, qn):
         ''' 
         This is an interface class to return either an existing responsible 
         party instance or create a new one from XML 
         '''
         # FIXME
-        s=ET.tostring(elem)
-        if s.find('Charlotte')>-1: 
+        s = ET.tostring(elem)
+        if s.find('Charlotte') > -1: 
             n = 'Charlotte Pascoe'
-            c = ResponsibleParty.objects.filter(name=n).order_by('id')
+            c = ResponsibleParty.objects.filter(name=n, qn=qn).order_by('id')
             if len(c) == 0:
                 p = ResponsibleParty(name=n,abbrev=n,uri=atomuri(),
-                                email='Charlotte.Pascoe@stfc.ac.uk')
+                                email='Charlotte.Pascoe@stfc.ac.uk', qn=qn)
                 p.save()
             else: 
                 p = c[0]
         elif s.find('Gerard') > 1:
             n = 'Gerard Devine'
-            c = ResponsibleParty.objects.filter(name=n).order_by('id')
+            c = ResponsibleParty.objects.filter(name=n, qn=qn).order_by('id')
             if len(c) == 0:
                 p = ResponsibleParty(name=n, abbrev=n, uri=atomuri(),
-                                email='g.m.devine@reading.ac.uk')
+                                email='g.m.devine@reading.ac.uk', qn=qn)
                 p.save()
             else: 
                 p = c[0]
@@ -746,7 +748,7 @@ class Experiment(Doc):
         E.requiredCalendar = term
        
         # bypass reading all that nasty gmd party stuff ...
-        E.metadataMaintainer = ResponsibleParty.fromXML(root.find('{%s}author' %cimv))
+        E.metadataMaintainer = ResponsibleParty.fromXML(root.find('{%s}author' %cimv), qn)
         
         # do some quick length checking
         if len(E.abbrev)>25:
@@ -1887,24 +1889,23 @@ class Grid(Doc):
     #to support paramgroups dressed as components/grids
     isParamGroup = models.BooleanField(default=False)
 
-    def copy(self, centre, topGrid=None):
+    def copy(self, qn, topGrid=None):
         '''
         Carry out a deep copy of a grid
         '''
-        # currently don't copys here ...
-        if centre.__class__ != Centre:
-            raise ValueError('Invalid centre passed to grid copy')
 
-        attrs = ['title', 'abbrev', 'description',
-               'istopGrid', 'isParamGroup', 'author', 'contact', 'funder']
+        attrs = ['title', 'abbrev', 'description', 'istopGrid', 'isParamGroup', 'author', 'contact', 'funder']
         kwargs = {}
+        
         for i in attrs:
             kwargs[i] = self.__getattribute__(i)
+        
         if kwargs['istopGrid']:
             kwargs['title'] = kwargs['title'] + ' dup'
             kwargs['abbrev'] = kwargs['abbrev'] + ' dup'
+        
         kwargs['uri'] = atomuri()
-        kwargs['centre'] = centre
+        kwargs['qn'] = qn
 
         new = Grid(**kwargs)
         new.save()  # we want an id, even though we might have one already ...
@@ -1913,23 +1914,21 @@ class Grid(Doc):
             if self.istopGrid:
                 topGrid = new
             else:
-                raise ValueError('Deep copy called with invalid grid'
-                                'arguments: %s' % self)
+                raise ValueError('Deep copy called with invalid grid arguments: %s' % self)
 
         new.topGrid = topGrid
 
         for c in self.grids.all().order_by('id'):
-            logging.debug('About to add a sub-grid to grid %s \
-                          (in centre %s, grid %s)' % (new, centre, topGrid))
-            r = c.copy(centre, topGrid=topGrid)
+            logging.debug('About to add a sub-grid to grid %s (in qn %s, grid %s)' % (new, qn, topGrid))
+            r = c.copy(qn, topGrid=topGrid)
             new.grids.add(r)
-            logging.debug('Added new grid %s to grid %s (in \
-                           centre %s, grid %s)' % (r, new, centre, topGrid))
+            logging.debug('Added new grid %s to grid %s (in qn %s, grid %s)' % (r, new, qn, topGrid))
 
         for p in self.paramGroup.all().order_by('id'):
             new.paramGroup.add(p.copy())
 
         new.save()
+        
         return new
 
 

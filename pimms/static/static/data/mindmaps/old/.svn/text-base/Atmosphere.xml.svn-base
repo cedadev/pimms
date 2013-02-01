@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vocab mmversion="based on r557 (mariepierre, 2009-06-09) of Atmosphere.mm" defnversion="">
+  <component name="Atmosphere">
+    <component name="DynamicalCore">
+      <parameter name="BasicApproximations" choice="OR">
+        <value name="Primitive Equations"/>
+        <value name="Non-Hydrostatic"/>
+        <value name="Anelastic"/>
+        <value name="Boussinesq"/>
+        <value name="Hydrostatic"/>
+        <value name="Quasi-Hydrostatic"/>
+        <value name="other"/>
+      </parameter>
+      <parameter name="TimeSteppingFramework" choice="XOR">
+        <value name="Adam Bashford"/>
+        <value name="Explicit"/>
+        <value name="Implicit"/>
+        <value name="Semi-Implicit"/>
+        <value name="LeapFrog"/>
+        <value name="Multi-step"/>
+        <value name="Runge Kutta fifth order"/>
+        <value name="Runge Kutta second order"/>
+        <value name="Runge Kutta third order"/>
+        <value name="other"/>
+      </parameter>
+      <component name="HorizontalDiscretisation">
+        <parameter name="SchemeType" choice="XOR">
+          <value name="spectral"/>
+          <value name="fixed grid"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="SpectralTruncatureNumber" choice="keyboard">
+          <constraint>Only required if "spectral" is selected for "SchemeType".</constraint>
+          <value format="numerical" name=""/>
+        </parameter>
+        <parameter name="NumberOfZonalGridBoxes" choice="keyboard">
+          <constraint>Only required if "fixed grid" is selected for "SchemeType".</constraint>
+          <value format="numerical" name=""/>
+        </parameter>
+        <parameter name="NumberOfMeridionalGridBoxes" choice="keyboard">
+          <constraint>Only required if "fixed grid" is selected for "SchemeType".</constraint>
+          <value format="numerical" name=""/>
+        </parameter>
+        <parameter name="Method" choice="XOR">
+          <constraint>Only required if "fixed grid" is selected for "SchemeType".</constraint>
+          <value name="finite emement"/>
+          <value name="finite volume"/>
+          <value name="finite differences"/>
+          <value name="centered finite differences"/>
+        </parameter>
+        <parameter name="Order" choice="keyboard">
+          <constraint>Only required if "finite differences" or "centered finite differences" is selected for "Method".</constraint>
+          <value format="numerical" name=""/>
+        </parameter>
+      </component>
+      <parameter name="ListOfAtmosPrognosticVariables" choice="OR">
+        <value name="surface pressure"/>
+        <value name="wind components"/>
+        <value name="divergence/curl"/>
+        <value name="temperature"/>
+        <value name="potential temperature"/>
+        <value name="total water"/>
+        <value name="vapor/solid/liquid"/>
+        <value name="total water moments"/>
+        <value name="other"/>
+      </parameter>
+      <component name="AdvectionScheme">
+        <component name="Tracers">
+          <parameter name="SchemeName" choice="XOR">
+            <value name="Prather"/>
+            <value name="other"/>
+          </parameter>
+          <parameter name="SchemeType" choice="XOR">
+            <value name="Eulerian"/>
+            <value name="Lagrangian"/>
+            <value name="Semi-lagrangian"/>
+            <value name="Mass-conserving"/>
+            <value name="Mass-conserving / Finite volume (Lin-Rood)"/>
+            <value name="other"/>
+          </parameter>
+          <parameter name="ConservedQuantities" choice="OR">
+            <value name="other"/>
+          </parameter>
+          <parameter name="ConservationMethod" choice="OR">
+            <value name="conservation fixer"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <component name="Momentum">
+          <parameter name="SchemeName" choice="XOR">
+            <value name="other"/>
+          </parameter>
+          <parameter name="SchemeType" choice="XOR">
+            <value name="Eulerian"/>
+            <value name="Lagrangian"/>
+            <value name="Semi-lagrangian"/>
+            <value name="Mass-conserving"/>
+            <value name="Mass-conserving / Finite volume (Lin-Rood)"/>
+            <value name="other"/>
+          </parameter>
+          <parameter name="ConservedQuantities" choice="OR">
+            <value name="other"/>
+          </parameter>
+          <parameter name="ConservationMethod" choice="OR">
+            <value name="conservation fixer"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+      </component>
+      <component name="AtmosHorizontalDiffusion">
+        <parameter name="SchemeName" choice="XOR">
+          <value name="Other"/>
+        </parameter>
+        <parameter name="Method" choice="XOR">
+          <value name="Iterated Laplacian"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+      <parameter name="TopBoundaryCondition" choice="XOR">
+        <value name="sponge layer"/>
+        <value name="radiation boundary condition"/>
+        <value name="other "/>
+      </parameter>
+      <parameter name="LateralBoundaryCondition" choice="XOR">
+        <value name="sponge layer"/>
+        <value name="radiation boundary condition"/>
+        <value name="other "/>
+      </parameter>
+    </component>
+    <component name="Radiation">
+      <component name="Longwave">
+        <parameter name="ShemeType" choice="XOR">
+          <value name="Wide-band model"/>
+          <value name="Wide-band (Morcrette)"/>
+          <value name="K-correlated"/>
+          <value name="K-correlated (RRTM)"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="Method" choice="XOR">
+          <value name="Two stream"/>
+          <value name="Layer interaction"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="NumberOfSpectralIntervals" choice="keyboard">
+          <value format="numerical" name=""/>
+        </parameter>
+      </component>
+      <component name="Shortwave">
+        <parameter name="SchemeType" choice="XOR">
+          <value name="Wide-band model"/>
+          <value name="Wide-band model (Foucquart)"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="NumberOfSpectralIntervals" choice="keyboard">
+          <value format="numerical" name=""/>
+        </parameter>
+      </component>
+      <parameter name="AerosolTypes" choice="OR">
+        <value name="Continental"/>
+        <value name="Urban"/>
+        <value name="Oceanic"/>
+        <value name="Desertic"/>
+        <value name="Sulphate"/>
+        <value name="Sea Salt"/>
+        <value name="Soot"/>
+        <value name="Biomass"/>
+        <value name="Soil Dust"/>
+        <value name="NAT"/>
+        <value name="Polar Stratospheric Ice"/>
+        <value name="Other"/>
+      </parameter>
+      <parameter name="GHG-Types" choice="OR">
+        <value name="CO2"/>
+        <value name="CH4"/>
+        <value name="N2O"/>
+        <value name="CFC"/>
+        <value name="H2O"/>
+        <value name="O3"/>
+        <value name="Other"/>
+      </parameter>
+      <parameter name="RadiatonTimeStep " choice="keyboard">
+        <value format="numerical" name=""/>
+      </parameter>
+    </component>
+    <component name="TurbulenceConvectionCloud">
+      <component name="BoundaryLayerTurbulence">
+        <parameter name="SchemeName" choice="XOR">
+          <value name="Mellor-Yamada"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="ClosureOrder" choice="keyboard">
+          <constraint>Only required if "Mellor-Yamada" is selected for "SchemeName".</constraint>
+          <value format="numerical" name="N.x"/>
+        </parameter>
+        <parameter name="Method" choice="XOR">
+          <value name="TKE prognostic"/>
+          <value name="TKE diagnostic"/>
+          <value name="TKE coupled with water"/>
+          <value name=" Vertical profile of Kz"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="CounterGradient" choice="XOR">
+          <value name="yes"/>
+          <value name="no"/>
+        </parameter>
+      </component>
+      <component name="DeepConvection">
+        <parameter name="SchemeName" choice="XOR">
+          <value name="other"/>
+        </parameter>
+        <parameter name="SchemeType" choice="XOR">
+          <value name="Mass-flux"/>
+          <value name="Adjustment"/>
+          <value name="other"/>
+        </parameter>
+        <parameter name="Method" choice="OR">
+          <constraint>Only required if "Mass-flux" is selected for "SchemeType".</constraint>
+          <value name="Mass flux determined by CAPE"/>
+          <value name="Bulk mass flux scheme"/>
+        </parameter>
+        <parameter name="Properties" choice="OR">
+          <value name="vertical momentum transport"/>
+          <value name="convective momentum transport (CMT)"/>
+          <value name="penetrative convection effects included"/>
+          <value name="representation of updrafts and downdrafts"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+      <component name="ShallowConvection">
+        <parameter name="Method" choice="XOR">
+          <value name="same as deep (unified)"/>
+          <value name="included in Boundary Layer Turbulence"/>
+          <value name="separated"/>
+        </parameter>
+        <parameter name="SchemeName" choice="XOR">
+          <constraint>Only required if "separated" is selected for "Method".</constraint>
+          <value name="other"/>
+        </parameter>
+        <parameter name="Scheme" choice="XOR">
+          <constraint>Only required if "separated" is selected for "Method".</constraint>
+          <value name="none"/>
+          <value name="Mass-flux"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+      <component name="CloudScheme">
+        <component name="SubGridScaleWaterDistrib">
+          <parameter name="Type" choice="XOR">
+            <value name="prognostic"/>
+            <value name="diagnostic"/>
+          </parameter>
+          <parameter name="NameOfDistributionFunction" choice="keyboard">
+            <value format="string" name=""/>
+          </parameter>
+          <parameter name="OrdersOfDistributionFunction" choice="keyboard">
+            <value format="numerical" name=""/>
+          </parameter>
+          <parameter name="Properties" choice="XOR">
+            <value name="coupled with deep convection"/>
+            <value name="coupled with shallow convection"/>
+            <value name="not coupled with convection"/>
+          </parameter>
+        </component>
+        <parameter name="Properties" choice="OR">
+          <value name="separated cloud treatment (convective+stratiform+boundary layer)"/>
+          <value name="cloud overlap"/>
+          <value name="entrainment"/>
+          <value name="detrainment"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+      <component name="LargeScalePrecipitation">
+        <parameter name="SchemeName" choice="XOR">
+          <value name="other"/>
+        </parameter>
+        <parameter name="PrecipitatingHydrometeors" choice="OR">
+          <value name="liquid rain"/>
+          <value name="snow"/>
+          <value name="hail"/>
+          <value name="graupel"/>
+          <value name="cats &amp; dogs"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+      <component name="Microphysics">
+        <parameter name="SchemeName" choice="XOR">
+          <value name="other"/>
+        </parameter>
+        <parameter name="Processes" choice="OR">
+          <value name="mixed phase"/>
+          <value name="cloud droplets"/>
+          <value name="cloud ice"/>
+          <value name="ice nucleation"/>
+          <value name="water vapour deposition"/>
+          <value name="raindrops"/>
+          <value name="snow"/>
+          <value name="graupel"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+    </component>
+    <component name="OrographyAndWaves">
+      <component name="GravityWaves">
+        <component name="Orographic">
+          <parameter name="SourceMechanisms" choice="OR">
+            <value name="Linear mountain waves"/>
+            <value name="Hydraulic jump"/>
+            <value name="Envelope orography"/>
+            <value name="Statistical sub-grid scale variance"/>
+            <value name="Non-Linear calculation"/>
+            <value name="more than two cardinal directions"/>
+            <value name="Other"/>
+          </parameter>
+          <parameter name="PropagationScheme" choice="XOR">
+            <value name="Linear theory"/>
+            <value name="Non-Linear theory"/>
+            <value name="other"/>
+          </parameter>
+          <parameter name="DissipationScheme" choice="XOR">
+            <value name="Total wave"/>
+            <value name="Single Wave"/>
+            <value name="Spectral"/>
+            <value name="Linear"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <component name="Convective">
+          <parameter name="Propagation Scheme" choice="XOR">
+            <value name="Linear theory"/>
+            <value name="Non-Linear theory"/>
+            <value name="other"/>
+          </parameter>
+          <parameter name="Dissipation Scheme" choice="XOR">
+            <value name="Total Wave"/>
+            <value name="Single Wave"/>
+            <value name="Spectral"/>
+            <value name="Linear"/>
+            <value name="other"/>
+          </parameter>
+        </component>
+        <parameter name="Background" choice="XOR">
+          <value name="none"/>
+          <value name="other"/>
+        </parameter>
+      </component>
+    </component>
+  </component>
+</vocab>

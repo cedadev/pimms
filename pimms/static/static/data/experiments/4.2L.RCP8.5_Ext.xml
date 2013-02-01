@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<numericalExperiment documentVersion="1" control="false" xmlns="http://www.metaforclimate.eu/cim/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.metaforclimate.eu/cim/1.4 Z:\CIM\XSDs\dev0p3\activity.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco">
+    
+    <rationale>Provide estimate of future anthropogenic climate change.</rationale>
+    <description> Extension of RCP8.5 through to the year 2300.</description>
+    
+    <!-- Initial Conditions -->
+    <numericalRequirement xsi:type="InitialCondition">
+        <id xsi:type="Identifier">ic.004b</id>
+        <name xsi:type="Identifier">4.2L.ic</name>
+        <description> Initial conditions are from the end of experiment 4.2 RCP8.5 </description>
+    </numericalRequirement>
+    
+    <!-- Boundary/Forcing Conditions -->
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">4.2L.bc.wmg</name>
+        <description>Imposed changing concentrations or emissions of extended RCP8.5 well mixed gases, including CO2</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.035</id>
+            <name xsi:type="Identifier">4.2L.bc.wmg_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.039</id>
+            <name xsi:type="Identifier">4.2L.bc.wmg_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">4.2L.bc.sls</name>
+        <description>Imposed changing concentrations or emissions of extended RCP8.5 short lived gas species</description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.036</id>
+            <name xsi:type="Identifier">4.2L.bc.sls_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.040</id>
+            <name xsi:type="Identifier">4.2L.bc.sls_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">4.2L.bc.aer</name>
+        <description>Imposed changing concentrations or emissions of extended RCP8.5 aerosols </description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.037</id>
+            <name xsi:type="Identifier">4.2L.bc.aer_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.041</id>
+            <name xsi:type="Identifier">4.2L.bc.aer_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <name xsi:type="Identifier">4.2L.bc.aer_pre</name>
+        <description>Imposed changing concentrations or emissions of extended RCP8.5 aerosol precursors </description>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.038</id>
+            <name xsi:type="Identifier">4.2L.bc.aer_pre_conc</name>
+            <description>Concentrations</description>            
+        </requirementOption>
+        <requirementOption>
+            <id xsi:type="Identifier">bc.042</id>
+            <name xsi:type="Identifier">4.2L.bc.aer_pre_em</name>
+            <description>Emissions</description>            
+        </requirementOption>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.043</id>
+        <name xsi:type="Identifier">4.2L.bc.LU</name>
+        <description>Imposed changing extended RCP8.5 land use </description>
+    </numericalRequirement>
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.034</id>
+        <name xsi:type="Identifier">4.2L.bc.volc_aer_conc</name>
+        <description>Imposed constant background volcanic aerosol</description>
+    </numericalRequirement>
+    
+    <numericalRequirement xsi:type="BoundaryCondition">
+        <id xsi:type="Identifier">bc.095</id>
+        <name xsi:type="Identifier">4.2L.bc.ext2300</name>
+        <description>RCP8.5 conditions extended through year 2300</description>
+    </numericalRequirement>
+    
+    
+    <shortName>
+		4.2-L rcp85
+	</shortName>
+    <longName> 
+		4.2-L RCP8.5 - Extended
+	</longName>
+    
+    <calendar>
+        <realCalendar/>
+    </calendar>
+    <numericalRequirement xsi:type="SpatioTemporalConstraint"><name xsi:type="Identifier">4.2L.stc.2100_200yr</name><id xsi:type="Identifier">stc.031</id><description>Begin in 2100 and run for 200 years </description><requiredDuration xsi:type="ClosedDateRange">
+		<startDate>2100-01-01T00:00:00Z</startDate>
+        <endDate>2300-01-01T00:00:00Z</endDate>
+	    <length units="years">200</length>
+	</requiredDuration></numericalRequirement>
+	
+	<author>
+		<gmd:CI_ResponsibleParty>
+			<gmd:individualName>
+				<gco:CharacterString>
+					Gerard Devine
+				</gco:CharacterString>
+			</gmd:individualName>
+			<gmd:organisationName>
+				<gco:CharacterString>
+					NCAS-CMS, University of Reading
+				</gco:CharacterString>
+			</gmd:organisationName>
+			<gmd:contactInfo>
+				<gmd:CI_Contact>
+					<gmd:address>
+						<gmd:CI_Address>
+							<gmd:electronicMailAddress>
+								<gco:CharacterString>
+									g.m.devine@reading.ac.uk
+								</gco:CharacterString>
+							</gmd:electronicMailAddress>
+						</gmd:CI_Address>
+					</gmd:address>
+				</gmd:CI_Contact>
+			</gmd:contactInfo>
+			<gmd:role>
+				<gmd:CI_RoleCode codeListValue="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeList="originator"/>
+			</gmd:role>
+		</gmd:CI_ResponsibleParty>
+	</author>
+    <documentID xsi:type="Identifier">a4bbc71e-d3a5-11df-837f-00163e9152a5</documentID>
+	<creationDate>
+		2009-06-23T15:00:00Z
+	</creationDate>
+</numericalExperiment>
