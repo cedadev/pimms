@@ -409,14 +409,19 @@ class TimeLengthFieldForm(forms.MultiValueField):
             d=TimeLength('%s %s'%tuple(data_list))
         return d
         
+        
 class DateRangeFieldForm2(forms.MultiValueField):
-    ''' Provides a multiwidget for a date range, based on 
-        http://www.hoboes.com/Mimsy/hacks/django-forms-edit-inline/multiwidgets-templates/ '''
+    ''' 
+    Provides a multiwidget for a date range, based on 
+    http://www.hoboes.com/Mimsy/hacks/django-forms-edit-inline/multiwidgets-templates/ 
+    '''
+    
     def __init__(self,*args,**kwargs):
-        units=kwargs.pop('units',[('0','Years'),('1','Days')])
-        fields=(SimDateTimeField(),SimDateTimeField(), TimeLengthField(units) )
-        mywidget = DurationWidget(units=units)
-        mywidget.units=units
+        units          = kwargs.pop('units',[('0','Years'),('1','Days')])
+        fields         = (SimDateTimeField(),SimDateTimeField(), TimeLengthField(units) )
+        mywidget       = DurationWidget(units=units)
+        mywidget.units = units
+        
         forms.MultiValueField.__init__(self,fields,widget=mywidget,required=False)
     
     ## Note that the base class cleans all the objects against the clean methods

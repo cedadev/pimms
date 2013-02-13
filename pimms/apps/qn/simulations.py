@@ -14,23 +14,25 @@ from pimms.apps.qn.cimHandler import commonURLs
 
 logging=settings.LOG
 
-ConformanceFormSet=modelformset_factory(Conformance,
-                                        form=ConformanceForm,
-                                        exclude=('simulation','requirement'))
-                                        #exclude=('simulation'))
+ConformanceFormSet = modelformset_factory(Conformance, form=ConformanceForm, exclude=('simulation','requirement'))
 
 
 class MyConformanceFormSet(ConformanceFormSet):
-    ''' Mimics the function of a formset for the situation where we want to edit the
-    known conformances '''
-    def __init__(self,simulation,data=None):
-        self.extra=0
-        qset=Conformance.objects.filter(simulation=simulation)
+    ''' 
+    Mimics the function of a formset for the situation where we want to edit the
+    known conformances 
+    '''
+  
+    def __init__(self, simulation, data=None):
+        self.extra = 0
+        qset = Conformance.objects.filter(simulation=simulation)
         ConformanceFormSet.__init__(self,data,queryset=qset)
-        self.s=simulation
+        self.s = simulation
+        
     def specialise(self):
         for form in self.forms:
             form.specialise(self.s)
+            
             
 class simulationHandler(object):
     ''' 
@@ -38,12 +40,14 @@ class simulationHandler(object):
     common methods 
     '''
     
-    def __init__(self, centre_id, simid=None, expid=None):
-        ''' Initialise based on what the request needs '''
-        self.centreid = centre_id
-        self.centre = Centre.objects.get(pk=centre_id)
-        self.pkid = simid
-        self.expid = expid
+    def __init__(self, qn, simid=None, expid=None):
+        ''' 
+        Initialise based on what the request needs 
+        '''
+        
+        self.qn     = qn
+        self.pkid   = simid
+        self.expid  = expid
         self.errors = {}
         if self.pkid:
             self.s = Simulation.objects.get(pk=self.pkid)
@@ -52,7 +56,7 @@ class simulationHandler(object):
             self.s = None
             self.Klass = 'Unknown as yet by simulation handler'
 
-    def __handle(self,request,s,e,url,label):
+    def __handle(self, request, s, e, url, label):
         '''
         This method handles the form itself for both the add and edit methods
         '''
@@ -61,7 +65,7 @@ class simulationHandler(object):
 
         if s.ensembleMembers > 1:
             eset = s.ensemble_set.all()
-            assert(len(eset)==1, 'There can only be one ensemble set for %s' % s)
+            assert(len(eset) == 1, 'There can only be one ensemble set for %s' % s)
             members = eset[0].ensemblemember_set.all()
             ensemble = {'set':eset[0], 'members':members}
         else:
@@ -69,24 +73,21 @@ class simulationHandler(object):
 
         urls = {'url':url}
         if label == 'Update':
-            urls['ic']=reverse('pimms.apps.qn.views.assign',
-                    args=(self.centreid,'initialcondition','simulation',s.id,))
-            urls['bc']=reverse('pimms.apps.qn.views.simulationCup',
-                    args=(self.centreid,s.id,))
-            urls['con']=reverse('pimms.apps.qn.views.conformanceMain',
-                    args=(self.centreid,s.id,))
-            urls['ens']=reverse('pimms.apps.qn.views.ensemble',
-                    args=(self.centreid,s.id,))
-            urls['mod']=reverse('pimms.apps.qn.views.assign',
-                     args=(self.centreid,'modelmod','simulation',s.id,))
+            urls['ic']   = reverse('pimms.apps.qn.views.assign', args=(self.qn, 'initialcondition', 'simulation', s.id, ))
+            urls['bc']   = reverse('pimms.apps.qn.views.simulationCup', args=(self.qn, s.id, ))
+            urls['con']  = reverse('pimms.apps.qn.views.conformanceMain', args=(self.qn, s.id, ))
+            urls['ens']  = reverse('pimms.apps.qn.views.ensemble', args=(self.qn, s.id, ))
+            urls['mod']  = reverse('pimms.apps.qn.views.assign', args=(self.qn, 'modelmod', 'simulation', s.id, ))
+            
             urls=commonURLs(s,urls)
             # dont think we should be able to get to input mods from here ...
-            #urls['ics']=reverse('pimms.apps.qn.views.assign',
-            #         args=(self.centreid,'inputmod','simulation',s.id,))        
+            # urls['ics']=reverse('pimms.apps.qn.views.assign',
+            # args=(self.centreid,'inputmod','simulation',s.id,))        
         
-        # A the moment we're only assuming one related simulation so we don't 
+        # At the moment we're only assuming one related simulation so we don't 
         # have to deal with a formset
         rsims = s.related_from.all()
+        
         if len(rsims):
             r = rsims[0]
         else:
@@ -138,8 +139,8 @@ class simulationHandler(object):
                 logging.info('SIMFORM not valid [%s]' % simform.errors)
             relform = SimRelationshipForm(s,
                                           request.POST,
-                                          instance=r,
-                                          prefix='rel')
+                                          instance = r,
+                                          prefix   = 'rel')
 
             if relform.is_valid():
                 if simok: 
@@ -153,25 +154,36 @@ class simulationHandler(object):
             
             
         else:
-            relform=SimRelationshipForm(s,instance=r,prefix='rel')
-            simform=SimulationForm(instance=s,prefix='sim')
-            simform.specialise(self.centre)
+            relform = SimRelationshipForm(s, qn=self.qn, instance=r, prefix='rel')
+            simform = SimulationForm(instance=s, prefix='sim')
+            simform.specialise(self.qn)
             
         
         # work out what we want to say about couplings
         cset=[]
-        if label !='Add': cset=s.numericalModel.couplings(s)
+        
+        if label !='Add': 
+            cset=s.numericalModel.couplings(s)
+        
         for i in cset:
-            i.valid=len(i.internalclosure_set.all())+len(i.externalclosure_set.all()) > 0 # need at least one closure
+            i.valid = len(i.internalclosure_set.all()) + len(i.externalclosure_set.all()) > 0 # need at least one closure
             
         # now work out what we want to say about conformances.
-        cs=Conformance.objects.filter(simulation=s)
+        cs = Conformance.objects.filter(simulation=s)
             
-        return render_to_response('simulation.html',
-            {'s':s,'simform':simform,'urls':urls,'label':label,'exp':e,
-             'cset':cset,'coset':cs,'ensemble':ensemble,'rform':relform,
-             'tabs':tabs(request,self.centreid,'Simulation',s.id or 0)})
-            # note that cform points to simform too, to support completion.html
+        return render_to_response('qn/simulation.html',
+                                 {'s': s, 
+                                  'simform': simform,
+                                  'urls': urls,
+                                  'label': label,
+                                  'exp': e,
+                                  'cset': cset,
+                                  'coset': cs,
+                                  'ensemble': ensemble,
+                                  'rform': relform,
+                                  #'tabs': tabs(request,self.centreid,'Simulation',s.id or 0)
+                                  })
+        # note that cform points to simform too, to support completion.html
             
     def edit(self,request):
         ''' Handle providing and receiving edit forms '''
@@ -185,26 +197,32 @@ class simulationHandler(object):
         return self.__handle(request,s,e,url,label)
        
     def add(self,request):
-        ''' Create a new simulation instance '''
+        ''' 
+        Create a new simulation instance 
+        '''
+        
         # first see whether a model and platform have been created!
         # if not, we should return an error message ..
-        c=self.centre
-        p=c.platform_set.values()
-        m=c.component_set.values()
-        url=reverse('pimms.apps.qn.views.centre',args=(self.centreid,))
-        if len(p)==0:
-            ''' Require them to create a platform '''
-            message='You need to create a platform before creating a simulation'
-            return render_to_response('error.html',{'message':message,'url':url})
+        qn = self.qn
+        p  = qn.platform_set.values()
+        m  = qn.component_set.values()
+        
+        url = reverse('pimms.apps.qn.views.qnhome', args=(self.qn, ))
+        
+        if len(p) == 0:
+            # Require them to create a platform
+            message = 'You need to create a platform before creating a simulation'
+            return render_to_response('error.html', {'message':message, 'url':url})
         elif len(m)==0:
-            ''' Require them to create a model'''
-            message='You need to create a model before creating a simulation'
-            return render_to_response('error.html',{'message':message,'url':url})
-        url=reverse('pimms.apps.qn.views.simulationAdd',args=(self.centreid,self.expid,))
+            # Require them to create a model
+            message = 'You need to create a model before creating a simulation'
+            return render_to_response('error.html', {'message':message, 'url':url})
+        
+        url = reverse('pimms.apps.qn.views.simulationAdd', args = (self.qn, self.expid, ))
        
-        u=atomuri()
-        e=Experiment.objects.get(pk=self.expid)
-        s=Simulation(uri=u,experiment=e,centre=self.centre)
+        u = atomuri()
+        e = Experiment.objects.get(pk=self.expid)
+        s = Simulation(uri=u, experiment=e, qn=self.qn)
         
         #grab the experiment duration if we can
         # there should be no more than one spatio temporal constraint, so let's 
@@ -221,40 +239,39 @@ class simulationHandler(object):
         
         return self.__handle(request,s,e,url,label)
 
-    def list(self,request):
-        ''' Return a listing of simulations for a given centre '''
-        
-        c=Centre.objects.get(pk=self.centreid)
+    def list(self, request):
+        ''' 
+        Return a listing of simulations for a given centre 
+        '''
        
         #little class to monkey patch up the stuff needed for the template
         class etmp:
-            def __init__(self, abbrev, values, id, group):
+            def __init__(self, abbrev, values, id, group, qn):
                 self.abbrev = abbrev
                 self.values = values
                 self.id = id
-                self.url = reverse('pimms.apps.qn.views.viewExperiment',
-                                 args=(c.id, id,))
-                self.new = reverse('pimms.apps.qn.views.simulationAdd', 
-                                 args=(c.id, id,))
+                self.url = reverse('pimms.apps.qn.views.viewExperiment', args=(qn, id, ))
+                self.new = reverse('pimms.apps.qn.views.simulationAdd', args=(qn, id,))
                 self.group = group
                 
-        csims = Simulation.objects.filter(centre=c).filter(isDeleted=False)
-        cpurl = reverse('pimms.apps.qn.views.simulationCopy', args=(c.id, ))
+        csims = Simulation.objects.filter(qn=self.qn).filter(isDeleted=False)
+        cpurl = reverse('pimms.apps.qn.views.simulationCopy', args=(self.qn, ))
 
         eset=Experiment.objects.all().filter(isDeleted=False)
         exp=[]
         for e in eset:
-            sims = e.simulation_set.filter(centre=c.id).filter(isDeleted=False)
+            sims = e.simulation_set.filter(qn=self.qn).filter(isDeleted=False)
             group = e.abbrev.split()[1]
             for s in sims: 
-                s.url = reverse('pimms.apps.qn.views.simulationEdit', 
-                                args=(c.id,s.id,))    
-            exp.append(etmp(e.abbrev, sims, e.id, group))
+                s.url = reverse('pimms.apps.qn.views.simulationEdit', args=(self.qn, s.id, ))    
+            exp.append(etmp(e.abbrev, sims, e.id, group, self.qn))
 
-        return render_to_response('simulationList.html',
-            {'c':c,'experiments':exp,'csims':csims,'cpurl':cpurl,
-            'tabs':tabs(request,c.id,'Experiments'),
-            'notAjax':not request.is_ajax()})
+        return render_to_response('qn/simulationList.html',
+                                  {'experiments':exp, 
+                                   'csims':csims, 
+                                   'cpurl':cpurl,
+                                   #'tabs':tabs(request,c.id,'Experiments'),
+                                   'notAjax':not request.is_ajax()})
  
  
     def conformanceMain(self,request):
@@ -286,7 +303,7 @@ class simulationHandler(object):
                                                       'tabs':tabs(request, self.centreid, 'Conformance')})
   
   
-    def copy(self,request):
+    def copy(self, request):
         '''
         Makes a copy of myself
         '''

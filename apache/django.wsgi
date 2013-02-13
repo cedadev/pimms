@@ -8,7 +8,7 @@ import os
 import sys
 import site
 
-vepath = '/home/gdevine/web/prod/cim_expgen/venv/lib/python2.6/site-packages'
+vepath = '/home/gdevine/web/prod/pimms/venv/lib/python2.6/site-packages'
 
 # Remember original sys.path.
 prev_sys_path = list(sys.path)
@@ -21,8 +21,8 @@ for directory in vepath:
   site.addsitedir(directory)
 
 # add the app's directory to the PYTHONPATH
-sys.path.append('/home/gdevine/web/prod/cim_expgen')
-sys.path.append('/home/gdevine/web/prod/cim_expgen/cimexpgen')
+sys.path.append('/home/gdevine/web/prod/pimms')
+sys.path.append('/home/gdevine/web/prod/pimms/pimms')
 
 # Reorder sys.path so new directories at the front.
 new_sys_path = []
@@ -36,7 +36,7 @@ for x in sys.path:
     print x
 
 # import from down here to pull in possible virtualenv django install
-os.environ['DJANGO_SETTINGS_MODULE'] = 'cimexpgen.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'pimms.settings'
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
 

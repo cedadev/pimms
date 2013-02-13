@@ -104,14 +104,14 @@ class gridHandler(object):
         logging.debug('Finished handling %s to grid %s' %(request.method, g.id))
         
         return render_to_response('qn/gridMain.html',
-                                 {'g':g,
-                                  'gform':gform, 
-                                  'pform':pform,
-                                  'navtree':navtree.html,
-                                  'refs':refs,
-                                  'urls':urls,
-                                  #'tabs':tabs(request,self.centre_id,'Grid',self.grid.topGrid.id),
-                                  'notAjax':not request.is_ajax()
+                                 {'g': g,
+                                  'gform': gform, 
+                                  'pform': pform,
+                                  'navtree': navtree.html,
+                                  'refs': refs,
+                                  'urls': urls,
+                                  'tabs': tabs(request, self.qn, 'Grid', self.grid.topGrid.id),
+                                  'notAjax': not request.is_ajax()
                                   })
         
     def manageRefs(self,request):      

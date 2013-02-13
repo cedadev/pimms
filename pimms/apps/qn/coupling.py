@@ -12,12 +12,8 @@ from pimms.apps.qn.layoutUtilities import tabs
 
 logging = settings.LOG
 
-InternalClosureFormSet = modelformset_factory(InternalClosure,can_delete=True,
-                                    form=InternalClosureForm,extra=0,
-                                    exclude=('coupling'))
-ExternalClosureFormSet = modelformset_factory(ExternalClosure,can_delete=True,
-                                    form=ExternalClosureForm,extra=0,
-                                    exclude=('coupling'))                                
+InternalClosureFormSet = modelformset_factory(InternalClosure,can_delete=True, form=InternalClosureForm,extra=0, exclude=('coupling'))
+ExternalClosureFormSet = modelformset_factory(ExternalClosure,can_delete=True, form=ExternalClosureForm,extra=0, exclude=('coupling'))                                
 
 #https://www.cduce.org/~abate/index.php?q=dynamic-forms-with-django
 
@@ -219,7 +215,7 @@ class MyCouplingFormSet:
         # this is the list of relevant realm level components:
         BaseInternalQueryset=Component.objects.filter(model=self.model).filter(isRealm=True)
         for q in queryset:
-            cf=CouplingForm(data,instance=q,prefix=q)
+            cf = CouplingForm(data, instance=q, prefix=q)
             if self.simulation:
                 centre_id=self.model.centre.id
                 cf.icreset=ClosureReset(centre_id,simulation.id,q,'ic')

@@ -1,17 +1,4 @@
-{% extends "twopanel.html" %}
-
-<!-- Page specific head information...css overrides etc-->
-{% block pagehead %}
-  <script type="text/javascript">
-    $(function() {
-    	  $( "input#id_gen-abbrev.inputH1" ).autocomplete({
-            source: "{% url autocomplete_model %}"
-            });
-    });
-  </script>
-{% endblock %}
-
-
+{% extends "qn/twopanel.html" %}
 
 {% block titlerow %} 
   Edit model
@@ -77,7 +64,7 @@
   
   {% if isParamGroup %}
     <div class="boxer">  
-	  {% include 'docbuttons.html' %}
+	  {% include 'qn/docbuttons.html' %}
     </div>
   {% else %}
     <div class="boxer">
@@ -109,7 +96,7 @@
 	  </p>
     </div>
     <div class="boxer">  
-	  {% include 'docbuttons.html' %}
+	  {% include 'qn/docbuttons.html' %}
     </div>
   {% endif %}
 {% endblock %}
@@ -139,7 +126,7 @@
         </div>
       {% endif %}
       
-      {% include 'helppanel.html' %}
+      {% include 'qn/helppanel.html' %}
       
       <!-- Main component information box --> 
       <div class="boxer formbox">
@@ -376,9 +363,9 @@
         {% endif %} 
         
         {% if isModel %}
-          {% include 'topmodel_attform.html' %}
+          {% include 'qn/topmodel_attform.html' %}
         {% else %}
-          {% include 'attributeform.html' %}
+          {% include 'qn/attributeform.html' %}
         {% endif %}
       
     </div>

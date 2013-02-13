@@ -1,6 +1,4 @@
-# Create your views here.
-from django.template import Context, loader
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
@@ -14,7 +12,7 @@ from pimms.apps.qn.layoutUtilities import tabs
 from pimms.apps.qn.coupling import MyCouplingFormSet
 from pimms.apps.qn.Translator import Translator
 from pimms.apps.qn.cimHandler import commonURLs
-from pimms.apps.vocabs.model_list import modelnames
+from pimms.apps.qn.vocabs.model_list import modelnames
 
 logging=settings.LOG
 
@@ -23,7 +21,7 @@ import os
 #from xml.etree import ElementTree as ET
 from lxml import etree as ET
 
-ComponentInputFormSet=modelformset_factory(ComponentInput,form=ComponentInputForm,exclude=('owner','realm'),can_delete=True)
+ComponentInputFormSet = modelformset_factory(ComponentInput, form=ComponentInputForm, exclude=('owner','realm'), can_delete=True)
             
             
 class MyComponentInputFormSet(ComponentInputFormSet):
@@ -65,31 +63,29 @@ class MyComponentInputFormSet(ComponentInputFormSet):
                 c=Coupling(parent=self.__getCouplingGroup(),targetInput=i)
                 c.save()
     
+    
 class componentHandler(object):
     
-    def __init__(self,centre_id,component_id=None):
+    def __init__(self, qn, component_id=None):
         ''' Instantiate a component handler, by loading existing component information '''
         
-        self.centre_id=centre_id
-        self.pkid=component_id
-        self.Klass='Unknown by component handler as yet'
+        self.qn     = qn
+        self.pkid   = component_id
+        self.Klass  = 'Unknown by component handler as yet'
         
         if component_id is None:
             ''' This is a brand new component '''
-            
-            cmip5c=Centre.objects.get(abbrev='CMIP5')
-            original=Component.objects.filter(abbrev='Model Template').get(centre=cmip5c)
-            self.component=original.copy(Centre.objects.get(id=centre_id))
+            original = Component.objects.filter(abbrev='Model Template').get(qn=qn)
+            self.component = original.copy(qn)
         else:
             try:
-                self.component=Component.objects.get(id=component_id)
-                self.Klass=self.component.__class__
+                self.component = Component.objects.get(id=component_id)
+                self.Klass = self.component.__class__
             except Exception,e:
                 logging.debug('Attempt to open an unknown component %s'%component_id)
                 raise Exception,e
         
-        self.url=reverse('pimms.apps.qn.views.componentEdit',
-                         args=(self.centre_id,self.component.id))
+        self.url = reverse('pimms.apps.qn.views.componentEdit', args=(self.qn, self.component.id))
        
             
     def XMLasText(self):
@@ -108,89 +104,98 @@ class componentHandler(object):
         #ok create a new component
         if request.method=='POST':
             u=atomuri()
-            c=Component(scienceType='sub',centre=self.component.centre,uri=u,abbrev='new',
-                        contact=self.component.contact,author=self.component.author,
-                        funder=self.component.funder,
-                        model=self.component.model,realm=self.component.realm)
-            r=c.save()
-            p=ParamGroup()
+            c=Component(scienceType  = 'sub', 
+                        qn           = self.qn, 
+                        uri          = u, 
+                        abbrev       = 'new',
+                        contact      = self.component.contact,
+                        author       = self.component.author,
+                        funder       = self.component.funder,
+                        model        = self.component.model,
+                        realm        = self.component.realm)
+            r = c.save()
+            p = ParamGroup()
             p.save()
             c.paramGroup.add(p) 
-            cg=ConstraintGroup(constraint='',parentGroup=p)
+            cg = ConstraintGroup(constraint='', parentGroup=p)
             cg.save()
+            
             #print 'Return Value',r
             self.component.components.add(c)
             url=reverse('pimms.apps.qn.views.componentEdit',args=(self.centre_id,c.id,))
-            logging.info('Created subcomponent %s in component %s (type "new")'%(c.id,self.component.id))
+            logging.info('Created subcomponent %s in component %s (type "new")' %(c.id,self.component.id))
             return HttpResponseRedirect(url)
         else:
             #would be better to post the create child to the parent url, not this artificial non restful way 
             return HttpResponseBadRequest('Cannot use HTTP GET to this URL')
 
-    def edit(self,request):
-        ''' Provides a form to edit a component, and handle the posting of a form
-        containing edits for a component, or a delete'''
+    def edit(self, request):
+        ''' 
+        Provides a form to edit a component, and handle the posting of a form
+        containing edits for a component, or a delete
+        '''
         
-        c=self.component
-        logging.debug('Starting editing component %s'%c.id)
+        c = self.component
+        logging.debug('Starting editing component %s' %c.id)
         
-        if request.method=='POST':
+        if request.method == 'POST':
             if 'deleteMe' in request.POST:
                 if c.controlled:
                     logging.debug('Invalid delete POST to controlled component')
                     return HttpResponse('Invalid Request')
                 else:
-                    if len(c.components.all())<>0:
+                    if len(c.components.all()) <> 0:
                         return HttpResponse('You need to delete child components first')
                     parent=Component.objects.filter(components=c)[0]
-                    url=reverse('pimms.apps.qn.views.componentEdit',args=(self.centre_id,parent.id,))
+                    url=reverse('pimms.apps.qn.views.componentEdit',args=(self.qn, parent.id, ))
                     c.delete()
                     return HttpResponseRedirect(url)
         
                 
         # find my own urls ...
-        urls={}
-        urls['form']=self.url
-        urls['refs']=reverse('pimms.apps.qn.views.assign',args=(self.centre_id,'reference',
-                             'component',c.id,))
-        urls['subcomp']=reverse('pimms.apps.qn.views.componentSub',args=(self.centre_id,c.id,))
-        urls['coupling']=reverse('pimms.apps.qn.views.componentCup',args=(self.centre_id,c.id))
-        urls['inputs']=reverse('pimms.apps.qn.views.componentInp',args=(self.centre_id,c.id))
-        urls['text']=reverse('pimms.apps.qn.views.componentTxt',args=(self.centre_id,c.id))
+        urls = {}
+        urls['form']     = self.url
+        urls['refs']     = reverse('pimms.apps.qn.views.assign', args=(self.qn, 'reference', 'component', c.id,))
+        urls['subcomp']  = reverse('pimms.apps.qn.views.componentSub', args=(self.qn, c.id,))
+        urls['coupling'] = reverse('pimms.apps.qn.views.componentCup', args=(self.qn, c.id))
+        urls['inputs']   = reverse('pimms.apps.qn.views.componentInp', args=(self.qn, c.id))
+        urls['text']     = reverse('pimms.apps.qn.views.componentTxt', args=(self.qn, c.id))
         
-        urls=commonURLs(c.model,urls)
+        urls = commonURLs(c.model, urls)
         
-        baseURL=reverse('pimms.apps.qn.views.componentAdd',args=(self.centre_id,))
-        template='+EDID+'
-        baseURL=baseURL.replace('add/','%s/edit'%template)
+        baseURL   = reverse('pimms.apps.qn.views.componentAdd', args=(self.qn, ))
+        template  = '+EDID+'
+        baseURL   = baseURL.replace('add/', '%s/edit' %template)
     
         # this is the automatic machinery ...
-        refs=Reference.objects.filter(component__id=c.id)
-        inps=ComponentInput.objects.filter(owner__id=c.id)
+        refs = Reference.objects.filter(component__id=c.id)
+        inps = ComponentInput.objects.filter(owner__id=c.id)
         
-        postOK=True
-        if request.method=="POST":
-            pform=ParamGroupForm(c,request.POST,prefix='props')
-            pform.newatt=1
-            cform=ComponentForm(request.POST,prefix='gen',instance=c)
+        postOK = True
+        if request.method == "POST":
+            pform = ParamGroupForm(c, request.POST, prefix='props')
+            pform.newatt = 1
+            cform = ComponentForm(request.POST, prefix='gen', instance=c)
+            
             if cform.is_valid():
-                c=cform.save()
-                c=RemoteUser(request,c)
-                logging.debug('Saving component %s details (e.g. uri %s)'%(c.id,c.uri))
+                c = cform.save()
+                c = RemoteUser(request,c)
+                logging.debug('Saving component %s details (e.g. uri %s)' %(c.id, c.uri))
             else:
-                logging.debug('Unable to save characteristics for component %s'%c.id)
-                postOK=False
+                logging.debug('Unable to save characteristics for component %s' %c.id)
+                postOK = False
                 logging.debug(cform.errors)
-            ok=pform.save()
-            if postOK: postOK=ok  # if not postok, ok value doesn't matter
+            
+            ok = pform.save()
+            if postOK: 
+                postOK=ok  # if not postok, ok value doesn't matter
         
         # We separate the response handling so we can do some navigation in the
         # meanwhile ...
-        navtree=yuiTree2(c.id,baseURL,template=template)
-        
+        navtree = yuiTree2(c.id, baseURL, template=template)
         
         # Handle a request to copy responsible details downwards to subcomponents
-        if request.method=='POST':
+        if request.method == 'POST':
             if 'filterdown' in request.POST:
                 c.filterdown()
             if 'filterdowngrid' in request.POST:
@@ -203,84 +208,40 @@ class componentHandler(object):
         if request.method=='POST':
             if postOK:
                 #redirect, so repainting the page doesn't resubmit
-                logging.debug('Finished handling post to %s'%c.id)
+                logging.debug('Finished handling post to %s' %c.id)
                 return HttpResponseRedirect(urls['form'])
             else:
                 pass
                 # don't reset the forms so the user gets an error response.
         else:
             #get some forms
-            cform=ComponentForm(instance=c, prefix='gen')
+            cform = ComponentForm(instance=c, prefix='gen')
             
-            pform=ParamGroupForm(c,prefix='props')
-            pform.newatt=1
+            pform = ParamGroupForm(c, prefix='props')
+            pform.newatt = 1
         
         if c.isModel:
             # We'd better decide what we want to say about couplings. Same 
             # code in simulation!
-            cset=c.couplings(None)
+            cset = c.couplings(None)
         else: 
-            cset=None
-            
-        # Need to check that the current top level model name is in agreement 
-        # with the official DRS names and sound a warning if not (as opposed 
-        # to raising a form error and halting further progress)
-        if c.isModel:
-            modname = c.abbrev
-            if modname not in modelnames:
-                warning = \
-                """
-                Warning: The model name used does not match an official cmip5
-                model name. Although this does not stop you from proceeding it 
-                will mean that you will not be able to export your metadata to 
-                CMIP5. If you believe your model name is correct, please get in 
-                touch as we update our list of accepted names only periodically   
-                """
+            cset = None        
                 
-            else:
-                warning=False
-        else:
-                warning=False
-                
-        # Text for notification panel to alert user of new questions and the 
-        # background behind this
-        if c.isModel:
-            helppaneltitle = "New Questions added"
-            helppaneltext = \
-            """         
-            
-            These additional questions have been established by the Lead Authors 
-            of IPCC AR5 Chap 9 on "Model evaluation" and in consultation with 
-            the community to inform the model development process of CMIP5. These 
-            will help document: <br/> 
-            1) the model development path, <br/> 
-            2) the tuning process, and  <br/>
-            3) the conservation of integral properties. <br/> 
-            
-            It is expected that answers provided before July 15th 2012  will be 
-            reflected in the second order draft of the AR5 report.
-            
-            """ 
-        else:
-            helppaneltitle = ''
-            helppaneltext = ''
-        
-        
-        logging.debug('Finished handling %s to component %s'%(request.method,c.id))
-        return render_to_response('componentMain.html',
-                {'c':c,'refs':refs,'inps':inps,
-                'cform':cform,'pform':pform,
-                'navtree':navtree.html,
-                'urls':urls,
-                'isRealm':c.isRealm,
-                'isModel':c.isModel,
-                'isParamGroup':c.isParamGroup,
-                'cset':cset,
-                'warning':warning,
-                'helppaneltitle': helppaneltitle,
-                'helppaneltext': helppaneltext,
-                'tabs':tabs(request, self.centre_id, 'Model', self.component.model.id),
-                'notAjax':not request.is_ajax()})
+        return render_to_response('qn/componentMain.html',
+                                  {'c':c, 
+                                   'refs': refs,
+                                   'inps': inps,
+                                   'cform': cform,
+                                   'pform': pform,
+                                   'navtree': navtree.html,
+                                   'urls': urls,
+                                   'isRealm': c.isRealm,
+                                   'isModel': c.isModel,
+                                   'isParamGroup': c.isParamGroup,
+                                   'cset': cset,
+                                   'tabs': tabs(request, self.qn, 'Model', self.component.model.id),
+                                   'notAjax': not request.is_ajax()
+                                   })
             
             
     def manageRefs(self,request):      

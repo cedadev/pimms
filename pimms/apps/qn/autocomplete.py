@@ -50,12 +50,9 @@ class TermAutocompleteField(forms.fields.CharField):
         #self.url=reverse('ajax_value',args=(vocabname,))
         #FIXME: I can't work out how to make the above work without circular imports.
         self.url='/ajax/vocabs/%s'%vocabname
-        self.vocab=Term.objects.filter(vocab=Vocab.objects.get(name=vocabname))
+        self.vocab = Term.objects.filter(vocab=Vocab.objects.get(name=vocabname))
         
-        super(TermAutocompleteField, self).__init__(
-            widget = AutocompleteWidget(self.vocab,lookup_url=self.url,size=size),
-            max_length=255,
-            *args, **kwargs)
+        super(TermAutocompleteField, self).__init__(widget = AutocompleteWidget(self.vocab,lookup_url=self.url, size=size), max_length=255, *args, **kwargs)
 
     def clean(self, value):
         if value==u'':
@@ -72,6 +69,7 @@ class TermAutocompleteField(forms.fields.CharField):
             raise Exception,e
             #raise ValidationError(u'Invalid item selected')            
         return obj
+
 
 class AutocompleteWidget(forms.widgets.TextInput):
     """ widget autocomplete for text fields

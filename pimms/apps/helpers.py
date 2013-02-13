@@ -1,7 +1,5 @@
 '''
-
 Generic helpers for PIMMS infrastructure
-
 '''
 
 from django.core.urlresolvers import reverse
@@ -16,12 +14,12 @@ def getsiteurls(urls):
     '''
     
     # generic home page, about page etc (main app)
-    urls['home'] = reverse('home', args=())
+    urls['home']  = reverse('home', args=())
     urls['about'] = reverse('about', args=())
     
     # accounts management (person app)
-    urls['login'] = reverse('login', args=())
-    urls['logout'] = reverse('logout', args=())
+    urls['login']    = reverse('login', args=())
+    urls['logout']   = reverse('logout', args=())
     urls['register'] = reverse('register', args=())
     
     return urls

@@ -16,13 +16,12 @@ logging=settings.LOG
 class BaseViewHandler:
     ''' This is a base class to be used by the editors and listers
             '''
-    def __init__(self,centre_id,resource,target):
+    def __init__(self, qn, resource, target):
         ''' The base view handler is initialised with stuff that is known to the url mapping
         and exploits some knowledge of the specific resources. We shouldn't know anything
         about the specific resources in this class '''
                  
-        self.cid=centre_id
-        self.centre=Centre.objects.get(id=centre_id)
+        self.qn = qn
         self.resource=resource
         self.target=target
         

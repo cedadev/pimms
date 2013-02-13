@@ -14,14 +14,7 @@ admin.autodiscover()
 script_path=settings.DEPLOYED_SCRIPT_PATH
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^cmip5q/', include('cmip5q.foo.urls')),
-    #(r'^$','pimms.apps.qn.views.centres', {}, 'qnhome'),
     (r'^(?P<qnproj>\D+)/home$','pimms.apps.qn.views.qnhome', {}, 'qnhome'),
-#    (r'^$','pimms.apps.qn.views.centres'),
-#    (r'^cmip5/$','pimms.apps.qn.views.centres'),
-#    (r'^cmip5/centres/$','pimms.apps.qn.views.centres'),
-#    (r'^cmip5/(?P<centre_id>\d+)/$','pimms.apps.qn.views.centre'),
 #    (r'^cmip5/publisheddocs/$','pimms.apps.qn.views.published_docs'),
 #    # 
 #    url(r'^cmip5/authz/$','pimms.apps.qn.views.authorisation',name='security'),
@@ -37,40 +30,32 @@ urlpatterns = patterns('',
     (r'^(?P<qnproj>\D+)/(?P<docType>\D+)/doc/(?P<pkid>\d+)/(?P<method>\D+)/$', 'pimms.apps.qn.views.genericDoc'),  
 #    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/$'%uuid,'pimms.apps.qn.views.persistedDoc'),
 #    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/(?P<version>\d+)/$'%uuid,'pimms.apps.qn.views.persistedDoc'),                     
-#    # 
-#    # COMPONENTS:
-#    #   
-#    (r'^cmip5/(?P<centre_id>\d+)/component/add/$','pimms.apps.qn.views.componentAdd'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/edit/$','pimms.apps.qn.views.componentEdit'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/addsub/$','pimms.apps.qn.views.componentSub'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/refs/$','pimms.apps.qn.views.componentRefs'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/coupling/$','pimms.apps.qn.views.componentCup'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/Inputs/$','pimms.apps.qn.views.componentInp'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/copy/$','pimms.apps.qn.views.componentCopy'),
-#    (r'^cmip5/(?P<centre_id>\d+)/component/(?P<component_id>\d+)/text/$','pimms.apps.qn.views.componentTxt'),
-#    #
-#    # SIMULATIONS
-#    #
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/list/$',
-#                'pimms.apps.qn.views.simulationList'),  
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/add/(?P<experiment_id>\d+)/$',
-#                'pimms.apps.qn.views.simulationAdd'),
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/edit/$',
-#                'pimms.apps.qn.views.simulationEdit'),  
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/coupling/$',
-#                'pimms.apps.qn.views.simulationCup'), 
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/coupling/(?P<coupling_id>\d+)/(?P<ctype>\D+)/$',
-#                'pimms.apps.qn.views.simulationCup'),  
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/conformance/$',
-#                'pimms.apps.qn.views.conformanceMain'),  
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/copy/$',
-#                'pimms.apps.qn.views.simulationCopy'),
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/copyind/$',
-#                'pimms.apps.qn.views.simulationCopyInd'),
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/resetCouplings/$',
-#                'pimms.apps.qn.views.simulationCupReset'), 
-#    (r'^cmip5/(?P<centre_id>\d+)/simulation/(?P<simulation_id>\d+)/delete/$',
-#                'pimms.apps.qn.views.simulationDel'),
+
+    # 
+    # COMPONENTS:
+    #   
+    (r'^(?P<qnproj>\D+)/component/add/$', 'pimms.apps.qn.views.componentAdd'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/edit/$', 'pimms.apps.qn.views.componentEdit'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/addsub/$', 'pimms.apps.qn.views.componentSub'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/refs/$','pimms.apps.qn.views.componentRefs'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/coupling/$','pimms.apps.qn.views.componentCup'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/Inputs/$','pimms.apps.qn.views.componentInp'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/copy/$','pimms.apps.qn.views.componentCopy'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/text/$','pimms.apps.qn.views.componentTxt'),
+
+    #
+    # SIMULATIONS
+    #
+    (r'^(?P<qnproj>\D+)/simulation/list/$', 'pimms.apps.qn.views.simulationList'),  
+    (r'^(?P<qnproj>\D+)/simulation/add/(?P<experiment_id>\d+)/$', 'pimms.apps.qn.views.simulationAdd'),
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/edit/$', 'pimms.apps.qn.views.simulationEdit'),  
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/coupling/$', 'pimms.apps.qn.views.simulationCup'), 
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/coupling/(?P<coupling_id>\d+)/(?P<ctype>\D+)/$', 'pimms.apps.qn.views.simulationCup'),  
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/conformance/$', 'pimms.apps.qn.views.conformanceMain'),  
+    (r'^(?P<qnproj>\D+)/simulation/copy/$', 'pimms.apps.qn.views.simulationCopy'),
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/copyind/$', 'pimms.apps.qn.views.simulationCopyInd'),
+    #(r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/resetCouplings/$', 'pimms.apps.qn.views.simulationCupReset'), 
+    #(r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/delete/$', 'pimms.apps.qn.views.simulationDel'),
 #    # 
 #    # GRIDS:
 #    #   
@@ -86,10 +71,9 @@ urlpatterns = patterns('',
     (r'^(?P<qnproj>\D+)/platform/add/$', 'pimms.apps.qn.views.platformEdit'),
     (r'^(?P<qnproj>\D+)/platform/(?P<platform_id>\d+)/edit/$', 'pimms.apps.qn.views.platformEdit'),
     
-#    #
-#    # experiment/view/experiment_id
-#    (r'^cmip5/(?P<cen_id>\d+)/experiment/(?P<experiment_id>\d+)/$',
-#            'pimms.apps.qn.views.viewExperiment'),
+    #
+    # experiment/view/experiment_id
+    (r'^(?P<qnproj>\D+)/experiment/(?P<experiment_id>\d+)/$', 'pimms.apps.qn.views.viewExperiment'),
 #    
 #    # cmip5/conformance/centre_id/simulation_id/requirement_id/$
 #    (r'^cmip5/conformance/(?P<cen_id>\d+)/(?P<sim_id>\d+)/(?P<req_id>\d+)/$',
@@ -134,8 +118,7 @@ urlpatterns = patterns('',
 #    (r'^cmip5/(?P<cen_id>\d+)/filterlist/(?P<resourceType>\D+)$',
 #            'pimms.apps.qn.views.filterlist'),
 #    # ASSIGN            
-#    (r'^cmip5/(?P<cen_id>\d+)/assign/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)/$',
-#            'pimms.apps.qn.views.assign'),       
+     (r'^(?P<qnproj>\D+)/assign/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)/$', 'pimms.apps.qn.views.assign'),       
 #            
 #    # export files to CMIP5
 #    (r'^cmip5/(?P<cen_id>\d+)/exportFiles/$','pimms.apps.qn.views.exportFiles'), 

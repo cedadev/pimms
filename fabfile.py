@@ -14,10 +14,10 @@ def gitupdate():
 
 
 def deploy():
-    code_dir = '/home/gdevine/web/prod/cim_expgen'
+    code_dir = '/home/gdevine/web/prod/pimms'
     with settings(warn_only=True):
         if run("test -d %s" % code_dir).failed:
-            run("git clone git@github.com:gerarddevine/cim_expgen.git %s" % code_dir)
+            run("git clone git@github.com:gerarddevine/pimms.git %s" % code_dir)
     with cd(code_dir):
         run("pwd")
         run("ls -la")

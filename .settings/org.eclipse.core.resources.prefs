@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//pimms/apps/qn/XMLutilities.py=utf-8
 encoding//pimms/apps/qn/atom.py=utf-8
 encoding//pimms/apps/qn/coupling.py=utf-8
+encoding//pimms/apps/qn/dropdown.py=utf-8
 encoding//pimms/apps/qn/fields.py=utf-8
 encoding//pimms/apps/qn/forms.py=utf-8
 encoding//pimms/apps/qn/modelUtilities.py=utf-8

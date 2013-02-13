@@ -502,71 +502,79 @@ class Term(BaseTerm):
         
         
 class Reference(models.Model):
-    ''' An academic Reference '''
-    name=models.CharField(max_length=24)
-    citation=models.TextField(blank=True)
-    link=models.URLField(blank=True,null=True)
-    refTypes=models.ForeignKey('Vocab',null=True,blank=True,editable=False)
-    refType=models.ForeignKey('Term')
-    centre=models.ForeignKey('Centre',blank=True,null=True)
+    ''' 
+    An academic Reference 
+    '''
+    name      = models.CharField(max_length=24)
+    citation  = models.TextField(blank=True)
+    link      = models.URLField(blank=True, null=True)
+    refTypes  = models.ForeignKey('Vocab', null=True, blank=True, editable=False)
+    refType   = models.ForeignKey('Term')
+    qn        = models.ForeignKey('Questionnaire', blank=True, null=True)
+    
     def __unicode__(self):
         return self.name
 #    def delete(self,*args,**kwargs):
 #        soft_delete(self,*args,**kwargs)
     class Meta:
-        ordering=['name','citation']
+        ordering=['name', 'citation']
+    
     
 class Component(Doc):
-    ''' A model component '''
+    ''' 
+    A model component 
+    '''
+    
     # this is the vocabulary NAME of this component:
-    scienceType=models.SlugField(max_length=64,blank=True,null=True)
+    scienceType = models.SlugField(max_length=64, blank=True, null=True)
     
     # these next four are to support the questionnaire function
-    implemented=models.BooleanField(default=1)
-    visited=models.BooleanField(default=0)
-    controlled=models.BooleanField(default=0)
+    implemented = models.BooleanField(default=1)
+    visited     = models.BooleanField(default=0)
+    controlled  = models.BooleanField(default=0)
     
-    model=models.ForeignKey('self',blank=True,null=True,related_name="parent_model")
-    realm=models.ForeignKey('self',blank=True,null=True,related_name="parent_realm")
-    isRealm=models.BooleanField(default=False)
-    isModel=models.BooleanField(default=False)
+    model       = models.ForeignKey('self', blank=True, null=True, related_name="parent_model")
+    realm       = models.ForeignKey('self', blank=True, null=True, related_name="parent_realm")
+    isRealm     = models.BooleanField(default=False)
+    isModel     = models.BooleanField(default=False)
     
     #to support paramgroups dressed as components
-    isParamGroup=models.BooleanField(default=False)
+    isParamGroup = models.BooleanField(default=False)
     
     # the following are common parameters
-    geneology=models.TextField(blank=True,null=True)
-    yearReleased=models.IntegerField(blank=True,null=True)
-    otherVersion=models.CharField(max_length=128,blank=True,null=True)
-    references=models.ManyToManyField(Reference,blank=True,null=True)
+    geneology    = models.TextField(blank=True, null=True)
+    yearReleased = models.IntegerField(blank=True, null=True)
+    otherVersion = models.CharField(max_length=128, blank=True, null=True)
+    references   = models.ManyToManyField(Reference, blank=True, null=True)
     
     # direct children components:
-    components=models.ManyToManyField('self',blank=True,null=True,symmetrical=False)
-    paramGroup=models.ManyToManyField('ParamGroup')
-    grid=models.ForeignKey('Grid',blank=True,null=True)
+    components   = models.ManyToManyField('self', blank=True, null=True, symmetrical=False)
+    paramGroup   = models.ManyToManyField('ParamGroup')
+    grid         = models.ForeignKey('Grid', blank=True, null=True)
     
-    isDeleted=models.BooleanField(default=False)
+    isDeleted    = models.BooleanField(default=False)
 
-    def copy(self,centre,model=None,realm=None):
-        ''' Carry out a deep copy of a model '''
-        # currently don't copys here ...
-        if centre.__class__!=Centre:
-            raise ValueError('Invalid centre passed to component copy')
-        
-        attrs=['title','abbrev','description',
-               'scienceType','controlled','implemented','isRealm','isModel','isParamGroup',
-               'author','contact','funder']
+    def copy(self, qn, model=None, realm=None):
+        ''' 
+        Carry out a deep copy of a model 
+        '''
+
+        attrs = ['title', 'abbrev', 'description', 'scienceType', 'controlled', 
+                 'implemented', 'isRealm', 'isModel', 'isParamGroup', 'author', 'contact', 'funder']
         kwargs={}
-        for i in attrs: kwargs[i]=self.__getattribute__(i)
-        if kwargs['isModel']: 
-            kwargs['title']=kwargs['title']+' dup'
-            kwargs['abbrev']=kwargs['abbrev']+' dup'
-        kwargs['uri']=atomuri()
-        kwargs['centre']=centre
         
-        new=Component(**kwargs)
+        for i in attrs: 
+            kwargs[i] = self.__getattribute__(i)
+        
+        if kwargs['isModel']: 
+            kwargs['title']  = kwargs['title'] + ' dup'
+            kwargs['abbrev'] = kwargs['abbrev'] + ' dup'
+        
+        kwargs['uri']    = atomuri()
+        kwargs['qn'] = qn
+        
+        new = Component(**kwargs)
         new.save() # we want an id, even though we might have one already ... 
-        #if new.isModel: print '2',new.couplinggroup_set.all()
        
         # now handle the references
         for r in self.references.all().order_by('id'):
@@ -574,30 +582,34 @@ class Component(Doc):
        
         if model is None:
             if self.isModel:
-                model=new
+                model = new
             else:
-                raise ValueError('Deep copy called with invalid model arguments: %s'%self)
+                raise ValueError('Deep copy called with invalid model arguments: %s' %self)
         elif realm is None:
             if self.isRealm:
-                realm=new
+                realm = new
             else:
-                raise ValueError('Deep copy called with invalid realm arguments: %s'%self)
-        new.model=model
-        new.realm=realm
+                raise ValueError('Deep copy called with invalid realm arguments: %s' %self)
+        
+        new.model = model
+        new.realm = realm
        
         for c in self.components.all().order_by('id'):
-            logging.debug('About to add a sub-component to component %s (in centre %s, model %s with realm %s)'%(new,centre, model,realm))
-            r=c.copy(centre,model=model,realm=realm)
+            logging.debug('About to add a sub-component to component %s (in qn %s, model %s with realm %s)' %(new, qn, model,realm))
+            r = c.copy(qn, model=model, realm=realm)
             new.components.add(r)
-            logging.debug('Added new component %s to component %s (in centre %s, model %s with realm %s)'%(r,new,centre, model,realm))
+            logging.debug('Added new component %s to component %s (in qn %s, model %s with realm %s)' %(r, new, qn, model, realm))
             
         for p in self.paramGroup.all().order_by('id'): 
             new.paramGroup.add(p.copy())
         
         ### And deal with the component inputs too ..
-        inputset=ComponentInput.objects.filter(owner=self).order_by('id')
-        for i in inputset: i.makeNewCopy(new)
+        inputset = ComponentInput.objects.filter(owner=self).order_by('id')
+        for i in inputset: 
+            i.makeNewCopy(new)
+        
         new.save()        
+        
         return new
     
     def couplings(self,simulation=None):
@@ -1466,8 +1478,7 @@ class DataObject(models.Model):
     variable = models.CharField(max_length=128, blank=True)
     
     # and if possible the CF name
-    cfname=models.ForeignKey('Term', blank=True, null=True, 
-                             related_name='data_cfname')
+    cfname=models.ForeignKey('Term', blank=True, null=True, related_name='data_cfname')
     
     # references (including web pages)
     reference = models.ForeignKey(Reference, blank=True, null=True, on_delete=models.SET_NULL)
