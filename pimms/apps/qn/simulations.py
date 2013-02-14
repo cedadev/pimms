@@ -95,24 +95,22 @@ class simulationHandler(object):
 
         if request.method == 'POST':
             # do the simualation first ...
-            simform = SimulationForm(request.POST,
-                                     instance=s,
-                                     prefix='sim')
-            simform.specialise(self.centre)
+            simform = SimulationForm(request.POST, instance=s, prefix='sim')
+            simform.specialise(self.qn)
+            
             if simform.is_valid():
                 simok = True
                 if label == 'Add':
-                    oldmodel = None
-                    olddrs = None
+                    oldmodel     = None
+                    olddrs       = None
                     oldstartyear = None
                 else:
-                    oldmodel = s.numericalModel
-                    olddrs = s.drsMember
+                    oldmodel     = s.numericalModel
+                    olddrs       = s.drsMember
                     oldstartyear = s.duration.startDate.year
 
                 news = simform.save()
-                logging.debug('model before %s, after %s' % (oldmodel,
-                                                        news.numericalModel))
+                logging.debug('model before %s, after %s' % (oldmodel, news.numericalModel))
 
                 if news.numericalModel != oldmodel:
                     news.resetConformances()
@@ -137,10 +135,7 @@ class simulationHandler(object):
             elif not simform.is_valid():
                 simok = False
                 logging.info('SIMFORM not valid [%s]' % simform.errors)
-            relform = SimRelationshipForm(s,
-                                          request.POST,
-                                          instance = r,
-                                          prefix   = 'rel')
+            relform = SimRelationshipForm(s, self.qn, request.POST, instance=r, prefix='rel')
 
             if relform.is_valid():
                 if simok: 
@@ -196,7 +191,7 @@ class simulationHandler(object):
         label='Update'
         return self.__handle(request,s,e,url,label)
        
-    def add(self,request):
+    def add(self, request):
         ''' 
         Create a new simulation instance 
         '''
@@ -212,11 +207,11 @@ class simulationHandler(object):
         if len(p) == 0:
             # Require them to create a platform
             message = 'You need to create a platform before creating a simulation'
-            return render_to_response('error.html', {'message':message, 'url':url})
+            return render_to_response('qn/error.html', {'message':message, 'url':url})
         elif len(m)==0:
             # Require them to create a model
             message = 'You need to create a model before creating a simulation'
-            return render_to_response('error.html', {'message':message, 'url':url})
+            return render_to_response('qn/error.html', {'message':message, 'url':url})
         
         url = reverse('pimms.apps.qn.views.simulationAdd', args = (self.qn, self.expid, ))
        
@@ -224,20 +219,22 @@ class simulationHandler(object):
         e = Experiment.objects.get(pk=self.expid)
         s = Simulation(uri=u, experiment=e, qn=self.qn)
         
-        #grab the experiment duration if we can
+        # grab the experiment duration if we can
         # there should be no more than one spatio temporal constraint, so let's 
         # get that one.
         
         stcg=e.requirements.filter(ctype__name='SpatioTemporalConstraint')
-        if len(stcg)<>1:
+        
+        if len(stcg) <> 1:
             logging.info('Experiment %s has no duration (%s)?'%(e,len(stcg)))
         else:
-            stc=stcg[0].get_child_object()
-            print 'duration',stc.requiredDuration
-            s.duration=stc.requiredDuration
+            stc = stcg[0].get_child_object()
+            print 'duration', stc.requiredDuration
+            s.duration = stc.requiredDuration
+        
         label='Add'
         
-        return self.__handle(request,s,e,url,label)
+        return self.__handle(request, s, e, url, label)
 
     def list(self, request):
         ''' 
@@ -246,32 +243,32 @@ class simulationHandler(object):
        
         #little class to monkey patch up the stuff needed for the template
         class etmp:
-            def __init__(self, abbrev, values, id, group, qn):
+            def __init__(self, abbrev, values, id, qn):
                 self.abbrev = abbrev
                 self.values = values
-                self.id = id
-                self.url = reverse('pimms.apps.qn.views.viewExperiment', args=(qn, id, ))
-                self.new = reverse('pimms.apps.qn.views.simulationAdd', args=(qn, id,))
-                self.group = group
+                self.id     = id
+                self.url    = reverse('pimms.apps.qn.views.viewExperiment', args=(qn, id, ))
+                self.new    = reverse('pimms.apps.qn.views.simulationAdd', args=(qn, id,))
                 
         csims = Simulation.objects.filter(qn=self.qn).filter(isDeleted=False)
         cpurl = reverse('pimms.apps.qn.views.simulationCopy', args=(self.qn, ))
 
-        eset=Experiment.objects.all().filter(isDeleted=False)
+        eset = Experiment.objects.all().filter(isDeleted=False)
         exp=[]
+        
         for e in eset:
             sims = e.simulation_set.filter(qn=self.qn).filter(isDeleted=False)
-            group = e.abbrev.split()[1]
             for s in sims: 
                 s.url = reverse('pimms.apps.qn.views.simulationEdit', args=(self.qn, s.id, ))    
-            exp.append(etmp(e.abbrev, sims, e.id, group, self.qn))
+            
+            exp.append(etmp(e.abbrev, sims, e.id, self.qn))
 
         return render_to_response('qn/simulationList.html',
-                                  {'experiments':exp, 
-                                   'csims':csims, 
-                                   'cpurl':cpurl,
-                                   #'tabs':tabs(request,c.id,'Experiments'),
-                                   'notAjax':not request.is_ajax()})
+                                  {'experiments': exp, 
+                                   'csims': csims, 
+                                   'cpurl': cpurl,
+                                   #'tabs':tabs(request, c.id, 'Experiments'),
+                                   'notAjax': not request.is_ajax()})
  
  
     def conformanceMain(self,request):

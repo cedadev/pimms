@@ -697,20 +697,27 @@ class Platform(Doc):
 
 
 def Calendar(elem):
-    ''' Retrieve a calendar term and add a toXML instance method. Behaves like a subclass of Term '''
-    def toXML(self,parent='calendar'):
-        e=ET.Element(parent)
-        e.text=self.name
+    ''' 
+    Retrieve a calendar term and add a toXML instance method. Behaves like a subclass of Term 
+    '''
+    def toXML(self, parent='calendar'):
+        e = ET.Element(parent)
+        e.text = self.name
         return e
-    cv=Term.objects.filter(vocab=Vocab.objects.get(name='CalendarTypes')).order_by('id')
+      
+    cv = Term.objects.filter(vocab=Vocab.objects.get(name='CalendarTypes')).order_by('id')
+    
     try:
-        tag=elem[0].tag.split('}')[1]
-        r=cv.get(name=tag)
-    except Exception,e:
-        raise ValueError('Invalid calendar type "%s" (%s)'%(elem.tag,e))
-    f=types.MethodType(toXML,r,Term)
-    r.toXML=f
+        tag = elem[0].tag.split('}')[1]
+        r = cv.get(name=tag)
+    except Exception, e:
+        raise ValueError('Invalid calendar type "%s" (%s)' %(elem.tag, e))
+    
+    f = types.MethodType(toXML, r, Term)
+    r.toXML = f
+    
     return r
+
 
 class Experiment(Doc):
     ''' 

@@ -550,7 +550,7 @@ def gridEdit(request, qnproj, grid_id):
 ##    return rH.assign(request,resourceType,resource_id)
 
 #    
-####### SIMULATION HANDLING ######################################################
+####### SIMULATION HANDLING ####################################################
 #
 @gracefulNotFound
 def simulationEdit(request, qnproj, simulation_id):
