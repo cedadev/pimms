@@ -5,7 +5,9 @@ from lxml import etree as ET
   
  
 class Experiment(models.Model):
-    ''' Class to represent numericalExperiment  '''
+    ''' 
+    Class to represent numericalExperiment  
+    '''
     
     abbrev          = models.CharField(max_length=40)
     title           = models.CharField(max_length=128, blank=True, null=True)

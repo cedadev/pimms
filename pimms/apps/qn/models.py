@@ -753,14 +753,14 @@ class Experiment(Doc):
             E.__setattr__(doc[key], getter.get(root, key))
 
         # load the calendar type
-        calendarName = root.find("{%s}calendar" %cimv)[0].tag.split('}')[1]
-        vocab = Vocab.objects.filter(qn=qn).get(name="CalendarTypes")
-        term = Term(vocab=vocab, name=calendarName)
-        term.save()
-        E.requiredCalendar = term
+#        calendarName = root.find("{%s}calendar" %cimv)[0].tag.split('}')[1]
+#        vocab = Vocab.objects.filter(qn=qn).get(name="CalendarTypes")
+#        term = Term(vocab=vocab, name=calendarName)
+#        term.save()
+#        E.requiredCalendar = term
        
         # bypass reading all that nasty gmd party stuff ...
-        E.metadataMaintainer = ResponsibleParty.fromXML(root.find('{%s}author' %cimv), qn)
+        #E.metadataMaintainer = ResponsibleParty.fromXML(root.find('{%s}author' %cimv), qn)
         
         # do some quick length checking
         if len(E.abbrev)>25:
