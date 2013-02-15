@@ -1,12 +1,13 @@
 {% extends "qn/base.html" %}
+
 {% block content %}
 <div class="boxer">
   <h1> 
     Experiments and Simulations 
   </h1>
   <p> 
-    This page holds the master index of all the simulations run by 
-    {{c.abbrev}}, and relates them to the appropriate CMIP5 experiment.
+    This page holds the master index of all simulations and relates 
+    them to the appropriate experiment.
   </p>
   <p> 
     You are expected to use the add simulation button to add simulations, 
@@ -24,21 +25,10 @@
     Alternatively, to copy all details of a current simulation, use the copy 
     function on the simulation table on the main summary page 
   </p>
-  <p>
-    Note that a number of experiments, e.g 1.1 decadal and 1.2 decadal, fall 
-    under the same experiment DRS group, i.e. decadal. Simulations that share 
-    the same model and that fall under a similar group must use different rip
-    values (at both the simulation and ensemble member level). This will allow a 
-    direct mapping to data files that are named according to DRS syntax (note 
-    this is not the case for the rcp/-L experiments where rip values can be 
-    reused - in this case the start year will allow mapping to an individual 
-    data file).    
-  </p>
    <div class="backgrey">
      <table width="100%">
        <tr>
          <th width="15%">Exp Name</th>
-         <th width="10%">Exp DRS group</th>
          <th width="10%">Add New Simulation</th>
          <th width="35%">Current Simulations </th>
          <th width="30%">Copy Simulation</th>
@@ -50,11 +40,6 @@
                <a href="{{e.url}}">
                  {{e.abbrev}}
                </a>
-             </center>
-           </td>
-           <td>
-             <center>
-               {{e.group}}
              </center>
            </td>
            <td>

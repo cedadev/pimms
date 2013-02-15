@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.template.context import RequestContext
 
 from pimms.apps.qn.models import *
 from pimms.apps.qn.forms import *
@@ -167,17 +168,18 @@ class simulationHandler(object):
         cs = Conformance.objects.filter(simulation=s)
             
         return render_to_response('qn/simulation.html',
-                                 {'s': s, 
-                                  'simform': simform,
-                                  'urls': urls,
-                                  'label': label,
-                                  'exp': e,
-                                  'cset': cset,
-                                  'coset': cs,
-                                  'ensemble': ensemble,
-                                  'rform': relform,
-                                  #'tabs': tabs(request,self.centreid,'Simulation',s.id or 0)
-                                  })
+                                 {'s'        : s, 
+                                  'simform'  : simform,
+                                  'urls'     : urls,
+                                  'label'    : label,
+                                  'exp'      : e,
+                                  'cset'     : cset,
+                                  'coset'    : cs,
+                                  'ensemble' : ensemble,
+                                  'rform'    : relform,
+                                  'tabs'     : tabs(request,self.qn,'Simulation',s.id or 0),
+                                  'notAjax': not request.is_ajax()},
+                                  context_instance=RequestContext(request))
         # note that cform points to simform too, to support completion.html
             
     def edit(self,request):
@@ -238,7 +240,7 @@ class simulationHandler(object):
 
     def list(self, request):
         ''' 
-        Return a listing of simulations for a given centre 
+        Return a listing of simulations for a given qn 
         '''
        
         #little class to monkey patch up the stuff needed for the template
@@ -265,10 +267,11 @@ class simulationHandler(object):
 
         return render_to_response('qn/simulationList.html',
                                   {'experiments': exp, 
-                                   'csims': csims, 
-                                   'cpurl': cpurl,
-                                   #'tabs':tabs(request, c.id, 'Experiments'),
-                                   'notAjax': not request.is_ajax()})
+                                   'csims'      : csims, 
+                                   'cpurl'      : cpurl,
+                                   'tabs'       : tabs(request, self.qn, 'Experiments'),
+                                   'notAjax'    : not request.is_ajax()},
+                                   context_instance=RequestContext(request))
  
  
     def conformanceMain(self,request):

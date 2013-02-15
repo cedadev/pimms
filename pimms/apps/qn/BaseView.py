@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.http import HttpResponse,HttpResponseRedirect,HttpResponseForbidden,HttpResponseBadRequest
 from django.conf import settings
+from django.template.context import RequestContext
 
 from pimms.apps.qn.models import *
 from pimms.apps.qn.forms import *
@@ -25,9 +26,9 @@ class BaseViewHandler:
         self.resource=resource
         self.target=target
         
-        self.editHTML='baseview_edit.html'#'%s_edit.html'%self.resource['type']
-        self.listHTML='baseview_list.html'#'%s_list.html'%self.resource['type']
-        self.selectHTML='baseviewAssign.html'
+        self.editHTML='qn/baseview_edit.html'#'%s_edit.html'%self.resource['type']
+        self.listHTML='qn/baseview_list.html'#'%s_list.html'%self.resource['type']
+        self.selectHTML='qn/baseviewAssign.html'
         
     def objects(self):
         ''' We use the subclass method '''
@@ -37,161 +38,185 @@ class BaseViewHandler:
         ''' We use the subclass method'''
         return 'Not Implemented'
     
-    def _constructForm(self,method,*args,**kwargs):
+    def _constructForm(self, method, *args, **kwargs):
         ''' Handle form construction '''
         if method == 'POST':
-            return self.resource['form'](*args,**kwargs)
+            return self.resource['form'](self.qn, *args, **kwargs)
         elif method == 'GET':
             # FIXME we'll need to do the specialisation based on the 
             # target information ... postpone this again for now.
-            form=self.resource['form'](*args,**kwargs)
-            constraints=self.constraints()
-            print 'constraints',constraints
-            if constraints is not None: form.specialise(constraints)
+            form = self.resource['form'](qn=self.qn, *args, **kwargs)
+            constraints = self.constraints()
+            if constraints is not None: 
+                form.specialise(constraints)
+            
             return form
         else:
             raise ValueError('Form construction only supports GET and POST')
                  
-    def list(self,request):
-        ''' Show a list of the basic entities, either all of them, or those
-        associated with a specific instance of a specific class '''
+    def list(self, request):
+        ''' 
+        Show a list of the basic entities, either all of them, or those
+        associated with a specific instance of a specific class 
+        '''
         
-        objects=self.objects()
+        objects = self.objects()
+        
         #construct a set of options for filtering to a specific class (if appropriate)
-        ftype=self.resource['filter']
-        if ftype:
-            url=reverse('pimms.apps.qn.views.filterlist',args=(self.cid,self.resource['type'],))
-            ops=ftype.objects.all()
-            try: # if we can filter on centres, we do ...
-                ops.filter(centre__id=self.cid)
-            except AttributeError: pass
-            filterops={'m':'Filter by %s'%ftype._meta.module_name,
-                       'ops':ops,
-                       'url':url,
-                       'klass':ftype._meta.module_name}
-        else: filterops=None
+        ftype = self.resource['filter']
         
-        # construct a CMIP5 export button
-        if self.resource['type']=='file':
-            exportFiles=reverse('pimms.apps.qn.views.exportFiles',args=(self.cid,))
-        else: exportFiles=None
+        if ftype:
+            url = reverse('pimms.apps.qn.views.filterlist', args=(self.qn, self.resource['type'],))
+            ops = ftype.objects.all()
+            
+            try: # if we can filter on centres, we do ...
+                ops.filter(qn__id=self.qn)
+            except AttributeError: 
+                pass
+              
+            filterops={'m':'Filter by %s'%ftype._meta.module_name,
+                       'ops' : ops,
+                       'url' : url,
+                       'klass' : ftype._meta.module_name}
+        else: 
+            filterops=None
+        
+        # construct an export button
+        if self.resource['type'] == 'file':
+            exportFiles = reverse('pimms.apps.qn.views.exportFiles', args=(self.qn, ))
+        else: 
+            exportFiles = None
         
         if self.target:
-
             # in the case of a list, the target is used to go back ...
 
             # get a URL for a blank form
-            formURL=reverse('pimms.apps.qn.views.edit',
-                            args=(self.cid,self.resource['type'],0,
-                            self.target['type'],self.target['instance'].id,'list',))
+            formURL = reverse('pimms.apps.qn.views.edit',
+                            args=(self.qn, self.resource['type'], 0, self.target['type'], self.target['instance'].id, 'list',))
             for o in objects:
                 # monkey patch an edit URL into the object allowing for the target,
                 # saying come back here (to the list). Unfortunately doing that
                 # means we lose the incoming reference.
-                args=(self.cid,self.resource['type'],o.id,
-                                  self.target['type'],self.target['instance'].id,'list',)
-                o.editURL=reverse('pimms.apps.qn.views.edit',args=args)
-                o.delURL=reverse('pimms.apps.qn.views.delete',args=args)
+                args = (self.qn, self.resource['type'], o.id, self.target['type'], self.target['instance'].id, 'list',)
+                o.editURL = reverse('pimms.apps.qn.views.edit', args=args)
+                o.delURL = reverse('pimms.apps.qn.views.delete', args=args)
                 #o.delURL=reverse('pimms.apps.qn.views.delete',
                 #            args=(self.cid,self.resource['type'],o.id,self.currentURL)
                 # Need to be able to make sure this isn't an html get from an <a> otherwise
                 # do it as  form with a method of delete.
         else:
             # get a URL for a blank form
-            formURL=reverse('pimms.apps.qn.views.edit',
-                            args=(self.cid,self.resource['type'],0,'list',))
+            formURL = reverse('pimms.apps.qn.views.edit', args=(self.qn, self.resource['type'], 0, 'list', ))
             
             for o in objects:
                 # monkey patch an edit URL into the object, saying come back here (list)
-                args=(self.cid,self.resource['type'],o.id,'list',)
-                o.editURL=reverse('pimms.apps.qn.views.edit',args=args)
-                if o.centre==self.centre:
-                    o.delURL=reverse('pimms.apps.qn.views.delete',args=args)
+                args = (self.qn, self.resource['type'], o.id, 'list', )
+                o.editURL = reverse('pimms.apps.qn.views.edit', args=args)
+                if o.qn == self.qn:
+                    o.delURL = reverse('pimms.apps.qn.views.delete', args=args)
                 else:
-                    o.delURL=None
+                    o.delURL = None
         # we pass a form and formURL for a new instance to be created.
         # we're doing all this because we think we have too many entities to use a formset
        
         return render_to_response(self.listHTML,{
-                'objects':sublist(objects,3),
-                'tabs':tabs(request,self.cid,self.resource['tab']),
-                'form':self._constructForm('GET'),
-                'editURL':formURL,
-                'instance':self.resource,
-                'snippet_template':'%s_snippet.html'%self.resource['type'],
-                'target':self.target,
-                'exportFiles':exportFiles,
-                'filter':filterops
-                })
+                                                'objects'     : sublist(objects, 3),
+                                                'tabs'        : tabs(request, self.qn, self.resource['tab']),
+                                                'form'        : self._constructForm('GET'),
+                                                'editURL'     : formURL,
+                                                'instance'    : self.resource,
+                                                'snippet_template': 'qn/%s_snippet.html' %self.resource['type'],
+                                                'target'      : self.target,
+                                                'exportFiles' : exportFiles,
+                                                'filter'      : filterops},
+                                                context_instance=RequestContext(request))
                 
-    def filterlist(self,request):
-        ''' construct a filter based on a posted form and redirect to a targetted list'''
-        if request.method=='POST':
-            logging.debug('Trying to filter on %s'%request.POST)
-            url=reverse('pimms.apps.qn.views.list',args=(self.cid,self.resource['type'],request.POST['klass'],request.POST['id'],))
+    def filterlist(self, request):
+        ''' 
+        construct a filter based on a posted form and redirect to a targetted list
+        '''
+        if request.method == 'POST':
+            logging.debug('Trying to filter on %s' %request.POST)
+            url = reverse('pimms.apps.qn.views.list', args=(self.qn, self.resource['type'], request.POST['klass'], request.POST['id'], ))
             return HttpResponseRedirect(url)
         else:
-           return render_badrequest('error.html',{'message':'Error, No GET to filterlist'})
+            return render_badrequest('error.html', {'message':'Error, No GET to filterlist'})
                 
-    def edit(self,request,returnType):
-        ''' We normally see this method called as a GET when it's hyperlinked
+    def edit(self, request, returnType):
+        ''' 
+        We normally see this method called as a GET when it's hyperlinked
         from a list or assign page, so we want to go back there in those cases.
         If it's a POST, then we handle it, and go back to the correct place,
-        unless there is a problem. '''
+        unless there is a problem. 
+        '''
             
         # The basic sequence when we receive an edit form as a post, is that 
         # if it's valid, return to where we came from. If it's not, we should show
         # a form, complete with errors, with a submission URL which gets the user
         # back to the right place.  A GET should set that process up.
         if self.target:
-            okURL=reverse('pimms.apps.qn.views.%s'%returnType,
-               args=(self.cid,self.resource['type'],self.target['type'],self.target['instance'].id,))
+            okURL = reverse('pimms.apps.qn.views.%s' %returnType,
+               args = (self.qn, self.resource['type'], self.target['type'], self.target['instance'].id, ))
         else:
-            okURL=reverse('pimms.apps.qn.views.%s'%returnType,
-               args=(self.cid,self.resource['type'],))
+            okURL = reverse('pimms.apps.qn.views.%s' %returnType, args=(self.qn, self.resource['type'], ))
+        
         # Note that if the resource instance id is zero, this is a new one.
         instance=None
-        if self.resource['id']<>'0':
-            instance=self.resource['class'].objects.get(id=self.resource['id'])
-            
-     
         
+        if self.resource['id'] <> '0':
+            instance = self.resource['class'].objects.get(id=self.resource['id'])
+            
+             
         # Now construct a useful submission URL
-        args=[self.cid,self.resource['type'],self.resource['id']]
-        if self.target:args+=[self.target['type'],self.target['instance'].id]
-        if returnType: args.append(returnType)
+        args = [self.qn, self.resource['type'], self.resource['id']]
+        
+        if self.target:
+            args += [self.target['type'],self.target['instance'].id]
+        
+        if returnType: 
+            args.append(returnType)
                     
         if request.method=='POST':
-            logging.debug('Handling post with %s, %s '%(self.resource,request.POST))
+            logging.debug('Handling post with %s, %s ' %(self.resource, request.POST))
             if instance:
-                if instance.centre!=self.centre:
+                if instance.qn != self.qn:
                     logging.info('Attempt to edit resource not owned')
                     return HttpResponseForbidden(render_to_string('error.html',
-                       {'message':"Attempt to edit a resource you don't own",
+                        {'message':"Attempt to edit a resource you don't own",
                         'url':okURL}))
-            form=self._constructForm('POST',request.POST,instance=instance)
-            form.hostCentre=self.centre
+            
+            form = self._constructForm('POST', request.POST, instance=instance)
+            
+            form.hostQn = self.qn
+            
             if form.is_valid():
-                if returnType=='ajax': return HttpResponse('not implemented')
-                f=form.save()
-                args[2]=f.id
-                editURL=reverse('pimms.apps.qn.views.edit',args=args)   
-                logging.debug('Successful edit post, redirecting to %s'%editURL)
+                if returnType == 'ajax': 
+                    return HttpResponse('not implemented')
+                f = form.save()
+                args[2] = f.id
+                editURL = reverse('pimms.apps.qn.views.edit', args=args)   
+                logging.debug('Successful edit post, redirecting to %s' %editURL)
+                
                 return HttpResponseRedirect(editURL)#(okURL)
             else:
-                print 'ERRORS [%s]'%form.errors
-        elif request.method=='GET':
-            form=self._constructForm('GET',instance=instance)
+                print 'ERRORS [%s]' %form.errors
+        elif request.method == 'GET':
+            form = self._constructForm('GET', instance=instance)
         
-        constraints=self.constraints()
-        if constraints:form.specialise(constraints)
+        constraints = self.constraints()
+        if constraints:
+            form.specialise(constraints)
                 
-        editURL=reverse('pimms.apps.qn.views.edit',args=args) 
+        editURL = reverse('pimms.apps.qn.views.edit', args=args) 
                           
-        return render_to_response(self.editHTML,{'form':form,'editURL':editURL,'okURL':okURL,
-                                                 'tabs':tabs(request,self.cid,'Edit %s'%instance),
-                                                 'snippet_template':'%s_snippet.html'%self.resource['type'],
-                                                 'resource':self.resource})
+        return render_to_response(self.editHTML,
+                                    {'form'    :form,
+                                     'editURL' :editURL,
+                                     'okURL'   :okURL,
+                                     'tabs'    :tabs(request,self.qn,'Edit %s'%instance),
+                                     'snippet_template':'qn/%s_snippet.html' %self.resource['type'],
+                                     'resource': self.resource},
+                                     context_instance=RequestContext(request))
                                                  
                                                  
     def delete(self,request,returnType):

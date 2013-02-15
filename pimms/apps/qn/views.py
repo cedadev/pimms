@@ -69,9 +69,8 @@ def qnhome(request, qnproj):
     newplatURL = reverse('pimms.apps.qn.views.platformEdit', args=(qn, ))
     viewsimURL = reverse('pimms.apps.qn.views.simulationList', args=(qn, ))
     newgridURL = reverse('pimms.apps.qn.views.gridAdd', args=(qn, ))
-#    
     
-#    refs=Reference.objects.filter(centre=c)
+    refs=Reference.objects.filter(qn=qn)
 #    files=DataContainer.objects.filter(centre=c)
 #    parties=ResponsibleParty.objects.filter(centre=c)
     
@@ -79,27 +78,7 @@ def qnhome(request, qnproj):
     tablesims = []
     tablesims = getsims(qn)
     
-#    logging.info('Viewing %s' %qnname)
-#    return render_to_response('centre/centre.html',
-#                              {'centre':qnname, 
-#                               'models':models,
-#                               'platforms':platforms,
-#                               'grids':grids, 
-#                               'refs':refs,
-#                               'files':files, 
-#                               'parties':parties,
-#                               'newmod':newmodURL,
-#                               'newplat':newplatURL,
-#                               'newgrid':newgridURL,
-#                               'sims':sublist(sims,3),
-#                               'viewsimurl':viewsimURL,
-#                               'tabs':tabs(request,c.id, 'Summary'),
-#                               'notAjax':not request.is_ajax(),
-#                               'tablesims':tablesims})
-    
-    #logging.info('Viewing %s' %qn.name)
-    #return render_to_response('qn/qnmain/home.html',
-    return render_to_response('qn/centre/centre.html',
+    return render_to_response('qn/qnhome/summary.html',
                               {'project'   : qn.project, 
                                'models'    : models,
                                'platforms' : platforms,
@@ -108,7 +87,11 @@ def qnhome(request, qnproj):
                                'newplat'   : newplatURL,
                                'newgrid'   : newgridURL,   
                                'newmod'    : newmodURL,    
-                               'viewsimurl': viewsimURL,                        
+                               'viewsimurl': viewsimURL,  
+                               'refs'      : refs,
+#                               'files':files, 
+#                               'parties':parties, 
+                               'tabs'      : tabs(request, qn, 'Summary'),                     
                                'notAjax'   : not request.is_ajax(),
                                'tablesims' : tablesims},
                                 context_instance=RequestContext(request))
@@ -719,9 +702,9 @@ def platformEdit(request, qnproj, platform_id=None):
                               'urls': urls, 
                               'p': p, 
                               'qn': qn,
-                              'tabs': tabs(request, qn, 'Platform')
-                              })
-                # point cform at pform too so that the completion html can use a common variable.
+                              'tabs': tabs(request, qn, 'Platform')},
+                              context_instance=RequestContext(request))
+                              # point cform at pform too so that the completion html can use a common variable.
         
         
 ########## EXPERIMENT VIEWS ##################
@@ -736,10 +719,11 @@ def viewExperiment(request, qnproj, experiment_id):
     e = Experiment.objects.get(id=experiment_id)
     r = e.requirements.all()
     
-    return render_to_response('experiment.html', {'e':e,
-                                                  'reqs':r,
+    return render_to_response('experiment.html', {'e'    :e,
+                                                  'reqs' :r,
                                                   #'tabs':tabs(request,cen_id,'Experiment')
-                                                  })
+                                                  },
+                                                  context_instance=RequestContext(request))
 
 
 ######## HELP, ABOUT and Vn History ###############
@@ -818,8 +802,9 @@ def viewExperiment(request, qnproj, experiment_id):
 ############ Simple Generic Views ########################
 
 class ViewHandler(BaseViewHandler):
-    ''' Specialises Base View for the various resource understood as a "simple"
-    view '''
+    ''' 
+    Specialises Base View for the various resource understood as a "simple" view 
+    '''
     
     # The base view handler needs a mapping between the resource type
     # as it will appear in a URL, the name it is used when an attribute, 
@@ -831,30 +816,34 @@ class ViewHandler(BaseViewHandler):
                                     'class'   : CodeMod,
                                     'form'    : CodeModForm,
                                     'filter'  : None},
+                        
                         'inputmod': {'attname': 'inputMod',
                                     'title'   : 'Input Modifications', 
                                     'tab'     : 'InputMods',
                                     'class'   : InputMod, 
                                     'form'    : InputModIndex,
-                                    'filter':None}, 
-                            'file': {'attname':'dataContainer',
-                                    'title':'Files and Variables',
-                                    'tab':'Files & Vars',
-                                    'class':DataContainer,
-                                    'form':DataHandlingForm,
-                                    'filter':Experiment},
-                       'reference': {'attname':'references',
-                                     'title':'References',
-                                     'tab':'References',
-                                     'class': Reference,
-                                     'form': ReferenceForm,
-                                     'filter':None},
-                         'parties': {'attname':'responsibleParty',
-                                     'title':'Parties', 
-                                     'tab':'Parties',
-                                     'class':ResponsibleParty, 
-                                     'form':ResponsiblePartyForm,
-                                     'filter':None},
+                                    'filter'  : None}, 
+                        
+                            'file': {'attname': 'dataContainer',
+                                    'title'   : 'Files and Variables',
+                                    'tab'     : 'Files & Vars',
+                                    'class'   : DataContainer,
+                                    'form'    : DataHandlingForm,
+                                    'filter'  : Experiment},
+                        
+                       'reference': {'attname': 'references',
+                                     'title'  : 'References',
+                                     'tab'    : 'References',
+                                     'class'  : Reference,
+                                     'form'   : ReferenceForm,
+                                     'filter' : None},
+                        
+                         'parties': {'attname': 'responsibleParty',
+                                     'title'  : 'Parties', 
+                                     'tab'    : 'Parties',
+                                     'class'  : ResponsibleParty, 
+                                     'form'   : ResponsiblePartyForm,
+                                     'filter' : None},
                         
                         #'grid':{'attname':'grid','title':'Grid Definitions','class':Grid,
                          #       'form':GridForm,'filter':None,'tab':'Grids'},
@@ -896,7 +885,9 @@ class ViewHandler(BaseViewHandler):
     # initial conditions (assign to a simulation) and list
                         
     def __init__(self, qn, resourceType, resource_id, target_id, targetType):
-        ''' We can have some combination of the above at initialiation time '''
+        ''' 
+        We can have some combination of the above at initialiation time 
+        '''
         
         if resourceType not in self.SupportedResources:
             raise ValueError('Unknown resource type %s '%resourceType)
@@ -905,6 +896,7 @@ class ViewHandler(BaseViewHandler):
             # We grab an instance of the target
             if targetType not in self.SupportedTargets:
                 raise ValueError('Unknown target type %s'%targetType)
+            
             try:
                 target = self.SupportedTargets[targetType]
                 target['type'] = targetType
@@ -912,77 +904,101 @@ class ViewHandler(BaseViewHandler):
             except Exception, e:
                 # FIXME: Handle this more gracefully
                 raise ValueError('Unable to find resource %s with id %s' %(targetType, target_id))
+            
             # and work out what the url will be to return to this target instance
             try:
                 target['url'] = reverse(self.SupportedTargetReverseFunctions[targetType], args=[qn, target_id])
-            except: target['url']=''
-        else: target=None 
+            except: 
+                target['url'] = ''
+        else: 
+            target=None 
         
-        resource=self.SupportedResources[resourceType]
-        resource['type']=resourceType
-        resource['id']=resource_id
+        resource = self.SupportedResources[resourceType]
+        resource['type'] = resourceType
+        resource['id'] = resource_id
      
         BaseViewHandler.__init__(self, qn, resource, target)
                 
     def objects(self):
-        ''' Returns a list of objects to display, as a function of the resource and target types'''
-        objects=self.resource['class'].objects.all()
-        if self.resource['type']=='modelmod' and self.target['type']=='simulation':
+        ''' 
+        Returns a list of objects to display, as a function of the resource and target types
+        '''
+        
+        objects = self.resource['class'].objects.all()
+        
+        if self.resource['type'] == 'modelmod' and self.target['type'] == 'simulation':
             # for code modifications, we need to get those associated with a model for a simulation
-            constraintSet=Component.objects.filter(model=self.target['instance'].numericalModel)
-            objects=objects.filter(component__in=constraintSet)
-        if self.resource['type'] in ['reference','file']:
-            #objects=objects.filter(centre__in=[None,self.centre]) doesn't work
-            objects=objects.filter(centre=None)|objects.filter(centre=self.centre)
-            oby={'reference':'name','file':'abbrev'}[self.resource['type']]
+            constraintSet = Component.objects.filter(model=self.target['instance'].numericalModel)
+            objects = objects.filter(component__in=constraintSet)
+        
+        if self.resource['type'] in ['reference', 'file']:
+            objects = objects.filter(qn=None)|objects.filter(qn=self.qn)
+            oby = {'reference':'name', 'file':'abbrev'}[self.resource['type']]
             if self.target:
                 #d={self.target['type']+'__id':str(self.target['instance'].id)}
                 #objects=objects.filter(**d)
-                if self.target['type']=='experiment':
-                    objects=objects.filter(experiments=self.target['instance'].id)
+                if self.target['type'] == 'experiment':
+                    objects = objects.filter(experiments=self.target['instance'].id)
                     
-            objects=objects.order_by(oby)
-        elif self.resource['type']=='modelmod':
-            objects=objects.filter(centre=self.centre)
+            objects = objects.order_by(oby)
+        elif self.resource['type'] == 'modelmod':
+            objects=objects.filter(qn=self.qn)
             objects=objects.order_by('mnemonic')
-        elif self.resource['type']=='parties':
-            objects=objects.filter(centre=self.centre).order_by('name')
-        elif self.resource['type']=='inputmod':
-            objects=objects.filter(centre=self.centre)
+        elif self.resource['type'] == 'parties':
+            objects=objects.filter(qn=self.qn).order_by('name')
+        elif self.resource['type'] == 'inputmod':
+            objects=objects.filter(qn=self.qn)
             objects=objects.order_by('mnemonic')
         return objects
         
     def constraints(self):
-        ''' Return constraints for form specialisation '''
-        if self.resource['type']=='modelmod':
-            if self.target['type']=='simulation':
+        ''' 
+        Return constraints for form specialisation 
+        '''
+        if self.resource['type'] == 'modelmod':
+            if self.target['type'] == 'simulation':
                 return self.target['instance'].numericalModel
-            elif self.target['type']=='component':
+            elif self.target['type'] == 'component':
                 return self.target['instance']
-            elif self.target['type']=='ensemble':
+            elif self.target['type'] == 'ensemble':
                 return self.target['instance'].numericalModel
-        if self.resource['type'] in ['reference','file','grid']:
-            return self.centre 
-        if self.resource['type']=='inputmod':
-            if self.target['type']=='ensemble':
+        if self.resource['type'] in ['reference', 'file', 'grid']:
+            return self.qn 
+        if self.resource['type'] == 'inputmod':
+            if self.target['type'] == 'ensemble':
                 return self.target['instance'] # which should be a simulation
                    
         return None
 
-def edit(request,cen_id,resourceType,resource_id,targetType=None,target_id=None,returnType=None):
-    ''' This is the generic simple view editor '''
-    h=ViewHandler(cen_id,resourceType,resource_id,target_id,targetType)
-    return h.edit(request,returnType)
+def edit(request, qnproj, resourceType, resource_id, targetType=None, target_id=None, returnType=None):
+    ''' 
+    This is the generic simple view editor 
+    '''
+  
+    # get current questionnaire
+    qn = Questionnaire.objects.get(project=qnproj)
+    
+    h = ViewHandler(qn, resourceType, resource_id, target_id, targetType)
+    return h.edit(request, returnType)
+  
 
 def delete(request,cen_id,resourceType,resource_id,targetType=None,target_id=None,returnType=None):
     ''' This is the generic simple item deleter '''
     h=ViewHandler(cen_id,resourceType,resource_id,target_id,targetType)
     return h.delete(request,returnType)
 
-def list(request,cen_id,resourceType,targetType=None,target_id=None):
-    ''' This is the generic simple view lister '''
-    h=ViewHandler(cen_id,resourceType,None,target_id,targetType)
+
+def list(request, qnproj, resourceType, targetType=None, target_id=None):
+    ''' 
+    This is the generic simple view lister 
+    '''
+    
+    # get current questionnaire
+    qn = Questionnaire.objects.get(project=qnproj)
+    
+    h = ViewHandler(qn, resourceType, None, target_id, targetType)
     return h.list(request)
+  
 
 def filterlist(request,cen_id,resourceType):
     ''' Receives a list filter post and redirects to list '''

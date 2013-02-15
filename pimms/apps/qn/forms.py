@@ -610,7 +610,7 @@ class ReferenceForm(forms.ModelForm):
       
     def clean(self):
         ''' 
-        Needed to ensure reference name uniqueness within a centre 
+        Needed to ensure reference name uniqueness within a qn
         '''
         return uniqueness(self, self.hostQn, 'name')
         

@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 from django.conf import settings
+from django.template.context import RequestContext
 
 from pimms.apps.qn.models import *
 from pimms.apps.qn.forms import *
@@ -65,7 +66,7 @@ class MyComponentInputFormSet(ComponentInputFormSet):
     
     
 class componentHandler(object):
-    
+    ''' '''
     def __init__(self, qn, component_id=None):
         ''' Instantiate a component handler, by loading existing component information '''
         
@@ -240,8 +241,8 @@ class componentHandler(object):
                                    'isParamGroup': c.isParamGroup,
                                    'cset': cset,
                                    'tabs': tabs(request, self.qn, 'Model', self.component.model.id),
-                                   'notAjax': not request.is_ajax()
-                                   })
+                                   'notAjax': not request.is_ajax()},
+                                   context_instance=RequestContext(request))
             
             
     def manageRefs(self,request):      

@@ -3,7 +3,7 @@ from django.forms.util import ErrorList
 from django.forms.fields import URLField
 
 
-def uniqueness(form, centre, field='name'):
+def uniqueness(form, qn, field='name'):
     '''  
     This utility function is to be called within a model clean method to ensure uniqueness
     of a field within a model in a given project (as opposed to within all instances of the model
@@ -22,8 +22,8 @@ def uniqueness(form, centre, field='name'):
     
     existing = form.Meta.model.objects.all()
     
-    if centre is not None:
-        existing = existing.filter(centre=centre)      
+    if qn is not None:
+        existing = existing.filter(qn=qn)      
     
     #Assume we don't want something with no centre clashing with anything
     #since it might want to be copied in later.

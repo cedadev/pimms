@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.template.context import RequestContext
 
 from pimms.apps.qn.models import *
 from pimms.apps.qn.forms import *
@@ -111,8 +112,8 @@ class gridHandler(object):
                                   'refs': refs,
                                   'urls': urls,
                                   'tabs': tabs(request, self.qn, 'Grid', self.grid.topGrid.id),
-                                  'notAjax': not request.is_ajax()
-                                  })
+                                  'notAjax': not request.is_ajax()},
+                                   context_instance=RequestContext(request))
         
     def manageRefs(self,request):      
         ''' Handle references for a specific grid '''

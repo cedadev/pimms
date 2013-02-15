@@ -180,7 +180,7 @@ class tabs(list):
             ('Grid', 'pimms.apps.qn.views.gridEdit', (qn, request.session['Grid'],) ,'left'),
             ('Simulation', 'pimms.apps.qn.views.simulationEdit', (qn, request.session['Simulation'],), 'left'),
             #('Files', 'pimms.apps.qn.views.list', (qn, 'file',), 'left'),
-            #('References', 'pimms.apps.qn.views.list', (qn, 'reference',), 'left'),
+            ('References', 'pimms.apps.qn.views.list', (qn, 'reference',), 'left'),
             #('Parties', 'pimms.apps.qn.views.list', (qn, 'parties',), 'left'),
             #('Help', 'pimms.apps.qn.views.help', (qn,), 'right'),
             #('About', 'pimms.apps.qn.views.about', (qn,), 'right'),

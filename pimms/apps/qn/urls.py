@@ -95,26 +95,21 @@ urlpatterns = patterns('',
 #            'pimms.apps.qn.views.ensemble'),
 #    (r'^cmip5/(?P<cen_id>\d+)/(?P<sim_id>\d+)/ensemble/(?P<ens_id>\d+)/$',
 #            'pimms.apps.qn.views.ensemble'),                                               
-#                          
-#    #### generic simple views
-#    # DELETE
-#    (r'^cmip5/(?P<cen_id>\d+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$',
-#            'pimms.apps.qn.views.delete'),
-#    (r'^cmip5/(?P<cen_id>\d+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$',
-#            'pimms.apps.qn.views.delete'),      
-#    # EDIT
-#    # cmip5q/centre_id/edit/resourceType/resourceID/returnType  (resourceID=0, blank form)
-#    (r'^cmip5/(?P<cen_id>\d+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$',
-#            'pimms.apps.qn.views.edit'),
-#    # cmip5q/centre_id/edit/resourceType/resourceID/targetType/targetID/returnType  
-#        #(resourceID=0, blank form)
-#    (r'^cmip5/(?P<cen_id>\d+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$',
-#            'pimms.apps.qn.views.edit'),
-#    # LIST
-#    (r'^cmip5/(?P<cen_id>\d+)/list/(?P<resourceType>\D+)/$',
-#            'pimms.apps.qn.views.list'),
-#    (r'^cmip5/(?P<cen_id>\d+)/list/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)$',
-#            'pimms.apps.qn.views.list'),
+
+                        
+    #### generic simple views
+    
+    # DELETE
+    (r'^(?P<qnproj>\D+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.delete'),
+    (r'^(?P<qnproj>\D+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.delete'),      
+    
+    # EDIT
+    (r'^(?P<qnproj>\D+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.edit'),
+    (r'^(?P<qnproj>\D+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.edit'),
+    
+    # LIST
+    (r'^(?P<qnproj>\D+)/list/(?P<resourceType>\D+)/$', 'pimms.apps.qn.views.list'),
+    (r'^cmip5/(?P<cen_id>\d+)/list/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)$', 'pimms.apps.qn.views.list'),
 #    (r'^cmip5/(?P<cen_id>\d+)/filterlist/(?P<resourceType>\D+)$',
 #            'pimms.apps.qn.views.filterlist'),
 #    # ASSIGN            

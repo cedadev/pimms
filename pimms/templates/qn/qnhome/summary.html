@@ -1,43 +1,41 @@
 {% extends "qn/base.html" %}
 
 {% block content %}
-
 <div class="boxer titlerow">
-  Summary page for <b>{{ project }}</b>
+  Home page for <b>{{ project }}</b> metadata
 </div>
 
-<!-- Page help section -->
-<!--{% include 'qn/centre/centrehelp.html' %}-->
+<!-- Page welcome section -->
+{% include 'qn/qnhome/welcome.html' %}
 
 <div class="boxer">
   <table>
     <tr>
       <td width="33%">
 	       <!-- Platform summary section -->
-        {% include 'qn/centre/centreplats.html' %}
+        {% include 'qn/qnhome/plats.html' %}
       </td>
     </tr>
     <tr>
       <td width="33%">
         <!-- Grid summary section -->
-        {% include 'qn/centre/centregrids.html' %}
+        {% include 'qn/qnhome/grids.html' %}
       </td>
     </tr>
     <tr>
       <td width="33%">    
         <!-- Model summary section -->
-        {% include 'qn/centre/centremodels.html' %}
+        {% include 'qn/qnhome/models.html' %}
       </td>
     </tr>    
   </table>
   
   <!-- Simulations summary section -->
   <div class="boxer">
-    {% include 'qn/centre/centresimtable.html' %}
+    {% include 'qn/qnhome/simtable.html' %}
   </div>
   
 </div>
-
 {% endblock %}
 
 {% block pagejs %}
