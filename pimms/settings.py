@@ -107,6 +107,7 @@ LOGIN_URL = 'pimms/login'
 
 
 INSTALLED_APPS = (
+    'django.contrib.staticfiles',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -118,7 +119,7 @@ INSTALLED_APPS = (
     'apps.cv',
     'apps.exp',
     'apps.person',
-    'apps.qn'
+    'apps.qn',
 )
 
 
