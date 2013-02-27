@@ -1,6 +1,7 @@
 from __future__ import with_statement
 from fabric.api import *
 from fabric.contrib.console import confirm
+from fabric.utils import error, warn
 
 import sys
 import os.path as op
@@ -12,8 +13,6 @@ env.hosts = ['gdevine@puma.nerc.ac.uk']
 
 # Defaults overridden in some tasks:
 env.deployment = sys.prefix
-env.apache_logdir = NotImplemented
-env.wsgi_path = NotImplemented
 
 def gitupdate():
     local("git add .")
@@ -42,11 +41,12 @@ def ceda_deployment(deployment='/pyEnv/ve/pimms'):
     wsgi_path = deployment+'/lib64/python2.6/site-packages/pimms/resources'
     with settings(deployment=deployment,
                   apache_logdir='/pyEnv/log',
-                  wsgi_path=wsgi_path):
+                  wsgi_path=wsgi_path,
+                  ):
         wsgi()
         wsgi_conf()
-    
-        
+
+        tarball()                  
 
 def wsgi(filepath=None):
     """
@@ -85,6 +85,31 @@ def wsgi_conf(filepath=None):
     conf_template = op.join(here, 'apache/pimms_wsgi.conf.tmpl')
     write_template(conf_template, filepath, **params)
 
+
+
+def tarball():
+    local('python setup.py sdist')
+
+
+def local_settings(db_password, filepath=None):
+    if filepath is None:
+        filepath = op.join(here, 'pimms/local_settings.py')
+
+    # Make sure we don't clobber local settings
+    if op.exists(filepath):
+        warn('%s exists.  Please remove to recreate' % filepath)
+        return
+
+    params = {
+        'ADMIN_NAME': env.admin_name,
+        'ADMIN_EMAIL': env.admin_email,
+        'SERVER_EMAIL': env.server_email,
+        'DB_PASSWORD': db_password,
+        'DB_HOST': env.db_host,
+        'DB_PORT': env.db_port,
+        }
+    settings_template = op.join(here, 'pimms/local_settings.py.tmpl')
+    write_template(settings_template, filepath, **params)
 
 def write_template(template_file, output_file, **kwargs):
     t = Template(open(template_file).read())

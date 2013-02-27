@@ -1,0 +1,26 @@
+import os
+thisDir = os.path.dirname(__file__)
+
+DEBUG = True
+
+ADMINS = (
+    (${ADMIN_NAME}, ${ADMIN_EMAIL})
+)
+
+MANAGERS = ADMINS
+
+SERVER_EMAIL = '${SERVER_EMAIL}'
+
+DATABASE_ENGINE = 'postgresql_psycopg2'
+DATABASE_NAME = 'pimms'
+DATABASE_USER = 'pimms'
+DATABASE_PASSWORD = '${DB_PASSWORD}'
+DATABASE_HOST = '${DB_HOST}'
+DATABASE_PORT = '${DB_PORT}'
+
+import logging
+LOG = logging
+
+STATICFILES_DIRS = (
+    thisDir + '/static/',
+)
