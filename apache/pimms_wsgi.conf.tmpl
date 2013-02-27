@@ -1,0 +1,21 @@
+###
+# Configuration for Apache mod_wsgi module
+# This file has to be INCLUDE in a <VirtualHost> tag
+###
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    ErrorLog ${LOG_DIR}/pimms_error.log
+    CustomLog ${LOG_DIR}/pimms.log combined
+
+    Alias /pimms/static/ ${DEPLOYMENT}/static
+    
+    <Directory ${DEPLOYMENT}/static>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    
+    WSGIScriptAlias /pimms ${PROJECT_WSGI}
+
