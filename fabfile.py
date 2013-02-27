@@ -13,6 +13,7 @@ env.hosts = ['gdevine@puma.nerc.ac.uk']
 
 # Defaults overridden in some tasks:
 env.deployment = sys.prefix
+env.db_port=''
 
 def gitupdate():
     local("git add .")
