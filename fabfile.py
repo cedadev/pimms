@@ -46,8 +46,6 @@ def ceda_deployment(deployment='/pyEnv/ve/pimms'):
         wsgi()
         wsgi_conf()
 
-        tarball()                  
-
 def wsgi(filepath=None):
     """
     Create the wsgi script used for deployment.
