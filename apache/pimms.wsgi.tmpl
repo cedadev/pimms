@@ -37,6 +37,11 @@ sys.path[:0] = new_sys_path
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'pimms.settings'
 
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
-
+#!TODO: This recipe depends on the Django version.  Verify that PIMMS needs 
+#    Django 1.3 then tidy up
+try:
+    from django.core.wsgi import get_wsgi_application
+    application = get_wsgi_application()
+except ImportError:
+    from django.core.handlers.wsgi import WSGIHandler
+    application = WSGIHandler()
