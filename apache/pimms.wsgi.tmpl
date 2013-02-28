@@ -1,6 +1,7 @@
 import sys
 import site
 import os
+import os.path as op
 
 ##############################################################################
 # Configuration parameters to be overridden during deployment
@@ -12,8 +13,8 @@ vepath = "${DEPLOYMENT}"
 # mod_wsgi virtualenv setup as documented at 
 #   http://code.google.com/p/modwsgi/wiki/VirtualEnvironments
 
-
-ALLDIRS = [vepath]
+#!TODO: remove hard-coded python version
+ALLDIRS = [op.join(vepath, 'lib/python2.6/site-packages')]
 
 # Remember original sys.path.
 prev_sys_path = list(sys.path)
