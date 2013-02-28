@@ -94,11 +94,6 @@ def local_settings(db_password, filepath=None):
     if filepath is None:
         filepath = op.join(here, 'pimms/local_settings.py')
 
-    # Make sure we don't clobber local settings
-    if op.exists(filepath):
-        warn('%s exists.  Please remove to recreate' % filepath)
-        return
-
     params = {
         'ADMIN_NAME': env.admin_name,
         'ADMIN_EMAIL': env.admin_email,
