@@ -1,7 +1,7 @@
 # Django settings for cimexpgen project.
 
 import os
-thisDir = os.path.dirname(__file__)
+thisDir = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 TEMPLATE_DEBUG = False
