@@ -39,7 +39,8 @@ def ceda_deployment(db_host, db_password, deployment='/pyEnv/ve/pimms'):
     Specific deployment configuration for CEDA.
 
     """
-    wsgi_path = deployment+'/lib/python2.6/site-packages/pimms/resources/pimms.wsgi'
+    #wsgi_path = deployment+'/lib/python2.6/site-packages/pimms/resources/pimms.wsgi'
+    wsgi_path = deployment+'/etc/pimms.wsgi'
 
     with settings(deployment=deployment,
                   apache_logdir='/pyEnv/log',
