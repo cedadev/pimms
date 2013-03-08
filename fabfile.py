@@ -34,18 +34,24 @@ def deploy():
         #run("touch app.wsgi")
 
 
-def ceda_deployment(deployment='/pyEnv/ve/pimms'):
+def ceda_deployment(db_host, db_password, deployment='/pyEnv/ve/pimms'):
     """
     Specific deployment configuration for CEDA.
 
     """
     wsgi_path = deployment+'/lib/python2.6/site-packages/pimms/resources/pimms.wsgi'
+
     with settings(deployment=deployment,
                   apache_logdir='/pyEnv/log',
                   wsgi_path=wsgi_path,
+                  db_host=db_host,
+                  admin_name='Stephen Pascoe',
+                  admin_email='Stephen.Pascoe@stfc.ac.uk',
+                  server_email='localhost',
                   ):
         wsgi()
         wsgi_conf()
+        local_settings(db_host, db_password)
 
 def wsgi(filepath=None):
     """
@@ -90,7 +96,7 @@ def tarball():
     local('python setup.py sdist')
 
 
-def local_settings(db_password, filepath=None):
+def local_settings(db_host, db_password, filepath=None):
     if filepath is None:
         filepath = op.join(here, 'pimms/local_settings.py')
 
@@ -99,7 +105,7 @@ def local_settings(db_password, filepath=None):
         'ADMIN_EMAIL': env.admin_email,
         'SERVER_EMAIL': env.server_email,
         'DB_PASSWORD': db_password,
-        'DB_HOST': env.db_host,
+        'DB_HOST': db_host,
         'DB_PORT': env.db_port,
         'DEPLOYMENT': env.deployment,
         }
