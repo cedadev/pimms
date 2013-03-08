@@ -24,3 +24,8 @@ LOG = logging
 STATICFILES_DIRS = (
     thisDir + '/static/',
 )
+
+# This is the location where static files will be installed during deployment
+# The deployment script should run "python manage.py collectstatic --noinput"
+# to collect static files into this directory
+STATIC_ROOT = '${DEPLOYMENT}/static'

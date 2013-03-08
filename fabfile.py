@@ -101,6 +101,7 @@ def local_settings(db_password, filepath=None):
         'DB_PASSWORD': db_password,
         'DB_HOST': env.db_host,
         'DB_PORT': env.db_port,
+        'DEPLOYMENT': env.deployment,
         }
     settings_template = op.join(here, 'pimms/local_settings.py.tmpl')
     write_template(settings_template, filepath, **params)
