@@ -1,0 +1,2 @@
+recursive-include pimms/templates *.html
+recursive-include pimms/static *
