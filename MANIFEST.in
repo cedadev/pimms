@@ -1,2 +1,3 @@
 recursive-include pimms/templates *.html
 recursive-include pimms/static *
+recursive-include pimms/apps/cv/xslt *
