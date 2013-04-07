@@ -30,6 +30,13 @@ class XMLVocabReader:
                     raise 'Cannot find centre %s'%centre
                 
 	def doParse(self):
+                #!TODO: I have patched this block to return when there are no components.
+		#       Check this is works with the rest of the code.
+		model = self.root.find('component')
+		if model is None:
+			logging.info("No components found for centre %s" % self.centreID)
+			return
+
 		model = self.root.findall('component')[0]
 		# top of tree / start of model
 		logging.info("New component: %s for centre %s"%(model.attrib['name'],self.centreID))

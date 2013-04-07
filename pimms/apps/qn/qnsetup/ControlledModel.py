@@ -111,7 +111,13 @@ class XMLVocabReader:
         self.model = model
      
     def doParse(self):
-        first = self.root.findall('component')[0]
+        #!TODO: I have patched this block to return when there are no components.
+        #       Check this is works with the rest of the code.
+        first = self.root.find('component')
+        if first is None:
+            logging.info("No components found for model %s" % self.model)
+            return
+
         logging.info("New component: %s for model %s"%(first.attrib['name'],self.model))
         # Initiate new top-level component in django:
         modelParser = ComponentParser(first, self.model)
