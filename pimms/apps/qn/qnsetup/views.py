@@ -22,6 +22,7 @@ def qnsetuphome(request):
         urls = getsiteurls(urls)
         urls = getqnsetupurls(urls)        
         
+        #!FIXME: if one of the questionnairs raises an error none will be built.
         allqns = Questionnaire.objects.filter()
         for qn in allqns:
             qn.url = reverse('pimms.apps.qn.views.qnhome', args=(qn, ))
