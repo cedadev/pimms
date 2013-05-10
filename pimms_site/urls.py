@@ -10,17 +10,17 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
         
     # for user registration/login/logout
-    (r'^register/$', 'pimms.apps.person.views.UserRegistration', {}, 'register'),
-    (r'^login/$', 'pimms.apps.person.views.LoginRequest', {}, 'login'),
-    (r'^logout/$', 'pimms.apps.person.views.LogoutRequest', {}, 'logout'),
+    (r'^register/$', 'pimms_apps.person.views.UserRegistration', {}, 'register'),
+    (r'^login/$', 'pimms_apps.person.views.LoginRequest', {}, 'login'),
+    (r'^logout/$', 'pimms_apps.person.views.LogoutRequest', {}, 'logout'),
     
     # including app level urls.py's
-    (r'', include('pimms.apps.main.urls')),
-    (r'', include('pimms.apps.person.urls')),
-    (r'^exp/', include('pimms.apps.exp.urls')),
-    (r'^cv/', include('pimms.apps.cv.urls')),
-    (r'^qn/', include('pimms.apps.qn.urls')),
-    (r'^qnsetup/', include('pimms.apps.qn.qnsetup.urls')),
+    (r'', include('pimms_apps.main.urls')),
+    (r'', include('pimms_apps.person.urls')),
+    (r'^exp/', include('pimms_apps.exp.urls')),
+    (r'^cv/', include('pimms_apps.cv.urls')),
+    (r'^qn/', include('pimms_apps.qn.urls')),
+    (r'^qnsetup/', include('pimms_apps.qn.qnsetup.urls')),
 )
 
 
