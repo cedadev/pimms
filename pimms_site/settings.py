@@ -116,10 +116,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'guardian',
-    'pimms.apps.cv',
-    'pimms.apps.exp',
-    'pimms.apps.person',
-    'pimms.apps.qn',
+    'pimms_apps.cv',
+    'pimms_apps.exp',
+    'pimms_apps.person',
+    'pimms_apps.qn',
 )
 
 
