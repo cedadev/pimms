@@ -7,6 +7,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # translator home page
-    (r'^$','pimms.apps.cv.views.cvhome', {}, 'cvhome'),
+    (r'^$','pimms_apps.cv.views.cvhome', {}, 'cvhome'),
     )
 

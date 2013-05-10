@@ -9,11 +9,11 @@ from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 
-from pimms.apps.qn.cimHandling import *
-from pimms.apps.qn.utilities import atomuri
-from pimms.apps.qn.XMLutilities import *
-from pimms.apps.qn.fields import *
-from pimms.apps.qn.viewer.view_manager import render_view
+from pimms_apps.qn.cimHandling import *
+from pimms_apps.qn.utilities import atomuri
+from pimms_apps.qn.XMLutilities import *
+from pimms_apps.qn.fields import *
+from pimms_apps.qn.viewer.view_manager import render_view
 
 
 logging = settings.LOG
@@ -197,7 +197,7 @@ class CIMObject(Fundamentals):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('pimms.apps.qn.views.persistedDoc', 
+        return ('pimms_apps.qn.views.persistedDoc', 
                 (self.cimtype, self.uri, self.documentVersion))
     def save(self, *args, **kwargs):
         # FIXME: We should have a local save method to ensure the version policy 
@@ -254,7 +254,7 @@ class Doc(Fundamentals):
     
     def xmlobject(self):
         ''' Return an lxml object view of me '''
-        from pimms.apps.qn.Translator import Translator  # needs to be deferred down here to avoid circularity
+        from pimms_apps.qn.Translator import Translator  # needs to be deferred down here to avoid circularity
         translator=Translator()
         if self._meta.module_name=='simulation' :
             # composition defaults to false
@@ -368,7 +368,7 @@ class Doc(Fundamentals):
     @models.permalink
     def edit_url(self):
         ''' How can we edit me? '''
-        return ('pimms.apps.qn.views.%sEdit'%self._meta.module_name,(self.centre_id,self.id,))
+        return ('pimms_apps.qn.views.%sEdit'%self._meta.module_name,(self.centre_id,self.id,))
   
 class Relationship(models.Model):
     ''' Used to describe relationships between entities '''

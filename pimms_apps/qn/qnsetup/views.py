@@ -4,12 +4,12 @@ from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
 
-from pimms.apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
-from pimms.apps.qn.qnsetup.helpers import getqnsetupurls
-from pimms.apps.qn.qnsetup.generateQn import generate_qn
-from pimms.apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
-from pimms.apps.helpers import getsiteurls
-from pimms.apps.qn.helpers import getqnurls
+from pimms_apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
+from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
+from pimms_apps.qn.qnsetup.generateQn import generate_qn
+from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
+from pimms_apps.helpers import getsiteurls
+from pimms_apps.qn.helpers import getqnurls
 
 
 def qnsetuphome(request):
@@ -25,9 +25,9 @@ def qnsetuphome(request):
         #!FIXME: if one of the questionnairs raises an error none will be built.
         allqns = Questionnaire.objects.filter()
         for qn in allqns:
-            qn.url = reverse('pimms.apps.qn.views.qnhome', args=(qn, ))
-#            qn.cpurl = reverse('pimms.apps.exp.views.expcopy', args=(exp.id, ))
-#            qn.delurl = reverse('pimms.apps.exp.views.expdelete', args=(exp.id, ))
+            qn.url = reverse('pimms_apps.qn.views.qnhome', args=(qn, ))
+#            qn.cpurl = reverse('pimms_apps.exp.views.expcopy', args=(exp.id, ))
+#            qn.delurl = reverse('pimms_apps.exp.views.expdelete', args=(exp.id, ))
     except:
         raise Http404
       
@@ -92,7 +92,7 @@ def qninputs(request):
                 #Now run the questionnaire setup script with the uploaded files/settings and return the generated url
                 generate_qn(qn, cvlist, gridupload, explist)
                 
-                urls['qnsetupsuccess'] = reverse('pimms.apps.qn.qnsetup.views.qnsetupsuccess', args=(qn.project, ))
+                urls['qnsetupsuccess'] = reverse('pimms_apps.qn.qnsetup.views.qnsetupsuccess', args=(qn.project, ))
                 
                 return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
             else:
@@ -128,10 +128,10 @@ def qnsetupsuccess(request, qnproj):
         urls = getsiteurls(urls)
         urls = getqnsetupurls(urls)
         # get qn specific url for success page
-        urls['qnsetupsuccess'] = reverse('pimms.apps.qn.qnsetup.views.qnsetupsuccess', args=(qnproj, ))
+        urls['qnsetupsuccess'] = reverse('pimms_apps.qn.qnsetup.views.qnsetupsuccess', args=(qnproj, ))
         
         #### Now construct a url using the qnname and the home url for an actual questionnaire
-        urls['qnhome'] = reverse('pimms.apps.qn.views.qnhome', args=(qnproj, ))
+        urls['qnhome'] = reverse('pimms_apps.qn.views.qnhome', args=(qnproj, ))
         
         
     except:

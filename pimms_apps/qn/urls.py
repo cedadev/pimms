@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-##from pimms.apps.qn.feeds import DocFeed
+##from pimms_apps.qn.feeds import DocFeed
 
 # this is not actually correct, since strictly we need hexadecimal following this pattern
 ##uuid='\w\w\w\w\w\w\w\w-\w\w\w\w-\w\w\w\w-\w\w\w\w-\w\w\w\w\w\w\w\w\w\w\w\w'
@@ -14,119 +14,119 @@ admin.autodiscover()
 script_path=settings.DEPLOYED_SCRIPT_PATH
 
 urlpatterns = patterns('',
-    (r'^(?P<qnproj>\D+)/home$','pimms.apps.qn.views.qnhome', {}, 'qnhome'),
-#    (r'^cmip5/publisheddocs/$','pimms.apps.qn.views.published_docs'),
+    (r'^(?P<qnproj>\D+)/home$','pimms_apps.qn.views.qnhome', {}, 'qnhome'),
+#    (r'^cmip5/publisheddocs/$','pimms_apps.qn.views.published_docs'),
 #    # 
-#    url(r'^cmip5/authz/$','pimms.apps.qn.views.authorisation',name='security'),
+#    url(r'^cmip5/authz/$','pimms_apps.qn.views.authorisation',name='security'),
 #    #        
 #    # ajax vocabulary handler
-#    url(r'^ajax/vocabs/(?P<vocabName>\D+)/$','pimms.apps.qn.views.completionHelper', 
+#    url(r'^ajax/vocabs/(?P<vocabName>\D+)/$','pimms_apps.qn.views.completionHelper', 
 #                                                name='ajax_value'),
-#    url(r'^ajax/autocomplete/modelname/$', 'pimms.apps.qn.views.autocomplete_model', 
+#    url(r'^ajax/autocomplete/modelname/$', 'pimms_apps.qn.views.autocomplete_model', 
 #                                                name='autocomplete_model'),
 #    #
 #    # generic document handling
 #    # 
-    (r'^(?P<qnproj>\D+)/(?P<docType>\D+)/doc/(?P<pkid>\d+)/(?P<method>\D+)/$', 'pimms.apps.qn.views.genericDoc'),  
-#    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/$'%uuid,'pimms.apps.qn.views.persistedDoc'),
-#    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/(?P<version>\d+)/$'%uuid,'pimms.apps.qn.views.persistedDoc'),                     
+    (r'^(?P<qnproj>\D+)/(?P<docType>\D+)/doc/(?P<pkid>\d+)/(?P<method>\D+)/$', 'pimms_apps.qn.views.genericDoc'),  
+#    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/$'%uuid,'pimms_apps.qn.views.persistedDoc'),
+#    (r'^cmip5/(?P<docType>\D+)/(?P<uri>%s)/(?P<version>\d+)/$'%uuid,'pimms_apps.qn.views.persistedDoc'),                     
 
     # 
     # COMPONENTS:
     #   
-    (r'^(?P<qnproj>\D+)/component/add/$', 'pimms.apps.qn.views.componentAdd'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/edit/$', 'pimms.apps.qn.views.componentEdit'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/addsub/$', 'pimms.apps.qn.views.componentSub'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/refs/$','pimms.apps.qn.views.componentRefs'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/coupling/$','pimms.apps.qn.views.componentCup'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/Inputs/$','pimms.apps.qn.views.componentInp'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/copy/$','pimms.apps.qn.views.componentCopy'),
-    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/text/$','pimms.apps.qn.views.componentTxt'),
+    (r'^(?P<qnproj>\D+)/component/add/$', 'pimms_apps.qn.views.componentAdd'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/edit/$', 'pimms_apps.qn.views.componentEdit'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/addsub/$', 'pimms_apps.qn.views.componentSub'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/refs/$','pimms_apps.qn.views.componentRefs'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/coupling/$','pimms_apps.qn.views.componentCup'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/Inputs/$','pimms_apps.qn.views.componentInp'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/copy/$','pimms_apps.qn.views.componentCopy'),
+    (r'^(?P<qnproj>\D+)/component/(?P<component_id>\d+)/text/$','pimms_apps.qn.views.componentTxt'),
 
     #
     # SIMULATIONS
     #
-    (r'^(?P<qnproj>\D+)/simulation/list/$', 'pimms.apps.qn.views.simulationList'),  
-    (r'^(?P<qnproj>\D+)/simulation/add/(?P<experiment_id>\d+)/$', 'pimms.apps.qn.views.simulationAdd'),
-    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/edit/$', 'pimms.apps.qn.views.simulationEdit'),  
-    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/coupling/$', 'pimms.apps.qn.views.simulationCup'), 
-    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/coupling/(?P<coupling_id>\d+)/(?P<ctype>\D+)/$', 'pimms.apps.qn.views.simulationCup'),  
-    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/conformance/$', 'pimms.apps.qn.views.conformanceMain'),  
-    (r'^(?P<qnproj>\D+)/simulation/copy/$', 'pimms.apps.qn.views.simulationCopy'),
-    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/copyind/$', 'pimms.apps.qn.views.simulationCopyInd'),
-    #(r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/resetCouplings/$', 'pimms.apps.qn.views.simulationCupReset'), 
-    #(r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/delete/$', 'pimms.apps.qn.views.simulationDel'),
+    (r'^(?P<qnproj>\D+)/simulation/list/$', 'pimms_apps.qn.views.simulationList'),  
+    (r'^(?P<qnproj>\D+)/simulation/add/(?P<experiment_id>\d+)/$', 'pimms_apps.qn.views.simulationAdd'),
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/edit/$', 'pimms_apps.qn.views.simulationEdit'),  
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/coupling/$', 'pimms_apps.qn.views.simulationCup'), 
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/coupling/(?P<coupling_id>\d+)/(?P<ctype>\D+)/$', 'pimms_apps.qn.views.simulationCup'),  
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/conformance/$', 'pimms_apps.qn.views.conformanceMain'),  
+    (r'^(?P<qnproj>\D+)/simulation/copy/$', 'pimms_apps.qn.views.simulationCopy'),
+    (r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/copyind/$', 'pimms_apps.qn.views.simulationCopyInd'),
+    #(r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/resetCouplings/$', 'pimms_apps.qn.views.simulationCupReset'), 
+    #(r'^(?P<qnproj>\D+)/simulation/(?P<simulation_id>\d+)/delete/$', 'pimms_apps.qn.views.simulationDel'),
 #    # 
 #    # GRIDS:
 #    #   
-    (r'^(?P<qnproj>\D+)/grid/add/$','pimms.apps.qn.views.gridAdd'),
-#    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/copy/$','pimms.apps.qn.views.gridCopy'),
-    (r'^(?P<qnproj>\D+)/grid/(?P<grid_id>\d+)/edit/$', 'pimms.apps.qn.views.gridEdit'),
-#    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/refs/$','pimms.apps.qn.views.gridRefs'),             
+    (r'^(?P<qnproj>\D+)/grid/add/$','pimms_apps.qn.views.gridAdd'),
+#    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/copy/$','pimms_apps.qn.views.gridCopy'),
+    (r'^(?P<qnproj>\D+)/grid/(?P<grid_id>\d+)/edit/$', 'pimms_apps.qn.views.gridEdit'),
+#    (r'^cmip5/(?P<centre_id>\d+)/grid/(?P<grid_id>\d+)/refs/$','pimms_apps.qn.views.gridRefs'),             
 
 
     # 
     # PLATFORMS:
     # 
-    (r'^(?P<qnproj>\D+)/platform/add/$', 'pimms.apps.qn.views.platformEdit'),
-    (r'^(?P<qnproj>\D+)/platform/(?P<platform_id>\d+)/edit/$', 'pimms.apps.qn.views.platformEdit'),
+    (r'^(?P<qnproj>\D+)/platform/add/$', 'pimms_apps.qn.views.platformEdit'),
+    (r'^(?P<qnproj>\D+)/platform/(?P<platform_id>\d+)/edit/$', 'pimms_apps.qn.views.platformEdit'),
     
     #
     # experiment/view/experiment_id
-    (r'^(?P<qnproj>\D+)/experiment/(?P<experiment_id>\d+)/$', 'pimms.apps.qn.views.viewExperiment'),
+    (r'^(?P<qnproj>\D+)/experiment/(?P<experiment_id>\d+)/$', 'pimms_apps.qn.views.viewExperiment'),
 #    
 #    # cmip5/conformance/centre_id/simulation_id/requirement_id/$
 #    (r'^cmip5/conformance/(?P<cen_id>\d+)/(?P<sim_id>\d+)/(?P<req_id>\d+)/$',
-#            'pimms.apps.qn.views.conformanceEdit'),  
+#            'pimms_apps.qn.views.conformanceEdit'),  
 #                     
 #    # help, intro, about, vn history
 #    (r'^cmip5/(?P<cen_id>\d+)/help/$',
-#            'pimms.apps.qn.views.help'),
+#            'pimms_apps.qn.views.help'),
 #    (r'^cmip5/(?P<cen_id>\d+)/vnhist/$',
-#            'pimms.apps.qn.views.vnhist'),
+#            'pimms_apps.qn.views.vnhist'),
 #    (r'^cmip5/(?P<cen_id>\d+)/trans/$',
-#            'pimms.apps.qn.views.trans'),              
+#            'pimms_apps.qn.views.trans'),              
 #    (r'^cmip5/(?P<cen_id>\d+)/about/$',
-#            'pimms.apps.qn.views.about'),     
+#            'pimms_apps.qn.views.about'),     
 #    (r'^cmip5/(?P<cen_id>\d+)/intro/$',
-#            'pimms.apps.qn.views.intro'),                       
+#            'pimms_apps.qn.views.intro'),                       
 #    # ensembles ...
 #    (r'^cmip5/(?P<cen_id>\d+)/(?P<sim_id>\d+)/ensemble/$',
-#            'pimms.apps.qn.views.ensemble'),
+#            'pimms_apps.qn.views.ensemble'),
 #    (r'^cmip5/(?P<cen_id>\d+)/(?P<sim_id>\d+)/ensemble/(?P<ens_id>\d+)/$',
-#            'pimms.apps.qn.views.ensemble'),                                               
+#            'pimms_apps.qn.views.ensemble'),                                               
 
                         
     #### generic simple views
     
     # DELETE
-    (r'^(?P<qnproj>\D+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.delete'),
-    (r'^(?P<qnproj>\D+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.delete'),      
+    (r'^(?P<qnproj>\D+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$', 'pimms_apps.qn.views.delete'),
+    (r'^(?P<qnproj>\D+)/delete/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$', 'pimms_apps.qn.views.delete'),      
     
     # EDIT
-    (r'^(?P<qnproj>\D+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.edit'),
-    (r'^(?P<qnproj>\D+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$', 'pimms.apps.qn.views.edit'),
+    (r'^(?P<qnproj>\D+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<returnType>\D+)/$', 'pimms_apps.qn.views.edit'),
+    (r'^(?P<qnproj>\D+)/edit/(?P<resourceType>\D+)/(?P<resource_id>\d+)/(?P<targetType>\D+)/(?P<target_id>\d+)/(?P<returnType>\D+)/$', 'pimms_apps.qn.views.edit'),
     
     # LIST
-    (r'^(?P<qnproj>\D+)/list/(?P<resourceType>\D+)/$', 'pimms.apps.qn.views.list'),
-    (r'^cmip5/(?P<cen_id>\d+)/list/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)$', 'pimms.apps.qn.views.list'),
+    (r'^(?P<qnproj>\D+)/list/(?P<resourceType>\D+)/$', 'pimms_apps.qn.views.list'),
+    (r'^cmip5/(?P<cen_id>\d+)/list/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)$', 'pimms_apps.qn.views.list'),
 #    (r'^cmip5/(?P<cen_id>\d+)/filterlist/(?P<resourceType>\D+)$',
-#            'pimms.apps.qn.views.filterlist'),
+#            'pimms_apps.qn.views.filterlist'),
 #    # ASSIGN            
-     (r'^(?P<qnproj>\D+)/assign/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)/$', 'pimms.apps.qn.views.assign'),       
+     (r'^(?P<qnproj>\D+)/assign/(?P<resourceType>\D+)/(?P<targetType>\D+)/(?P<target_id>\d+)/$', 'pimms_apps.qn.views.assign'),       
 #            
 #    # export files to CMIP5
-#    (r'^cmip5/(?P<cen_id>\d+)/exportFiles/$','pimms.apps.qn.views.exportFiles'), 
-#    (r'^cmip5/testFile/(?P<fname>.+)$','pimms.apps.qn.views.testFile'),
+#    (r'^cmip5/(?P<cen_id>\d+)/exportFiles/$','pimms_apps.qn.views.exportFiles'), 
+#    (r'^cmip5/testFile/(?P<fname>.+)$','pimms_apps.qn.views.testFile'),
 #        
 #            # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
 #    # to INSTALLED_APPS to enable admin documentation:
 #    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 #        
 #    # Vocabs
-#    url(r'^cmip5/vocab/$','pimms.apps.qn.vocab.list',name="vocab_display"),
-#    (r'^cmip5/vocab/(?P<vocabID>\d+)/$','pimms.apps.qn.vocab.show'),
-#    #(r'^cmip5/vocab/(?P<docID>\d+)/(?P<valID>\d+)/$','pimms.apps.qn.vocab.list'),
+#    url(r'^cmip5/vocab/$','pimms_apps.qn.vocab.list',name="vocab_display"),
+#    (r'^cmip5/vocab/(?P<vocabID>\d+)/$','pimms_apps.qn.vocab.show'),
+#    #(r'^cmip5/vocab/(?P<docID>\d+)/(?P<valID>\d+)/$','pimms_apps.qn.vocab.list'),
 #        
 #    # Atom Feeds
 #    (r'^feeds/(.*)/$', "django.contrib.syndication.views.feed", {
@@ -135,8 +135,8 @@ urlpatterns = patterns('',
 #    ),
 #
 #    # Admin
-#    (r'', include('pimms.apps.qn.admin.urls')),
-#    #(r'^admin/protoq/component/copy/$', 'pimms.apps.qn.admin.admin_views.modelcopy'),
+#    (r'', include('pimms_apps.qn.admin.urls')),
+#    #(r'^admin/protoq/component/copy/$', 'pimms_apps.qn.admin.admin_views.modelcopy'),
 #    (r'^cmip5/admin/', include(admin.site.urls)),
 #
 #    #---------------------------------
@@ -153,7 +153,7 @@ urlpatterns = patterns('',
 # now add the common document url methods
 #for doc in ['experiment','platform','component','simulation']:
 #    for key in ['validate','view','xml','html','export']:
-#        urlpatterns+=patterns('',(r'^cmip5/(?P<centre_id>\d+)/%s/(?P<%s_id>\d+)/%s/$'%(doc,doc,key),'pimms.apps.qn.views.doc'))
+#        urlpatterns+=patterns('',(r'^cmip5/(?P<centre_id>\d+)/%s/(?P<%s_id>\d+)/%s/$'%(doc,doc,key),'pimms_apps.qn.views.doc'))
                     
 #if True:  # HACK HACK HACK POOR PERFORMANCE AND SECURITY.
 #    urlpatterns += patterns('',

@@ -6,19 +6,19 @@ A view of a cim instance.
 import lxml
 from lxml import etree as et
 
-from pimms.apps.qn.viewer.view_exception import ViewException
-from pimms.apps.qn.viewer.base_renderer import VIEW_FORMAT_HTML
-from pimms.apps.qn.viewer.base_renderer import VIEW_FORMAT_PDF
-from pimms.apps.qn.viewer.base_renderer import VIEW_FORMAT_XML
-from pimms.apps.qn.viewer.base_renderer import VIEW_MODE_FULL
-from pimms.apps.qn.viewer.base_renderer import VIEW_MODE_PARTIAL
-from pimms.apps.qn.viewer.renderer_of_data_object import RendererOfDataObject
-from pimms.apps.qn.viewer.renderer_of_document_set import RendererOfDocumentSet
-from pimms.apps.qn.viewer.renderer_of_model_component import RendererOfModelComponent
-from pimms.apps.qn.viewer.renderer_of_numerical_experiment import RendererOfNumericalExperiment
-from pimms.apps.qn.viewer.renderer_of_simulation_run import RendererOfSimulationRun
-from pimms.apps.qn.viewer.renderer_of_gridspec import RendererOfGridspec
-from pimms.apps.qn.viewer.renderer_of_platform import RendererOfPlatform
+from pimms_apps.qn.viewer.view_exception import ViewException
+from pimms_apps.qn.viewer.base_renderer import VIEW_FORMAT_HTML
+from pimms_apps.qn.viewer.base_renderer import VIEW_FORMAT_PDF
+from pimms_apps.qn.viewer.base_renderer import VIEW_FORMAT_XML
+from pimms_apps.qn.viewer.base_renderer import VIEW_MODE_FULL
+from pimms_apps.qn.viewer.base_renderer import VIEW_MODE_PARTIAL
+from pimms_apps.qn.viewer.renderer_of_data_object import RendererOfDataObject
+from pimms_apps.qn.viewer.renderer_of_document_set import RendererOfDocumentSet
+from pimms_apps.qn.viewer.renderer_of_model_component import RendererOfModelComponent
+from pimms_apps.qn.viewer.renderer_of_numerical_experiment import RendererOfNumericalExperiment
+from pimms_apps.qn.viewer.renderer_of_simulation_run import RendererOfSimulationRun
+from pimms_apps.qn.viewer.renderer_of_gridspec import RendererOfGridspec
+from pimms_apps.qn.viewer.renderer_of_platform import RendererOfPlatform
 
 
 # Dictionary ofsupported renderers.

@@ -1,7 +1,7 @@
 #
 # Some code to support the navigation of model components 
 #
-from pimms.apps.qn.models import *
+from pimms_apps.qn.models import *
         
 class ComponentFamily:
     ''' Used to provide a django template friendly structure for component heirarchy '''

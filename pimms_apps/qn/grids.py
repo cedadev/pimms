@@ -5,11 +5,11 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.template.context import RequestContext
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.forms import *
-from pimms.apps.qn.yuiTree import *
-from pimms.apps.qn.utilities import RemoteUser
-from pimms.apps.qn.layoutUtilities import tabs
+from pimms_apps.qn.models import *
+from pimms_apps.qn.forms import *
+from pimms_apps.qn.yuiTree import *
+from pimms_apps.qn.utilities import RemoteUser
+from pimms_apps.qn.layoutUtilities import tabs
 
 
 logging = settings.LOG
@@ -38,7 +38,7 @@ class gridHandler(object):
                 logging.debug('Attempt to open an unknown grid %s'%grid_id)
                 raise Exception,e
         
-        self.url = reverse('pimms.apps.qn.views.gridEdit', args=(self.qn, self.grid.id))
+        self.url = reverse('pimms_apps.qn.views.gridEdit', args=(self.qn, self.grid.id))
        
             
     def edit(self, request):
@@ -53,10 +53,10 @@ class gridHandler(object):
         # find my own urls ...
         urls = {}
         urls['form'] = self.url
-        #urls['refs'] = reverse('pimms.apps.qn.views.assign', args=(self.centre_id, 'reference', 'grid', g.id, ))
+        #urls['refs'] = reverse('pimms_apps.qn.views.assign', args=(self.centre_id, 'reference', 'grid', g.id, ))
         #urls=commonURLs(g.grid,urls)
         
-        baseURL = reverse('pimms.apps.qn.views.gridAdd', args=(self.qn, ))
+        baseURL = reverse('pimms_apps.qn.views.gridAdd', args=(self.qn, ))
         template = '+EDID+'
         baseURL = baseURL.replace('add/', '%s/edit' %template)
         
@@ -124,9 +124,9 @@ class gridHandler(object):
         for r in allrefs: 
             if r not in refs:available.append(r) 
         rform=ReferenceForm()
-        refu=reverse('pimms.apps.qn.views.addReference',args=(self.centre_id,c.id,))
-        baseURLa=reverse('pimms.apps.qn.views.assignReference',args=(1,1,))[0:-4]
-        baseURLr=reverse('pimms.apps.qn.views.remReference',args=(1,1,))[0:-4]
+        refu=reverse('pimms_apps.qn.views.addReference',args=(self.centre_id,c.id,))
+        baseURLa=reverse('pimms_apps.qn.views.assignReference',args=(1,1,))[0:-4]
+        baseURLr=reverse('pimms_apps.qn.views.remReference',args=(1,1,))[0:-4]
         return render_to_response('gridRefs.html',
             {'refs':refs,'available':available,'rform':rform,'c':c,
             'refu':refu,'baseURLa':baseURLa,'baseURLr':baseURLr,
@@ -141,7 +141,7 @@ class gridHandler(object):
         new.abbrev=self.grid.abbrev+'cp'
         new.title=self.grid.title+'cp'
         new.save()
-        url=reverse('pimms.apps.qn.views.gridEdit',args=(self.centre_id,new.id,))
+        url=reverse('pimms_apps.qn.views.gridEdit',args=(self.centre_id,new.id,))
         logging.info('Created new grid %s with id %s (copy of %s)'%(new,new.id,self.grid))
         return HttpResponseRedirect(url)
    

@@ -1,5 +1,5 @@
 from django import forms
-from pimms.apps.qn.models import Questionnaire
+from pimms_apps.qn.models import Questionnaire
 
 
 class qnSetupForm(forms.ModelForm):

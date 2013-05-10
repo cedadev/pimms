@@ -7,10 +7,10 @@ Created on 5 Sep 2011
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 
-from pimms.apps.qn.admin.admin_forms import CompCopyForm
-from pimms.apps.qn.admin.admin_scripts import copyCompToNewCen
+from pimms_apps.qn.admin.admin_forms import CompCopyForm
+from pimms_apps.qn.admin.admin_scripts import copyCompToNewCen
 
-from pimms.apps.qn.models import Component, Centre
+from pimms_apps.qn.models import Component, Centre
 
 
 def modelcopy(request):

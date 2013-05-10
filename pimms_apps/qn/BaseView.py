@@ -5,10 +5,10 @@ from django.http import HttpResponse,HttpResponseRedirect,HttpResponseForbidden,
 from django.conf import settings
 from django.template.context import RequestContext
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.forms import *
-from pimms.apps.qn.layoutUtilities import tabs
-from pimms.apps.qn.utilities import sublist, render_badrequest
+from pimms_apps.qn.models import *
+from pimms_apps.qn.forms import *
+from pimms_apps.qn.layoutUtilities import tabs
+from pimms_apps.qn.utilities import sublist, render_badrequest
 
 
 logging=settings.LOG
@@ -66,7 +66,7 @@ class BaseViewHandler:
         ftype = self.resource['filter']
         
         if ftype:
-            url = reverse('pimms.apps.qn.views.filterlist', args=(self.qn, self.resource['type'],))
+            url = reverse('pimms_apps.qn.views.filterlist', args=(self.qn, self.resource['type'],))
             ops = ftype.objects.all()
             
             try: # if we can filter on centres, we do ...
@@ -83,7 +83,7 @@ class BaseViewHandler:
         
         # construct an export button
         if self.resource['type'] == 'file':
-            exportFiles = reverse('pimms.apps.qn.views.exportFiles', args=(self.qn, ))
+            exportFiles = reverse('pimms_apps.qn.views.exportFiles', args=(self.qn, ))
         else: 
             exportFiles = None
         
@@ -91,29 +91,29 @@ class BaseViewHandler:
             # in the case of a list, the target is used to go back ...
 
             # get a URL for a blank form
-            formURL = reverse('pimms.apps.qn.views.edit',
+            formURL = reverse('pimms_apps.qn.views.edit',
                             args=(self.qn, self.resource['type'], 0, self.target['type'], self.target['instance'].id, 'list',))
             for o in objects:
                 # monkey patch an edit URL into the object allowing for the target,
                 # saying come back here (to the list). Unfortunately doing that
                 # means we lose the incoming reference.
                 args = (self.qn, self.resource['type'], o.id, self.target['type'], self.target['instance'].id, 'list',)
-                o.editURL = reverse('pimms.apps.qn.views.edit', args=args)
-                o.delURL = reverse('pimms.apps.qn.views.delete', args=args)
-                #o.delURL=reverse('pimms.apps.qn.views.delete',
+                o.editURL = reverse('pimms_apps.qn.views.edit', args=args)
+                o.delURL = reverse('pimms_apps.qn.views.delete', args=args)
+                #o.delURL=reverse('pimms_apps.qn.views.delete',
                 #            args=(self.cid,self.resource['type'],o.id,self.currentURL)
                 # Need to be able to make sure this isn't an html get from an <a> otherwise
                 # do it as  form with a method of delete.
         else:
             # get a URL for a blank form
-            formURL = reverse('pimms.apps.qn.views.edit', args=(self.qn, self.resource['type'], 0, 'list', ))
+            formURL = reverse('pimms_apps.qn.views.edit', args=(self.qn, self.resource['type'], 0, 'list', ))
             
             for o in objects:
                 # monkey patch an edit URL into the object, saying come back here (list)
                 args = (self.qn, self.resource['type'], o.id, 'list', )
-                o.editURL = reverse('pimms.apps.qn.views.edit', args=args)
+                o.editURL = reverse('pimms_apps.qn.views.edit', args=args)
                 if o.qn == self.qn:
-                    o.delURL = reverse('pimms.apps.qn.views.delete', args=args)
+                    o.delURL = reverse('pimms_apps.qn.views.delete', args=args)
                 else:
                     o.delURL = None
         # we pass a form and formURL for a new instance to be created.
@@ -137,7 +137,7 @@ class BaseViewHandler:
         '''
         if request.method == 'POST':
             logging.debug('Trying to filter on %s' %request.POST)
-            url = reverse('pimms.apps.qn.views.list', args=(self.qn, self.resource['type'], request.POST['klass'], request.POST['id'], ))
+            url = reverse('pimms_apps.qn.views.list', args=(self.qn, self.resource['type'], request.POST['klass'], request.POST['id'], ))
             return HttpResponseRedirect(url)
         else:
             return render_badrequest('error.html', {'message':'Error, No GET to filterlist'})
@@ -155,10 +155,10 @@ class BaseViewHandler:
         # a form, complete with errors, with a submission URL which gets the user
         # back to the right place.  A GET should set that process up.
         if self.target:
-            okURL = reverse('pimms.apps.qn.views.%s' %returnType,
+            okURL = reverse('pimms_apps.qn.views.%s' %returnType,
                args = (self.qn, self.resource['type'], self.target['type'], self.target['instance'].id, ))
         else:
-            okURL = reverse('pimms.apps.qn.views.%s' %returnType, args=(self.qn, self.resource['type'], ))
+            okURL = reverse('pimms_apps.qn.views.%s' %returnType, args=(self.qn, self.resource['type'], ))
         
         # Note that if the resource instance id is zero, this is a new one.
         instance=None
@@ -194,7 +194,7 @@ class BaseViewHandler:
                     return HttpResponse('not implemented')
                 f = form.save()
                 args[2] = f.id
-                editURL = reverse('pimms.apps.qn.views.edit', args=args)   
+                editURL = reverse('pimms_apps.qn.views.edit', args=args)   
                 logging.debug('Successful edit post, redirecting to %s' %editURL)
                 
                 return HttpResponseRedirect(editURL)#(okURL)
@@ -207,7 +207,7 @@ class BaseViewHandler:
         if constraints:
             form.specialise(constraints)
                 
-        editURL = reverse('pimms.apps.qn.views.edit', args=args) 
+        editURL = reverse('pimms_apps.qn.views.edit', args=args) 
                           
         return render_to_response(self.editHTML,
                                     {'form'    :form,
@@ -222,10 +222,10 @@ class BaseViewHandler:
     def delete(self,request,returnType):
         ''' Delete an item ... '''
         if self.target:
-            okURL=reverse('pimms.apps.qn.views.%s'%returnType,
+            okURL=reverse('pimms_apps.qn.views.%s'%returnType,
                args=(self.cid,self.resource['type'],self.target['type'],self.target['instance'].id,))
         else:
-            okURL=reverse('pimms.apps.qn.views.%s'%returnType,
+            okURL=reverse('pimms_apps.qn.views.%s'%returnType,
                args=(self.cid,self.resource['type'],))
         if request.method=='POST':
             if self.resource['id']<>'0':
@@ -318,9 +318,9 @@ class BaseViewHandler:
         url=''
         
         #editURL and form used to add a new instance.
-        editURL=reverse('pimms.apps.qn.views.edit',
+        editURL=reverse('pimms_apps.qn.views.edit',
             args=(self.cid,self.resource['type'],0,self.target['type'],self.target['instance'].id,'assign'))
-        listURL=reverse('pimms.apps.qn.views.list',
+        listURL=reverse('pimms_apps.qn.views.list',
             args=(self.cid,self.resource['type'],self.target['type'],self.target['instance'].id))
             
         return render_to_response(self.selectHTML,

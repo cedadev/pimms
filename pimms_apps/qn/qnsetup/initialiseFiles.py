@@ -5,7 +5,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'pimms.settings'
 
 from django.conf import settings
 
-from pimms.apps.qn.models import *
+from pimms_apps.qn.models import *
 
 logging = settings.LOG
 

@@ -3,11 +3,11 @@ HTML generator for different sections of a CIMDocumentSet CIM instance.
 """
 
 # Module imports.
-from pimms.apps.qn.viewer.modelhtml_generator import get_modelhtml
-from pimms.apps.qn.viewer.simhtml_generator import get_simrunhtml
-from pimms.apps.qn.viewer.gridhtml_generator import get_gridhtml
-from pimms.apps.qn.viewer.datahtml_generator import get_datahtml
-from pimms.apps.qn.viewer.plathtml_generator import get_plathtml
+from pimms_apps.qn.viewer.modelhtml_generator import get_modelhtml
+from pimms_apps.qn.viewer.simhtml_generator import get_simrunhtml
+from pimms_apps.qn.viewer.gridhtml_generator import get_gridhtml
+from pimms_apps.qn.viewer.datahtml_generator import get_datahtml
+from pimms_apps.qn.viewer.plathtml_generator import get_plathtml
 
 
 #namespaces used within the CIM

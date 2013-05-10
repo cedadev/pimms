@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from pimms.apps.qn.models import *
+from pimms_apps.qn.models import *
 
 
 class CompCopyForm(forms.Form):

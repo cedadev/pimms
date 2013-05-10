@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.forms import *
-from pimms.apps.qn.layoutUtilities import tabs
+from pimms_apps.qn.models import *
+from pimms_apps.qn.forms import *
+from pimms_apps.qn.layoutUtilities import tabs
 
 
 logging = settings.LOG
@@ -28,8 +28,8 @@ class ClosureReset:
         self.closureModel={'ic':InternalClosure,'ec':ExternalClosure,'None':None}[ctype]
         args=[centre_id,simulation_id,coupling.id,]
         if ctype<>'None':args.append(ctype)
-        self.url=reverse('pimms.apps.qn.views.simulationCup',args=args)
-        self.returnURL=reverse('pimms.apps.qn.views.simulationCup',
+        self.url=reverse('pimms_apps.qn.views.simulationCup',args=args)
+        self.returnURL=reverse('pimms_apps.qn.views.simulationCup',
                  args=(centre_id,simulation_id,))
     def reset(self):
         ''' Reset internal or external closures '''
@@ -317,20 +317,20 @@ class couplingHandler:
         ''' Handle's model couplings '''
         self.component=Component.objects.get(id=component_id)
         # we do the couplings for the parent model of a component
-        self.urls={'ok':reverse('pimms.apps.qn.views.componentCup',args=(self.centre_id,component_id,)),
-              'return':reverse('pimms.apps.qn.views.componentEdit',args=(self.centre_id,component_id,)),
+        self.urls={'ok':reverse('pimms_apps.qn.views.componentCup',args=(self.centre_id,component_id,)),
+              'return':reverse('pimms_apps.qn.views.componentEdit',args=(self.centre_id,component_id,)),
               'returnName':'component'
               }
         return self.__handle()
     def simulation(self,simulation_id):
         simulation=Simulation.objects.get(id=simulation_id)
         self.component=simulation.numericalModel
-        self.urls={'ok':reverse('pimms.apps.qn.views.simulationCup',args=(self.centre_id,simulation_id,)),
-              'return':reverse('pimms.apps.qn.views.simulationEdit',args=(self.centre_id,simulation_id,)),
+        self.urls={'ok':reverse('pimms_apps.qn.views.simulationCup',args=(self.centre_id,simulation_id,)),
+              'return':reverse('pimms_apps.qn.views.simulationEdit',args=(self.centre_id,simulation_id,)),
               'returnName':'simulation',
-              'nextURL':reverse('pimms.apps.qn.views.assign',
+              'nextURL':reverse('pimms_apps.qn.views.assign',
                      args=(self.centre_id,'modelmod','simulation',simulation_id,)),
-              'reset':reverse('pimms.apps.qn.views.simulationCupReset',args=(self.centre_id,simulation_id,)),
+              'reset':reverse('pimms_apps.qn.views.simulationCupReset',args=(self.centre_id,simulation_id,)),
               }
         print self.urls['nextURL']
         return self.__handle(simulation)
@@ -338,7 +338,7 @@ class couplingHandler:
         model=self.component.model
         assert model != None,'Component %s has no model'%self.component
         queryset=model.couplings(simulation)
-        self.urls['model']=reverse('pimms.apps.qn.views.componentEdit',
+        self.urls['model']=reverse('pimms_apps.qn.views.componentEdit',
                     args=(self.centre_id,model.id,))
         logging.debug('Handling %s coupling request for %s (simulation %s)'%(self.method,model,simulation))
        

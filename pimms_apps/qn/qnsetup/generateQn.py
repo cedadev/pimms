@@ -1,10 +1,10 @@
-from pimms.apps.qn.models import Experiment
-from pimms.apps.qn.qnsetup.XMLinitialiseQ import initialise
-from pimms.apps.qn.qnsetup.ControlledModel import initialiseModel
-from pimms.apps.qn.qnsetup.ControlledGrid import initialiseGrid
-#from pimms.apps.qn.initialiser.initialiseRefs import initialiseRefs
-#from pimms.apps.qn.initialiser.initialiseFiles import initialiseFiles
-#from pimms.apps.qn.initialiser.initialiseVars import initialiseVars
+from pimms_apps.qn.models import Experiment
+from pimms_apps.qn.qnsetup.XMLinitialiseQ import initialise
+from pimms_apps.qn.qnsetup.ControlledModel import initialiseModel
+from pimms_apps.qn.qnsetup.ControlledGrid import initialiseGrid
+#from pimms_apps.qn.initialiser.initialiseRefs import initialiseRefs
+#from pimms_apps.qn.initialiser.initialiseFiles import initialiseFiles
+#from pimms_apps.qn.initialiser.initialiseVars import initialiseVars
 
 
 def generate_qn(qn, cvlist, gridcv, explist):

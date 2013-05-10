@@ -1,12 +1,12 @@
 from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
 
-from pimms.apps.qn.dropdown import *
-#from pimms.apps.qn.fields import *
-from pimms.apps.qn.models import *
-#from pimms.apps.qn.utilities import atomuri
-from pimms.apps.qn.modelUtilities import uniqueness, refLinkField
-from pimms.apps.qn.autocomplete import TermAutocompleteField
+from pimms_apps.qn.dropdown import *
+#from pimms_apps.qn.fields import *
+from pimms_apps.qn.models import *
+#from pimms_apps.qn.utilities import atomuri
+from pimms_apps.qn.modelUtilities import uniqueness, refLinkField
+from pimms_apps.qn.autocomplete import TermAutocompleteField
 
 
 class ConformanceForm(forms.ModelForm):

@@ -7,9 +7,9 @@ from django.conf import settings
 
 from xml.etree import ElementTree as ET
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.utilities import atomuri
-from pimms.apps.qn.qnsetup.XMLinitialiseQ.VocabList import Realms
+from pimms_apps.qn.models import *
+from pimms_apps.qn.utilities import atomuri
+from pimms_apps.qn.qnsetup.XMLinitialiseQ.VocabList import Realms
 
 logging=settings.LOG
 

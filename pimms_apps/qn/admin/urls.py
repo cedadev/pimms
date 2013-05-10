@@ -5,5 +5,5 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^admin/qn/component/copy/$', 'pimms.apps.qn.admin.admin_views.modelcopy'),
+    (r'^admin/qn/component/copy/$', 'pimms_apps.qn.admin.admin_views.modelcopy'),
 )

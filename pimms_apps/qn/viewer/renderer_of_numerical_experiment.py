@@ -6,8 +6,8 @@ A concrete view over a cim instance.
 import lxml
 from lxml import etree as et
 
-from pimms.apps.qn.viewer.base_renderer import RendererBase
-from pimms.apps.qn.viewer.simhtml_generator import get_simrunhtml
+from pimms_apps.qn.viewer.base_renderer import RendererBase
+from pimms_apps.qn.viewer.simhtml_generator import get_simrunhtml
 
 # Module provenance info.
 __author__="markmorgan"

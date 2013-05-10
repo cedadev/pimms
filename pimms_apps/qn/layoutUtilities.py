@@ -3,8 +3,8 @@ import string
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.utilities import RingBuffer
+from pimms_apps.qn.models import *
+from pimms_apps.qn.utilities import RingBuffer
 
 logging=settings.LOG
 
@@ -112,14 +112,14 @@ def getsims(qn):
     
     for s in tablesims:
         #get individual sim edit url
-        s.url = reverse('pimms.apps.qn.views.simulationEdit', args=(qn, s.id))   
+        s.url = reverse('pimms_apps.qn.views.simulationEdit', args=(qn, s.id))   
         #get individual sim copy url
-        s.copysimurl = reverse('pimms.apps.qn.views.simulationCopyInd', args=(qn, s.id))
+        s.copysimurl = reverse('pimms_apps.qn.views.simulationCopyInd', args=(qn, s.id))
         #get individual sim delete url (for non-published sims)
         if len(CIMObject.objects.filter(uri=s.uri)):
             s.delurl = None
         else:     
-            s.delurl=reverse('pimms.apps.qn.views.simulationDel', args=(qn, s.id))     
+            s.delurl=reverse('pimms_apps.qn.views.simulationDel', args=(qn, s.id))     
     
     return tablesims
 
@@ -174,16 +174,16 @@ class tabs(list):
         
         #This is the list of tabs '''
         self.tablist=[
-            ('Summary', 'pimms.apps.qn.views.qnhome', (qn,), 'left'),
-            ('Experiments', 'pimms.apps.qn.views.simulationList', (qn,), 'left'),
-            ('Model', 'pimms.apps.qn.views.componentEdit', (qn, request.session['Model'],), 'left'),
-            ('Grid', 'pimms.apps.qn.views.gridEdit', (qn, request.session['Grid'],) ,'left'),
-            ('Simulation', 'pimms.apps.qn.views.simulationEdit', (qn, request.session['Simulation'],), 'left'),
-            #('Files', 'pimms.apps.qn.views.list', (qn, 'file',), 'left'),
-            ('References', 'pimms.apps.qn.views.list', (qn, 'reference',), 'left'),
-            #('Parties', 'pimms.apps.qn.views.list', (qn, 'parties',), 'left'),
-            #('Help', 'pimms.apps.qn.views.help', (qn,), 'right'),
-            #('About', 'pimms.apps.qn.views.about', (qn,), 'right'),
+            ('Summary', 'pimms_apps.qn.views.qnhome', (qn,), 'left'),
+            ('Experiments', 'pimms_apps.qn.views.simulationList', (qn,), 'left'),
+            ('Model', 'pimms_apps.qn.views.componentEdit', (qn, request.session['Model'],), 'left'),
+            ('Grid', 'pimms_apps.qn.views.gridEdit', (qn, request.session['Grid'],) ,'left'),
+            ('Simulation', 'pimms_apps.qn.views.simulationEdit', (qn, request.session['Simulation'],), 'left'),
+            #('Files', 'pimms_apps.qn.views.list', (qn, 'file',), 'left'),
+            ('References', 'pimms_apps.qn.views.list', (qn, 'reference',), 'left'),
+            #('Parties', 'pimms_apps.qn.views.list', (qn, 'parties',), 'left'),
+            #('Help', 'pimms_apps.qn.views.help', (qn,), 'right'),
+            #('About', 'pimms_apps.qn.views.about', (qn,), 'right'),
             ]
         
         for item in self.tablist:

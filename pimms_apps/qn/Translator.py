@@ -1,7 +1,7 @@
 
-from pimms.apps.qn.models import *
+from pimms_apps.qn.models import *
 
-from pimms.apps.qn.qnsetup.XMLinitialiseQ import QuestionniareConfiguration
+from pimms_apps.qn.qnsetup.XMLinitialiseQ import QuestionniareConfiguration
 
 from lxml import etree as ET
 import uuid

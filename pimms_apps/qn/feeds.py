@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 
 from atom import Feed, AtomFeed
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.XMLutilities import etTxt
+from pimms_apps.qn.models import *
+from pimms_apps.qn.XMLutilities import etTxt
 
 
 logging=settings.LOG
@@ -77,7 +77,7 @@ class TestDocumentSet(object):
         self.updated = datetime.now()
 
     def get_absolute_url(self):
-        return reverse('pimms.apps.qn.views.testFile', args=(self.fname, ))
+        return reverse('pimms_apps.qn.views.testFile', args=(self.fname, ))
     
 
 #class AtomEntryCustomFeed(Feed):

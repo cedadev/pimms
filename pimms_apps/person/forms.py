@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from pimms.apps.person.models import Person
+from pimms_apps.person.models import Person
 
 
 class RegistrationForm(ModelForm):

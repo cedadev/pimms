@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # provides unit tests for some questionnaire models
 
-from pimms.apps.qn.models import *
+from pimms_apps.qn.models import *
 from lxml import etree as ET
 import unittest
 

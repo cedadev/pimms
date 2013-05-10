@@ -5,15 +5,15 @@ from django.forms.models import modelformset_factory
 from django.conf import settings
 from django.template.context import RequestContext
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.forms import *
-from pimms.apps.qn.yuiTree import *
-from pimms.apps.qn.utilities import RemoteUser, atomuri
-from pimms.apps.qn.layoutUtilities import tabs
-from pimms.apps.qn.coupling import MyCouplingFormSet
-from pimms.apps.qn.Translator import Translator
-from pimms.apps.qn.cimHandler import commonURLs
-from pimms.apps.qn.vocabs.model_list import modelnames
+from pimms_apps.qn.models import *
+from pimms_apps.qn.forms import *
+from pimms_apps.qn.yuiTree import *
+from pimms_apps.qn.utilities import RemoteUser, atomuri
+from pimms_apps.qn.layoutUtilities import tabs
+from pimms_apps.qn.coupling import MyCouplingFormSet
+from pimms_apps.qn.Translator import Translator
+from pimms_apps.qn.cimHandler import commonURLs
+from pimms_apps.qn.vocabs.model_list import modelnames
 
 logging=settings.LOG
 
@@ -86,7 +86,7 @@ class componentHandler(object):
                 logging.debug('Attempt to open an unknown component %s'%component_id)
                 raise Exception,e
         
-        self.url = reverse('pimms.apps.qn.views.componentEdit', args=(self.qn, self.component.id))
+        self.url = reverse('pimms_apps.qn.views.componentEdit', args=(self.qn, self.component.id))
        
             
     def XMLasText(self):
@@ -123,7 +123,7 @@ class componentHandler(object):
             
             #print 'Return Value',r
             self.component.components.add(c)
-            url=reverse('pimms.apps.qn.views.componentEdit',args=(self.centre_id,c.id,))
+            url=reverse('pimms_apps.qn.views.componentEdit',args=(self.centre_id,c.id,))
             logging.info('Created subcomponent %s in component %s (type "new")' %(c.id,self.component.id))
             return HttpResponseRedirect(url)
         else:
@@ -148,7 +148,7 @@ class componentHandler(object):
                     if len(c.components.all()) <> 0:
                         return HttpResponse('You need to delete child components first')
                     parent=Component.objects.filter(components=c)[0]
-                    url=reverse('pimms.apps.qn.views.componentEdit',args=(self.qn, parent.id, ))
+                    url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn, parent.id, ))
                     c.delete()
                     return HttpResponseRedirect(url)
         
@@ -156,15 +156,15 @@ class componentHandler(object):
         # find my own urls ...
         urls = {}
         urls['form']     = self.url
-        urls['refs']     = reverse('pimms.apps.qn.views.assign', args=(self.qn, 'reference', 'component', c.id,))
-        urls['subcomp']  = reverse('pimms.apps.qn.views.componentSub', args=(self.qn, c.id,))
-        urls['coupling'] = reverse('pimms.apps.qn.views.componentCup', args=(self.qn, c.id))
-        urls['inputs']   = reverse('pimms.apps.qn.views.componentInp', args=(self.qn, c.id))
-        urls['text']     = reverse('pimms.apps.qn.views.componentTxt', args=(self.qn, c.id))
+        urls['refs']     = reverse('pimms_apps.qn.views.assign', args=(self.qn, 'reference', 'component', c.id,))
+        urls['subcomp']  = reverse('pimms_apps.qn.views.componentSub', args=(self.qn, c.id,))
+        urls['coupling'] = reverse('pimms_apps.qn.views.componentCup', args=(self.qn, c.id))
+        urls['inputs']   = reverse('pimms_apps.qn.views.componentInp', args=(self.qn, c.id))
+        urls['text']     = reverse('pimms_apps.qn.views.componentTxt', args=(self.qn, c.id))
         
         urls = commonURLs(c.model, urls)
         
-        baseURL   = reverse('pimms.apps.qn.views.componentAdd', args=(self.qn, ))
+        baseURL   = reverse('pimms_apps.qn.views.componentAdd', args=(self.qn, ))
         template  = '+EDID+'
         baseURL   = baseURL.replace('add/', '%s/edit' %template)
     
@@ -254,9 +254,9 @@ class componentHandler(object):
         for r in allrefs: 
             if r not in refs:available.append(r) 
         rform=ReferenceForm()
-        refu=reverse('pimms.apps.qn.views.addReference',args=(self.centre_id,c.id,))
-        baseURLa=reverse('pimms.apps.qn.views.assignReference',args=(1,1,))[0:-4]
-        baseURLr=reverse('pimms.apps.qn.views.remReference',args=(1,1,))[0:-4]
+        refu=reverse('pimms_apps.qn.views.addReference',args=(self.centre_id,c.id,))
+        baseURLa=reverse('pimms_apps.qn.views.assignReference',args=(1,1,))[0:-4]
+        baseURLr=reverse('pimms_apps.qn.views.remReference',args=(1,1,))[0:-4]
         return render_to_response('componentRefs.html',
             {'refs':refs,'available':available,'rform':rform,'c':c,
             'refu':refu,'baseURLa':baseURLa,'baseURLr':baseURLr,
@@ -267,8 +267,8 @@ class componentHandler(object):
         ''' Handle the construction of component couplings '''
         # we do the couplings for the parent model of a component
         model=self.component.model
-        okURL=reverse('pimms.apps.qn.views.componentCup',args=(self.centre_id,self.pkid,))
-        urls={'self':reverse('pimms.apps.qn.views.componentCup',
+        okURL=reverse('pimms_apps.qn.views.componentCup',args=(self.centre_id,self.pkid,))
+        urls={'self':reverse('pimms_apps.qn.views.componentCup',
                 args=(self.centre_id,self.pkid,))
               }
         cg=CouplingGroup.objects.filter(component=model).get(simulation=None)
@@ -287,7 +287,7 @@ class componentHandler(object):
         
     def inputs(self,request):
         ''' Handle the construction of input requirements into a component '''
-        okURL=reverse('pimms.apps.qn.views.componentInp',args=(self.centre_id,self.pkid,))
+        okURL=reverse('pimms_apps.qn.views.componentInp',args=(self.centre_id,self.pkid,))
         urls={'ok':okURL,'self':self.url}
         if request.method=='POST':
             Inpform=MyComponentInputFormSet(self.component,self.component.isRealm,
@@ -316,6 +316,6 @@ class componentHandler(object):
         new.abbrev=self.component.abbrev+'cp'
         new.title=self.component.title+'cp'
         new.save()
-        url=reverse('pimms.apps.qn.views.componentEdit',args=(self.centre_id,new.id,))
+        url=reverse('pimms_apps.qn.views.componentEdit',args=(self.centre_id,new.id,))
         logging.info('Created new model %s with id %s (copy of %s)'%(new,new.id,self.component))
         return HttpResponseRedirect(url)

@@ -4,9 +4,9 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
-from pimms.apps.qn.cimHandling import viewer
-from pimms.apps.qn.models import Simulation, Component
-from pimms.apps.qn.vocabs import model_list
+from pimms_apps.qn.cimHandling import viewer
+from pimms_apps.qn.models import Simulation, Component
+from pimms_apps.qn.vocabs import model_list
 
 
 def commonURLs(obj, dictionary):
@@ -15,9 +15,9 @@ def commonURLs(obj, dictionary):
     '''
   
     for key in ['validate', 'xml', 'cimView']:
-        dictionary[key] = reverse('pimms.apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, key))
+        dictionary[key] = reverse('pimms_apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, key))
         
-    dictionary['export'] = reverse('pimms.apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, 'export'))
+    dictionary['export'] = reverse('pimms_apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, 'export'))
     
     return dictionary
 

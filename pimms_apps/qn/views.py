@@ -10,22 +10,22 @@ from django.template.context import RequestContext
 from django import forms
 from django.conf import settings
 
-from pimms.apps.qn.models import *
-#from pimms.apps.qn.feeds import DocFeed
-from pimms.apps.qn.forms import *
-#from pimms.apps.qn.yuiTree import *
-from pimms.apps.qn.BaseView import *
-from pimms.apps.qn.layoutUtilities import tabs, getpubs, getsims
-from pimms.apps.qn.components import componentHandler
-from pimms.apps.qn.grids import gridHandler
-from pimms.apps.qn.simulations import simulationHandler
-from pimms.apps.qn.cimHandler import cimHandler, commonURLs
-#from pimms.apps.qn.XML import *
-from pimms.apps.qn.utilities import render_badrequest, gracefulNotFound, atomuri, sublist 
-from pimms.apps.qn.coupling import couplingHandler
-#from pimms.apps.qn.vocabs import model_list
-#from pimms.apps.qn.helpers import getqnurls
-#from pimms.apps.helpers import getsiteurls
+from pimms_apps.qn.models import *
+#from pimms_apps.qn.feeds import DocFeed
+from pimms_apps.qn.forms import *
+#from pimms_apps.qn.yuiTree import *
+from pimms_apps.qn.BaseView import *
+from pimms_apps.qn.layoutUtilities import tabs, getpubs, getsims
+from pimms_apps.qn.components import componentHandler
+from pimms_apps.qn.grids import gridHandler
+from pimms_apps.qn.simulations import simulationHandler
+from pimms_apps.qn.cimHandler import cimHandler, commonURLs
+#from pimms_apps.qn.XML import *
+from pimms_apps.qn.utilities import render_badrequest, gracefulNotFound, atomuri, sublist 
+from pimms_apps.qn.coupling import couplingHandler
+#from pimms_apps.qn.vocabs import model_list
+#from pimms_apps.qn.helpers import getqnurls
+#from pimms_apps.helpers import getsiteurls
 
 
 logging=settings.LOG
@@ -45,30 +45,30 @@ def qnhome(request, qnproj):
     # Grab all models associated with this project
     models = [Component.objects.get(id=m.id) for m in qn.component_set.filter(scienceType='model').filter(isDeleted=False)]
     for m in models:
-        m.url = reverse('pimms.apps.qn.views.componentEdit', args=(qn, m.id))
-        m.cpURL = reverse('pimms.apps.qn.views.componentCopy', args=(qn, m.id))
+        m.url = reverse('pimms_apps.qn.views.componentEdit', args=(qn, m.id))
+        m.cpURL = reverse('pimms_apps.qn.views.componentCopy', args=(qn, m.id))
     
     # Platforms
     platforms = [Platform.objects.get(id=p['id']) for p in qn.platform_set.values().filter(isDeleted=False)]
     for p in platforms:
-        p.url = reverse('pimms.apps.qn.views.platformEdit', args=(qn, p.id))
+        p.url = reverse('pimms_apps.qn.views.platformEdit', args=(qn, p.id))
     
     # Simulations
     sims = Simulation.objects.filter(qn=qn).filter(isDeleted=False).order_by('abbrev')
     for s in sims:
-        s.url = reverse('pimms.apps.qn.views.simulationEdit', args=(qn, s.id))
+        s.url = reverse('pimms_apps.qn.views.simulationEdit', args=(qn, s.id))
     
     # Grids
     grids = Grid.objects.filter(qn=qn).filter(istopGrid=True).filter(isDeleted=False) 
     for g in grids:
-        g.url = reverse('pimms.apps.qn.views.gridEdit', args=(qn, g.id))
-        #g.cpURL=reverse('pimms.apps.qn.views.gridCopy',args=(c.id,g.id))
+        g.url = reverse('pimms_apps.qn.views.gridEdit', args=(qn, g.id))
+        #g.cpURL=reverse('pimms_apps.qn.views.gridCopy',args=(c.id,g.id))
     
     # 'New' buttons 
-    newmodURL  = reverse('pimms.apps.qn.views.componentAdd', args=(qn, ))
-    newplatURL = reverse('pimms.apps.qn.views.platformEdit', args=(qn, ))
-    viewsimURL = reverse('pimms.apps.qn.views.simulationList', args=(qn, ))
-    newgridURL = reverse('pimms.apps.qn.views.gridAdd', args=(qn, ))
+    newmodURL  = reverse('pimms_apps.qn.views.componentAdd', args=(qn, ))
+    newplatURL = reverse('pimms_apps.qn.views.platformEdit', args=(qn, ))
+    viewsimURL = reverse('pimms_apps.qn.views.simulationList', args=(qn, ))
+    newgridURL = reverse('pimms_apps.qn.views.gridAdd', args=(qn, ))
     
     refs=Reference.objects.filter(qn=qn)
 #    files=DataContainer.objects.filter(centre=c)
@@ -258,10 +258,10 @@ def genericDoc(request, cid, docType, pkid, method):
 #        try:
 #            if 'choice' in request.POST:
 #                selected_centre=p.get(id=request.POST['choice'])
-#                return HttpResponseRedirect(reverse('pimms.apps.qn.views.centre',args=(selected_centre.id,)))
+#                return HttpResponseRedirect(reverse('pimms_apps.qn.views.centre',args=(selected_centre.id,)))
 #            elif 'auxchoice' in request.POST:
 #                selected_centre=p_aux.get(id=request.POST['auxchoice'])
-#                return HttpResponseRedirect(reverse('pimms.apps.qn.views.centre',args=(selected_centre.id,)))
+#                return HttpResponseRedirect(reverse('pimms_apps.qn.views.centre',args=(selected_centre.id,)))
 #            elif 'ripchoice' in request.POST:
 #                centre = Centre.objects.get(id=request.POST['ripchoice'])
 #                ensembles = []
@@ -286,7 +286,7 @@ def genericDoc(request, cid, docType, pkid, method):
 #            return render_badrequest('error.html',{'message':m})
 #    else: 
 #        logging.info('Viewing centres')
-#        curl = reverse('pimms.apps.qn.views.centres')
+#        curl = reverse('pimms_apps.qn.views.centres')
 #        feeds=DocFeed.feeds.keys()
 #        feedlist=[]
 #        for f in sorted(feeds):
@@ -317,26 +317,26 @@ def genericDoc(request, cid, docType, pkid, method):
 #                                                    isDeleted=False)]
 #    #monkey patch the urls to edit these ...
 #    for m in models:
-#        m.url=reverse('pimms.apps.qn.views.componentEdit',args=(c.id,m.id))
-#        m.cpURL=reverse('pimms.apps.qn.views.componentCopy',args=(c.id,m.id))
+#        m.url=reverse('pimms_apps.qn.views.componentEdit',args=(c.id,m.id))
+#        m.cpURL=reverse('pimms_apps.qn.views.componentCopy',args=(c.id,m.id))
 #    
 #    platforms=[Platform.objects.get(id=p['id']) for p in c.platform_set.values().filter(isDeleted=False)]
 #    for p in platforms:
-#        p.url=reverse('pimms.apps.qn.views.platformEdit',args=(c.id,p.id))
+#        p.url=reverse('pimms_apps.qn.views.platformEdit',args=(c.id,p.id))
 #    
 #    sims=Simulation.objects.filter(centre=c.id).filter(isDeleted=False).order_by('abbrev')
 #    for s in sims:
-#        s.url=reverse('pimms.apps.qn.views.simulationEdit',args=(c.id,s.id))
+#        s.url=reverse('pimms_apps.qn.views.simulationEdit',args=(c.id,s.id))
 #    
 #    grids=Grid.objects.filter(centre=c.id).filter(istopGrid=True).filter(isDeleted=False) 
 #    for g in grids:
-#        g.url=reverse('pimms.apps.qn.views.gridEdit',args=(c.id,g.id))
-#        g.cpURL=reverse('pimms.apps.qn.views.gridCopy',args=(c.id,g.id))
+#        g.url=reverse('pimms_apps.qn.views.gridEdit',args=(c.id,g.id))
+#        g.cpURL=reverse('pimms_apps.qn.views.gridCopy',args=(c.id,g.id))
 #    
-#    newmodURL=reverse('pimms.apps.qn.views.componentAdd',args=(c.id,))
-#    newplatURL=reverse('pimms.apps.qn.views.platformEdit',args=(c.id,))
-#    viewsimURL=reverse('pimms.apps.qn.views.simulationList',args=(c.id,))
-#    newgridURL=reverse('pimms.apps.qn.views.gridAdd',args=(c.id,))
+#    newmodURL=reverse('pimms_apps.qn.views.componentAdd',args=(c.id,))
+#    newplatURL=reverse('pimms_apps.qn.views.platformEdit',args=(c.id,))
+#    viewsimURL=reverse('pimms_apps.qn.views.simulationList',args=(c.id,))
+#    newgridURL=reverse('pimms_apps.qn.views.gridAdd',args=(c.id,))
 #    
 #    
 #    refs=Reference.objects.filter(centre=c)
@@ -668,7 +668,7 @@ def platformEdit(request, qnproj, platform_id=None):
     
     # start by getting a form ...
     if platform_id is None:
-        urls['edit'] = reverse('pimms.apps.qn.views.platformEdit', args=(qnproj, ))
+        urls['edit'] = reverse('pimms_apps.qn.views.platformEdit', args=(qnproj, ))
         if request.method == 'GET':
             pform = MyPlatformForm(qn)
         elif request.method == 'POST':
@@ -677,7 +677,7 @@ def platformEdit(request, qnproj, platform_id=None):
         p = None
         puri = atomuri()
     else:
-        urls['edit'] = reverse('pimms.apps.qn.views.platformEdit', args=(qnproj, platform_id, ))
+        urls['edit'] = reverse('pimms_apps.qn.views.platformEdit', args=(qnproj, platform_id, ))
         p = Platform.objects.get(id=platform_id)
         puri = p.uri
         if request.method == 'GET':
@@ -695,7 +695,7 @@ def platformEdit(request, qnproj, platform_id=None):
             p.uri = puri
             p.save()
             
-            return HttpResponseRedirect(reverse('pimms.apps.qn.views.qnhome', args=(qn, )))
+            return HttpResponseRedirect(reverse('pimms_apps.qn.views.qnhome', args=(qn, )))
     
     return render_to_response('qn/platform.html',
                              {'pform': pform, 
@@ -735,8 +735,8 @@ def viewExperiment(request, qnproj, experiment_id):
 #    return render_to_response('trans.html')
 #
 #def help(request,cen_id):    
-#    urls={'vnhist':reverse('pimms.apps.qn.views.vnhist',args=(cen_id,)),
-#          'trans':reverse('pimms.apps.qn.views.trans',args=(cen_id,)),}
+#    urls={'vnhist':reverse('pimms_apps.qn.views.vnhist',args=(cen_id,)),
+#          'trans':reverse('pimms_apps.qn.views.trans',args=(cen_id,)),}
 #    
 #    return render_to_response('help.html',{'urls':urls,'tabs':tabs(request,cen_id,'Help')})
 # 
@@ -761,13 +761,13 @@ def viewExperiment(request, qnproj, experiment_id):
 #                                               extra=0,exclude=('ensemble',
 #                                                                'memberNumber'))
 #    
-#    urls={'self':reverse('pimms.apps.qn.views.ensemble',
+#    urls={'self':reverse('pimms_apps.qn.views.ensemble',
 #                         args=(cen_id,sim_id,)),
-#          'sim':reverse('pimms.apps.qn.views.simulationEdit',
+#          'sim':reverse('pimms_apps.qn.views.simulationEdit',
 #                        args=(cen_id,sim_id,)),
-#          'mods':reverse('pimms.apps.qn.views.list',
+#          'mods':reverse('pimms_apps.qn.views.list',
 #                     args=(cen_id,'modelmod','ensemble',s.id,)),
-#          'ics':reverse('pimms.apps.qn.views.list',
+#          'ics':reverse('pimms_apps.qn.views.list',
 #                     args=(cen_id,'inputmod','ensemble',s.id,)),        
 #                     }              
 #  
@@ -869,13 +869,13 @@ class ViewHandler(BaseViewHandler):
     # that we need the right function name
     
     SupportedTargetReverseFunctions={
-                      'simulation': 'pimms.apps.qn.views.simulationEdit',
-                      'qn'        : 'pimms.apps.qn.views.home',
-                      'component' : 'pimms.apps.qn.views.componentEdit',
-                      'grid'      : 'pimms.apps.qn.views.gridEdit',
-                      'ensemble'  : 'pimms.apps.qn.views.ensemble',
+                      'simulation': 'pimms_apps.qn.views.simulationEdit',
+                      'qn'        : 'pimms_apps.qn.views.home',
+                      'component' : 'pimms_apps.qn.views.componentEdit',
+                      'grid'      : 'pimms_apps.qn.views.gridEdit',
+                      'ensemble'  : 'pimms_apps.qn.views.ensemble',
                       # not sure about the following: for files ...
-                      'experiment': 'pimms.apps.qn.views.list',
+                      'experiment': 'pimms_apps.qn.views.list',
                       }
                         
     # Now the expected usage of this handler is for

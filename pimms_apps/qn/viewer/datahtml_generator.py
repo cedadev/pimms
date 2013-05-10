@@ -6,8 +6,8 @@ HTML generator for different sections of a dataObject CIM instance.
 import lxml
 from lxml import etree as et
 
-from pimms.apps.qn.viewer.for_html import *
-from pimms.apps.qn.viewer.common import *
+from pimms_apps.qn.viewer.for_html import *
+from pimms_apps.qn.viewer.common import *
 
 # Module provenance info.
 __author__="Gerry Devine"

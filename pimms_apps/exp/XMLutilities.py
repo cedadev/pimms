@@ -10,7 +10,7 @@ questionnaire app)
 
 import uuid
 from lxml import etree as ET
-from pimms.apps.exp.models import Experiment, NumericalRequirement
+from pimms_apps.exp.models import Experiment, NumericalRequirement
 
 
 # CIM document attributes: namespaces, schema locations etc..

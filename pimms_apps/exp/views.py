@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import login_required
 from guardian.shortcuts import assign
 from guardian.decorators import permission_required_or_403
 
-from pimms.apps.exp.models import Experiment
-from pimms.apps.exp.models import NumericalRequirement
-from pimms.apps.exp.forms import ExperimentForm, RequirementForm
-from pimms.apps.exp.XMLutilities import getCIMXML
-from pimms.apps.exp.helpers import getexpurls
-from pimms.apps.helpers import getsiteurls
+from pimms_apps.exp.models import Experiment
+from pimms_apps.exp.models import NumericalRequirement
+from pimms_apps.exp.forms import ExperimentForm, RequirementForm
+from pimms_apps.exp.XMLutilities import getCIMXML
+from pimms_apps.exp.helpers import getexpurls
+from pimms_apps.helpers import getsiteurls
 
 
 @login_required
@@ -27,9 +27,9 @@ def exphome(request):
         urls = getexpurls(urls)        
         allexps = Experiment.objects.filter(author=request.user)
         for exp in allexps:
-            exp.url = reverse('pimms.apps.exp.views.expview', args=(exp.id, ))
-            exp.cpurl = reverse('pimms.apps.exp.views.expcopy', args=(exp.id, ))
-            exp.delurl = reverse('pimms.apps.exp.views.expdelete', args=(exp.id, ))
+            exp.url = reverse('pimms_apps.exp.views.expview', args=(exp.id, ))
+            exp.cpurl = reverse('pimms_apps.exp.views.expcopy', args=(exp.id, ))
+            exp.delurl = reverse('pimms_apps.exp.views.expdelete', args=(exp.id, ))
     except:
         raise Http404
     return render_to_response('exp/exphome.html', {'allexps': allexps,
@@ -49,14 +49,14 @@ def expview(request, expid):
     urls = {}
     urls = getsiteurls(urls)
     urls = getexpurls(urls)      
-    urls['expedit']=reverse('pimms.apps.exp.views.expedit',args=(exp.id, ))
-    urls['exppub']=reverse('pimms.apps.exp.views.exppub',args=(exp.id, ))
+    urls['expedit']=reverse('pimms_apps.exp.views.expedit',args=(exp.id, ))
+    urls['exppub']=reverse('pimms_apps.exp.views.exppub',args=(exp.id, ))
     
     #Get my numerical requirements
     reqs = NumericalRequirement.objects.filter(experiment=expid)
     
     for req in reqs:
-        req.url = reverse('pimms.apps.exp.views.reqview', 
+        req.url = reverse('pimms_apps.exp.views.reqview', 
                               args=(req.id, ))   
     
     #Send to template
@@ -78,8 +78,8 @@ def expcopy(request, expid):
     urls = {}
     urls = getsiteurls(urls)
     urls = getexpurls(urls)  
-    urls['expedit']=reverse('pimms.apps.exp.views.expedit',args=(exp.id, ))
-    urls['exppub']=reverse('pimms.apps.exp.views.exppub',args=(exp.id, ))
+    urls['expedit']=reverse('pimms_apps.exp.views.expedit',args=(exp.id, ))
+    urls['exppub']=reverse('pimms_apps.exp.views.exppub',args=(exp.id, ))
     
     return HttpResponseRedirect(urls['exphome']) # Redirect after POST
 
@@ -173,7 +173,7 @@ def expedit(request, expid=None):
         cancel = request.POST.get('cancel', None)
         if cancel:
             # reroute back to view page
-            urls['expview']=reverse('pimms.apps.exp.views.expview',args=(exp.id, ))
+            urls['expview']=reverse('pimms_apps.exp.views.expview',args=(exp.id, ))
             return HttpResponseRedirect(urls['expview'])
         else:        
             if 'expform' in request.POST:
@@ -234,9 +234,9 @@ def reqlist(request):
     try:        
         allreqs = NumericalRequirement.objects.filter(author=request.user)
         for req in allreqs:
-            req.url = reverse('pimms.apps.exp.views.reqview', 
+            req.url = reverse('pimms_apps.exp.views.reqview', 
                               args=(req.id, ))
-            req.delurl = reverse('pimms.apps.exp.views.reqdelete', 
+            req.delurl = reverse('pimms_apps.exp.views.reqdelete', 
                               args=(req.id, ))
         
         # get my urls
@@ -265,7 +265,7 @@ def reqview(request, reqid):
     urls = {}
     urls = getsiteurls(urls)
     urls = getexpurls(urls)  
-    urls['reqedit']=reverse('pimms.apps.exp.views.reqedit',args=(req.id, ))
+    urls['reqedit']=reverse('pimms_apps.exp.views.reqedit',args=(req.id, ))
          
     return render_to_response('exp/reqview.html', {'req':req, 'urls':urls}, 
                                 context_instance=RequestContext(request))
@@ -324,7 +324,7 @@ def reqedit(request, reqid=None):
     if request.method == 'POST': 
         cancel = request.POST.get('cancel', None)
         if cancel:
-            urls['reqview']=reverse('pimms.apps.exp.views.reqview', args=(req.id, ))
+            urls['reqview']=reverse('pimms_apps.exp.views.reqview', args=(req.id, ))
             return HttpResponseRedirect(urls['reqview'])
         else:          
             reqform = RequirementForm(request.POST, instance=req)

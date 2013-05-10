@@ -6,8 +6,8 @@ A concrete view over a cim instance.
 import lxml
 from lxml import etree as et
 
-from pimms.apps.qn.viewer.base_renderer import RendererBase
-from pimms.apps.qn.viewer.datahtml_generator import get_datahtml
+from pimms_apps.qn.viewer.base_renderer import RendererBase
+from pimms_apps.qn.viewer.datahtml_generator import get_datahtml
 
 
 class RendererOfDataObject(RendererBase):

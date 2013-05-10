@@ -8,7 +8,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import CheckboxSelectMultiple
 
-from pimms.apps.exp.models import Experiment, NumericalRequirement
+from pimms_apps.exp.models import Experiment, NumericalRequirement
 
 
 class ExperimentForm(ModelForm):

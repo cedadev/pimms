@@ -1,7 +1,7 @@
 from lxml import etree as ET
-from pimms.apps.qn.models import *
-from pimms.apps.qn.utilities import atomuri
-from pimms.apps.qn.qnsetup.XMLinitialiseQ import VocabList
+from pimms_apps.qn.models import *
+from pimms_apps.qn.utilities import atomuri
+from pimms_apps.qn.qnsetup.XMLinitialiseQ import VocabList
 
 # This file has the NumericalModel class, which is independent of the django views (but not
 # the django strage), used to instantiate numerical models from xml versions of the mindmaps,

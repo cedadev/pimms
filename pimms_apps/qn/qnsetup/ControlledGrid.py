@@ -1,8 +1,8 @@
 # This file really needs to be joined up with ControlledModel to avoid repeated code. 
 from lxml import etree as ET
-from pimms.apps.qn.models import *
-from pimms.apps.qn.utilities import atomuri
-from pimms.apps.qn.qnsetup.XMLinitialiseQ import VocabList
+from pimms_apps.qn.models import *
+from pimms_apps.qn.utilities import atomuri
+from pimms_apps.qn.qnsetup.XMLinitialiseQ import VocabList
 
 # move from ElementTree to lxml.etree
 #from xml.etree import ElementTree as ET

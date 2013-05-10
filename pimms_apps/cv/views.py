@@ -2,10 +2,10 @@ from django.shortcuts import render_to_response
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 
-from pimms.apps.cv.forms import MMForm
-from pimms.apps.cv.mindmap import checkMM, translateMM
-from pimms.apps.cv.helpers import getcvurls
-from pimms.apps.helpers import getsiteurls
+from pimms_apps.cv.forms import MMForm
+from pimms_apps.cv.mindmap import checkMM, translateMM
+from pimms_apps.cv.helpers import getcvurls
+from pimms_apps.helpers import getsiteurls
 
 
 def cvhome(request):

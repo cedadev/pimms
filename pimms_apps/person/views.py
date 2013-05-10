@@ -4,9 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from pimms.apps.person.forms import RegistrationForm, LoginForm
-from pimms.apps.person.models import Person
-from pimms.apps.helpers import getsiteurls
+from pimms_apps.person.forms import RegistrationForm, LoginForm
+from pimms_apps.person.models import Person
+from pimms_apps.helpers import getsiteurls
 
 
 def UserRegistration(request):

@@ -1,4 +1,4 @@
-from pimms.apps.qn.models import *
+from pimms_apps.qn.models import *
 
 import uuid
 

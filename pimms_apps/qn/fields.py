@@ -10,8 +10,8 @@ from django.db import models
 from django.forms.util import ValidationError
 from django.conf import settings
 
-from pimms.apps.qn.XMLutilities import *
-from pimms.apps.qn.dropdown import DurationWidget, SDTwidget, TimeLengthWidget
+from pimms_apps.qn.XMLutilities import *
+from pimms_apps.qn.dropdown import DurationWidget, SDTwidget, TimeLengthWidget
 
 logging=settings.LOG
 #
@@ -481,8 +481,8 @@ class extURLField(URLField):
 ## South needs information on custom fields:
 #from south.modelsinspector import add_introspection_rules
 
-#add_introspection_rules([], ["pimms.apps.qn.fields.SimDateTimeField"])
-#add_introspection_rules([], ["pimms.apps.qn.fields.DateRangeField"])
+#add_introspection_rules([], ["pimms_apps.qn.fields.SimDateTimeField"])
+#add_introspection_rules([], ["pimms_apps.qn.fields.DateRangeField"])
 
 
 

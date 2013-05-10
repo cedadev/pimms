@@ -46,7 +46,7 @@ class TermAutocompleteField(forms.fields.CharField):
     
     def __init__(self, Vocab, vocabname, Term, size=0, *args, **kwargs):
        
-        #self.url=reverse('pimms.apps.qn.views.completionHelper',args=(vocabname,))
+        #self.url=reverse('pimms_apps.qn.views.completionHelper',args=(vocabname,))
         #self.url=reverse('ajax_value',args=(vocabname,))
         #FIXME: I can't work out how to make the above work without circular imports.
         self.url='/ajax/vocabs/%s'%vocabname

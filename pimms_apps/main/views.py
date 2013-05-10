@@ -2,10 +2,10 @@ from django.shortcuts import render_to_response
 from django.http import Http404
 from django.template.context import RequestContext
 
-from pimms.apps.helpers import getsiteurls
-from pimms.apps.exp.helpers import getexpurls
-from pimms.apps.cv.helpers import getcvurls
-from pimms.apps.qn.qnsetup.helpers import getqnsetupurls
+from pimms_apps.helpers import getsiteurls
+from pimms_apps.exp.helpers import getexpurls
+from pimms_apps.cv.helpers import getcvurls
+from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
 
 
 def home(request):

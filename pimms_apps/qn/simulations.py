@@ -6,12 +6,12 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.template.context import RequestContext
 
-from pimms.apps.qn.models import *
-from pimms.apps.qn.forms import *
-from pimms.apps.qn.yuiTree import *
-from pimms.apps.qn.layoutUtilities import tabs
-from pimms.apps.qn.utilities import atomuri
-from pimms.apps.qn.cimHandler import commonURLs
+from pimms_apps.qn.models import *
+from pimms_apps.qn.forms import *
+from pimms_apps.qn.yuiTree import *
+from pimms_apps.qn.layoutUtilities import tabs
+from pimms_apps.qn.utilities import atomuri
+from pimms_apps.qn.cimHandler import commonURLs
 
 logging=settings.LOG
 
@@ -74,15 +74,15 @@ class simulationHandler(object):
 
         urls = {'url':url}
         if label == 'Update':
-            urls['ic']   = reverse('pimms.apps.qn.views.assign', args=(self.qn, 'initialcondition', 'simulation', s.id, ))
-            urls['bc']   = reverse('pimms.apps.qn.views.simulationCup', args=(self.qn, s.id, ))
-            urls['con']  = reverse('pimms.apps.qn.views.conformanceMain', args=(self.qn, s.id, ))
-            urls['ens']  = reverse('pimms.apps.qn.views.ensemble', args=(self.qn, s.id, ))
-            urls['mod']  = reverse('pimms.apps.qn.views.assign', args=(self.qn, 'modelmod', 'simulation', s.id, ))
+            urls['ic']   = reverse('pimms_apps.qn.views.assign', args=(self.qn, 'initialcondition', 'simulation', s.id, ))
+            urls['bc']   = reverse('pimms_apps.qn.views.simulationCup', args=(self.qn, s.id, ))
+            urls['con']  = reverse('pimms_apps.qn.views.conformanceMain', args=(self.qn, s.id, ))
+            urls['ens']  = reverse('pimms_apps.qn.views.ensemble', args=(self.qn, s.id, ))
+            urls['mod']  = reverse('pimms_apps.qn.views.assign', args=(self.qn, 'modelmod', 'simulation', s.id, ))
             
             urls=commonURLs(s,urls)
             # dont think we should be able to get to input mods from here ...
-            # urls['ics']=reverse('pimms.apps.qn.views.assign',
+            # urls['ics']=reverse('pimms_apps.qn.views.assign',
             # args=(self.centreid,'inputmod','simulation',s.id,))        
         
         # At the moment we're only assuming one related simulation so we don't 
@@ -189,7 +189,7 @@ class simulationHandler(object):
         s.updateCoupling()
         
         e=s.experiment
-        url=reverse('pimms.apps.qn.views.simulationEdit',args=(self.centreid,s.id,))
+        url=reverse('pimms_apps.qn.views.simulationEdit',args=(self.centreid,s.id,))
         label='Update'
         return self.__handle(request,s,e,url,label)
        
@@ -204,7 +204,7 @@ class simulationHandler(object):
         p  = qn.platform_set.values()
         m  = qn.component_set.values()
         
-        url = reverse('pimms.apps.qn.views.qnhome', args=(self.qn, ))
+        url = reverse('pimms_apps.qn.views.qnhome', args=(self.qn, ))
         
         if len(p) == 0:
             # Require them to create a platform
@@ -215,7 +215,7 @@ class simulationHandler(object):
             message = 'You need to create a model before creating a simulation'
             return render_to_response('qn/error.html', {'message':message, 'url':url})
         
-        url = reverse('pimms.apps.qn.views.simulationAdd', args = (self.qn, self.expid, ))
+        url = reverse('pimms_apps.qn.views.simulationAdd', args = (self.qn, self.expid, ))
        
         u = atomuri()
         e = Experiment.objects.get(pk=self.expid)
@@ -249,11 +249,11 @@ class simulationHandler(object):
                 self.abbrev = abbrev
                 self.values = values
                 self.id     = id
-                self.url    = reverse('pimms.apps.qn.views.viewExperiment', args=(qn, id, ))
-                self.new    = reverse('pimms.apps.qn.views.simulationAdd', args=(qn, id,))
+                self.url    = reverse('pimms_apps.qn.views.viewExperiment', args=(qn, id, ))
+                self.new    = reverse('pimms_apps.qn.views.simulationAdd', args=(qn, id,))
                 
         csims = Simulation.objects.filter(qn=self.qn).filter(isDeleted=False)
-        cpurl = reverse('pimms.apps.qn.views.simulationCopy', args=(self.qn, ))
+        cpurl = reverse('pimms_apps.qn.views.simulationCopy', args=(self.qn, ))
 
         eset = Experiment.objects.all().filter(isDeleted=False)
         exp=[]
@@ -261,7 +261,7 @@ class simulationHandler(object):
         for e in eset:
             sims = e.simulation_set.filter(qn=self.qn).filter(isDeleted=False)
             for s in sims: 
-                s.url = reverse('pimms.apps.qn.views.simulationEdit', args=(self.qn, s.id, ))    
+                s.url = reverse('pimms_apps.qn.views.simulationEdit', args=(self.qn, s.id, ))    
             
             exp.append(etmp(e.abbrev, sims, e.id, self.qn))
 
@@ -280,11 +280,11 @@ class simulationHandler(object):
         s=self.s
         e=s.experiment
         
-        urls={'self':reverse('pimms.apps.qn.views.conformanceMain',
+        urls={'self':reverse('pimms_apps.qn.views.conformanceMain',
                     args=(self.centreid,s.id,)),
-              'mods':reverse('pimms.apps.qn.views.assign',
+              'mods':reverse('pimms_apps.qn.views.assign',
                     args=(self.centreid,'modelmod','simulation',s.id,)),
-              'sim':reverse('pimms.apps.qn.views.simulationEdit',
+              'sim':reverse('pimms_apps.qn.views.simulationEdit',
                     args=(self.centreid,s.id,))
                     }
         #con=Conformance.objects.filter(simulation=s)
@@ -317,7 +317,7 @@ class simulationHandler(object):
             targetSim = request.POST['targetSim']
             s = Simulation.objects.get(id=targetSim)
             ss = s.copy(exp)
-            url = reverse('pimms.apps.qn.views.simulationEdit', 
+            url = reverse('pimms_apps.qn.views.simulationEdit', 
                         args=(self.centreid,ss.id,))
             
             return HttpResponseRedirect(url)
@@ -334,7 +334,7 @@ class simulationHandler(object):
         '''
         s = self.s
         ss = s.copy(s.experiment)
-        url = reverse('pimms.apps.qn.views.simulationEdit', 
+        url = reverse('pimms_apps.qn.views.simulationEdit', 
                     args=(self.centreid, ss.id, ))
         
         return HttpResponseRedirect(url)
@@ -349,7 +349,7 @@ class simulationHandler(object):
         s.isDeleted = True
         s.save()
         # return me to the summary page
-        url = reverse('pimms.apps.qn.views.centre', args=(self.centreid, ))
+        url = reverse('pimms_apps.qn.views.centre', args=(self.centreid, ))
         return HttpResponseRedirect(url)
         
         
@@ -362,7 +362,7 @@ class simulationHandler(object):
         s = self.s
         s.resetCoupling(closures=True)
         # and return to the coupling view 
-        url = reverse('pimms.apps.qn.views.simulationCup',
+        url = reverse('pimms_apps.qn.views.simulationCup',
                     args=(self.centreid, s.id, ))
         
         return HttpResponseRedirect(url)

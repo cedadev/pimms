@@ -1,4 +1,4 @@
-from pimms.apps.qn.models import Component, Centre, Experiment
+from pimms_apps.qn.models import Component, Centre, Experiment
 from django.contrib import admin
 
 admin.site.register(Centre)

@@ -6,7 +6,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^$', 'pimms.apps.qn.qnsetup.views.qnsetuphome', {}, 'qnsetuphome'),
-    (r'^qninputs$', 'pimms.apps.qn.qnsetup.views.qninputs', {}, 'qninputs'),
-    (r'^success/(?P<qnproj>\w+)/$', 'pimms.apps.qn.qnsetup.views.qnsetupsuccess', {}, 'qnsetupsuccess'),
+    (r'^$', 'pimms_apps.qn.qnsetup.views.qnsetuphome', {}, 'qnsetuphome'),
+    (r'^qninputs$', 'pimms_apps.qn.qnsetup.views.qninputs', {}, 'qninputs'),
+    (r'^success/(?P<qnproj>\w+)/$', 'pimms_apps.qn.qnsetup.views.qnsetupsuccess', {}, 'qnsetupsuccess'),
     )

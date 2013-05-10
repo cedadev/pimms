@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # home and about pages
-    (r'^$','pimms.apps.main.views.home', {}, 'home'),
-    (r'^about/$','pimms.apps.main.views.about', {}, 'about'),
+    (r'^$','pimms_apps.main.views.home', {}, 'home'),
+    (r'^about/$','pimms_apps.main.views.about', {}, 'about'),
     )
 
