@@ -28,7 +28,8 @@ def checkMM(mmfile):
     #pull in the xsl transformation file
     XSLFileName = os.path.join(thisDir, 'xslt', 'mmcheck_0.9.0_bdl.xsl')
     #set the fpre file
-    fpre = open(os.path.join(thisDir,'xslt', str(mmfile)+'.pre'), 'w')
+
+    fpre = open(os.path.join(settings.PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
     #begin reading through each line in the mm file, and....
     for line in mmfile:
         # make necessary mods to richcontent symbols
@@ -77,7 +78,7 @@ def translateMM(mmfile):
     #pull in the mindmap file to be translated
     fin = mmfile
 
-    fpre = open(os.path.join(thisDir,'xslt', str(mmfile)+'.pre'), 'w')
+    fpre = open(os.path.join(PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
 
     for line in fin:
       if re.match("^<text>",line) or re.match("^<richcontent TYPE=",line):
@@ -91,7 +92,7 @@ def translateMM(mmfile):
     transform = etree.XSLT(xslt_root)
     strResult = transform(xml_input)
 
-    os.remove(os.path.join(thisDir,'xslt', str(mmfile)+'.pre'))
+    os.remove(os.path.join(PIMMS_TMP_DIR, str(mmfile)+'.pre'))
 
     return strResult
   

@@ -52,6 +52,7 @@ def ceda_deployment(db_host, db_password, deployment='/pyEnv/ve/pimms'):
                   ):
         wsgi()
         wsgi_conf()
+        run('mkdir -p {0}/tmp'.format(deployment))
         local_settings(db_host, db_password)
 
 def wsgi(filepath=None):
