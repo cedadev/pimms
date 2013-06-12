@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
@@ -16,25 +16,32 @@ def qnsetuphome(request):
     '''
     controller for experiment list home page .
     '''
-    try:
-        # get my urls
-        urls = {}
-        urls = getsiteurls(urls)
-        urls = getqnsetupurls(urls)        
-        
-        #!FIXME: if one of the questionnairs raises an error none will be built.
-        allqns = Questionnaire.objects.filter()
-        for qn in allqns:
-            qn.url = reverse('pimms_apps.qn.views.qnhome', args=(qn, ))
-#            qn.cpurl = reverse('pimms_apps.exp.views.expcopy', args=(exp.id, ))
-#            qn.delurl = reverse('pimms_apps.exp.views.expdelete', args=(exp.id, ))
-    except:
-        raise Http404
+    # get my urls
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getqnsetupurls(urls)        
+
+    #!FIXME: if one of the questionnairs raises an error none will be built.
+    allqns = Questionnaire.objects.filter()
+    for qn in allqns:
+        qn.url = reverse('pimms_apps.qn.views.qnhome', args=(qn, ))
+        qn.delurl = reverse('pimms_apps.qn.qnsetup.views.qndelete', args=(qn, ))
+        qn.abbrev = qn
+        #!TODO: qn.cpurl
       
     return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allqns, 'urls': urls},
                                 context_instance=RequestContext(request))
     
     
+def qndelete(request, qnproj):
+    #!TODO: we should have some check to ensure this has been called from the
+    # modal dialog
+    project = Questionnaire.objects.get(project=qnproj)
+    project.delete()
+
+    return HttpResponseRedirect(reverse('pimms_apps.qn.qnsetup.views.qnsetuphome'))
+    
+
 def qninputs(request):
     '''
     '''
