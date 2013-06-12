@@ -1,6 +1,9 @@
 from django import forms
 from pimms_apps.qn.models import Questionnaire
 
+import re
+
+VALID_PROJECT_REXP = r'^\D+$'
 
 class qnSetupForm(forms.ModelForm):
     ''' 
@@ -12,6 +15,16 @@ class qnSetupForm(forms.ModelForm):
         
         exclude = ('creator', 'cvs', 'exps', 'creationDate') 
         
+
+    def clean(self):
+        cleaned_data = super(qnSetupForm, self).clean()
+        project = cleaned_data.get('project')
+
+        if not re.match(VALID_PROJECT_REXP, project):
+            self._errors['project'] = ['Projects cannot contain digits']
+            raise forms.ValidationError('Invalid project name')
+
+        return cleaned_data
         
 class UploadCVForm(forms.Form):
     cvfile  = forms.FileField(required=False)
