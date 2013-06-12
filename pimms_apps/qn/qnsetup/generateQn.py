@@ -23,4 +23,5 @@ def generate_qn(qn, cvlist, gridcv, explist):
     initialiseModel(qn, cvlist)
 
     # initialise a grid template and upload supplied grid cv
-    initialiseGrid(qn, gridcv)
+    if gridcv:
+        initialiseGrid(qn, gridcv)

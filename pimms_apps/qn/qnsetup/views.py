@@ -80,10 +80,13 @@ def qninputs(request):
                         cvlist.append(entry['cvfile'])
                 
                 # handle grid cvupload
-                gridcvfile = GridCVFile(filename=gridcvform.cleaned_data['gridcvfile'].name)
-                gridcvfile.save()
-                qn.gridcv = gridcvfile
-                gridupload = gridcvform.cleaned_data['gridcvfile']
+                if gridcvform.cleaned_data['gridcvfile']:
+                    gridcvfile = GridCVFile(filename=gridcvform.cleaned_data['gridcvfile'].name)
+                    gridcvfile.save()
+                    qn.gridcv = gridcvfile
+                    gridupload = gridcvform.cleaned_data['gridcvfile']
+                else:
+                    gridupload = None
                     
                 # deal with saving exp file details
                 explist = []
