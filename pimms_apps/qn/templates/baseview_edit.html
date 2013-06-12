@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="boxer">
+<div class="boxer2">
+<h4> Edit {{resource.type}} description </h4>
+<div id="data">
+    <form action="{{editURL}}" method="POST" onsubmit="myProject.bypassConfirm()">
+       {% include snippet_template %}
+    </form>
+</div>
+</div>
+<p><a href="{{okURL}}" id="returnBut">Return (without saving)</a></p>
+<script type="text/javascript">
+    var returnBut = new YAHOO.widget.Button("returnBut");
+</script>
+</div>
+{% endblock%} 

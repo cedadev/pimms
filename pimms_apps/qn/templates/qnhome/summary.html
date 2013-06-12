@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="boxer titlerow">
+  Home page for <b>{{ project }}</b> metadata
+</div>
+
+<!-- Page welcome section -->
+{% include 'qn/qnhome/welcome.html' %}
+
+<div class="boxer">
+  <table>
+    <tr>
+      <td width="33%">
+	       <!-- Platform summary section -->
+        {% include 'qn/qnhome/plats.html' %}
+      </td>
+    </tr>
+    <tr>
+      <td width="33%">
+        <!-- Grid summary section -->
+        {% include 'qn/qnhome/grids.html' %}
+      </td>
+    </tr>
+    <tr>
+      <td width="33%">    
+        <!-- Model summary section -->
+        {% include 'qn/qnhome/models.html' %}
+      </td>
+    </tr>    
+  </table>
+  
+  <!-- Simulations summary section -->
+  <div class="boxer">
+    {% include 'qn/qnhome/simtable.html' %}
+  </div>
+  
+</div>
+{% endblock %}
+
+{% block pagejs %}
+<script type="text/javascript">
+    /* <![CDATA[ */
+    $(document).ready(function() {
+     $('#sims-table').dataTable({
+      "bJQueryUI": true,
+      "bAutoWidth": false,
+      'sPaginationType': 'full_numbers',
+      'aaSorting': [[ 0, "desc" ]],
+     });
+    } );
+    /* ]]> */
+</script>
+{% endblock %} 

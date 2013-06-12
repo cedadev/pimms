@@ -6,7 +6,7 @@ here = op.dirname(__file__)
 
 # Import version from the top-level package
 sys.path[:0] = here
-from pimms import __version__
+from pimms_site import __version__
 README = open(op.join(here, 'README')).read()
 
 setup(name='pimms',

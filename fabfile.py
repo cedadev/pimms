@@ -39,7 +39,6 @@ def ceda_deployment(db_host, db_password, deployment='/pyEnv/ve/pimms'):
     Specific deployment configuration for CEDA.
 
     """
-    #wsgi_path = deployment+'/lib/python2.6/site-packages/pimms/resources/pimms.wsgi'
     wsgi_path = deployment+'/etc/pimms.wsgi'
 
     with settings(deployment=deployment,
@@ -52,6 +51,7 @@ def ceda_deployment(db_host, db_password, deployment='/pyEnv/ve/pimms'):
                   ):
         wsgi()
         wsgi_conf()
+        run('mkdir -p {0}/tmp'.format(deployment))
         local_settings(db_host, db_password)
 
 def wsgi(filepath=None):
@@ -96,10 +96,21 @@ def wsgi_conf(filepath=None):
 def tarball():
     local('python setup.py sdist')
 
+def sandbox(db_password, name='admin', email='admin@localhost'):
+    with settings(deployment='.',
+                  db_host='localhost',
+                  db_password=db_password,
+                  admin_name=name,
+                  admin_email=email,
+                  server_email=email,
+                  ):
+        local('mkdir -p {0}/tmp'.format(env.deployment))
+        local_settings(env.db_host, env.db_password)
+
 
 def local_settings(db_host, db_password, filepath=None):
     if filepath is None:
-        filepath = op.join(here, 'pimms/local_settings.py')
+        filepath = op.join(here, 'pimms_site/local_settings.py')
 
     params = {
         'ADMIN_NAME': env.admin_name,
@@ -110,7 +121,7 @@ def local_settings(db_host, db_password, filepath=None):
         'DB_PORT': env.db_port,
         'DEPLOYMENT': env.deployment,
         }
-    settings_template = op.join(here, 'pimms/local_settings.py.tmpl')
+    settings_template = op.join(here, 'pimms_site/local_settings.py.tmpl')
     write_template(settings_template, filepath, **params)
 
 def write_template(template_file, output_file, **kwargs):

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+
+{% block pagehead %}
+  <!-- linking in autocomplete javascript -->
+  <script type="text/javascript" src="/static/jquery/jquery-autocomplete/jquery.autocomplete.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-autocomplete/jquery.autocomplete.css"/>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="boxer">
+  <table width="100%">
+    <tr>
+      <td>
+        <h1> {{instance.title}} {% if target %} for {{target.attname}} {{target.instance}} {% endif %} </h1>
+      </td>
+      {% if exportFiles %}
+        <td align="right">
+          <form action="{{exportFiles}}" method="POST" onsubmit="myProject.bypassConfirm()"><input value="Export" type="submit" id="cmipbut" > Files to CMIP5</form>
+        </td>
+      {% endif %}
+    </tr>
+  </table>
+
+  <script type="text/javascript"> 
+      var oLinkButton1 = new YAHOO.widget.Button("cmipbut"); 
+  </script>
+</div>
+
+
+{% if filter %}
+  <div class="boxer">
+    <h4>{{filter.m}}</h4>
+    <form action="{{filter.url}}" method="POST" onsubmit="myProject.bypassConfirm()">
+      <select name="id" id="filterops">
+        {% for o in filter.ops %}
+          <option value="{{o.id}}">{{o}}</option>
+        {% endfor %}
+        <input type="hidden" name="klass" value="{{filter.klass}}">
+        <input type="submit" value="Filter" id="filbut">
+      </select>
+    </form>
+    <script type="text/javascript">var olinkButton2 = new YAHOO.widget.Button("filbut"); </script>
+    <script type="text/javascript">$("#filterops").dropdownchecklist({maxDropHeight: 200});</script>
+  </div>
+{% endif %}
+
+
+<div class="boxer">
+  {% if objects|length_is:0 %}
+    {% if target %} 
+      <p>No {{instance.title|lower}} match filter.</p>
+    {% else %} 
+      <p>No {{instance.title|lower}} loaded at present.</p>
+    {% endif %}
+  {% else %} 
+    <table class="linklike">
+      <h4> Current {{instance.title|lower}}: </h4>
+      {% for r in objects %}
+        <tr class="{% cycle 'row1' 'row2' %}">
+          {% for d in r %}
+            <td width="20%">
+              <center>
+                <a href="{{d.editURL}}">{{d}}
+              </center>
+            </td>
+            <td width="10%">
+              <center>
+                {% if d.delURL %}
+                  <form action="{{d.delURL}}" method="POST" onsubmit="myProject.bypassConfirm()"> <input type="image" src="/static/icons/24x24/Erase.png" value="delete"></form>
+                  <!-- <a href = {{ d.delURL }}><img src="/static/icons/24x24/Erase.png" title="Delete {{d}}"/></a> -->
+                {% endif %}
+              </center>
+            </td>
+            <td/>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</div>
+
+<div class="boxer">
+  <div class="boxer2">
+    <h4> Add new {{instance.title|lower}}: </h4>
+    <div id="data">
+      <form action="{{editURL}}" method="POST" ENCTYPE="multipart/form-data" onsubmit="myProject.bypassConfirm()">
+        {% include snippet_template %}
+      </form>
+    </div>
+  </div>
+  {% if target.url %}
+    <center>
+        <a id="returnBut" href="{{target.url}}">Return to {{target.type}} for {{target.instance}}</a>
+    </center>
+    <script type="text/javascript"> 
+      var oLinkButton3 = new YAHOO.widget.Button("returnBut"); 
+    </script>
+  {% endif %}
+</div>
+
+{% endblock%}
