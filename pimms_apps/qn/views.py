@@ -31,6 +31,11 @@ from pimms_apps.qn.coupling import couplingHandler
 logging=settings.LOG
 MESSAGE=''
 
+##############################################################################
+# Note: Some code has been removed from generic PIMMS.  
+# The code was commented out but are now completely removed.
+# See git history for details.
+# Last commit with the comments was 2fed36609 on devel.
 
 def qnhome(request, qnproj):
     ''' 
@@ -98,58 +103,6 @@ def qnhome(request, qnproj):
 
 
 
-
-
-#def authorisation(request):
-#    m = '''
-#    Access denied, you don't have appropriate permission to access this 
-#    resource. Contact badc@rl.ac.uk if you think this is an error. (Please 
-#    include your openid id in your email.)
-#    '''
-#    
-#    return render_to_response('error.html',{'message':m})
-#
-#
-#def completionHelper(request, vocabName):
-#    ''' 
-#    This method provides support for ajax autocompletion within a specific 
-#    vocabulary 
-#    '''
-#    
-#    results = []
-#    if request.method == "GET":
-#        if request.GET.has_key(u'q'):
-#            value = request.GET[u'q']
-#            # Ignore queries shorter than length 3
-#            if len(value) > 2:
-#                try:
-#                    v=Vocab.objects.get(name=vocabName)
-#                except: 
-#                    return HttpResponseBadRequest('Invalid vocab %s'%vocabName)
-#                model_results = Term.objects.filter(vocab=v).filter(name__startswith=value)
-#                results = [ (x.__unicode__(), x.id) for x in model_results ]
-#   
-#        json = simplejson.dumps(results)
-#        return HttpResponse(json, mimetype='application/json')
-#    return HttpResponse
-#
-#
-#def autocomplete_model(request):
-#    '''
-#    returns model names for jquery/ajax autocompletion
-#    '''
-#    modelnames = model_list.modelnames
-#    modellist=[]
-#    if request.GET.has_key(u'term'): # coming in from form element 
-#        for name in modelnames:
-#            if name.startswith(request.GET[u'term']):
-#                modellist.append(name)
-#        return HttpResponse(simplejson.dumps(modellist), 
-#                              mimetype="application/json")
-#    else: # flat list page
-#        return HttpResponse('<br/>'.join(modelnames))
-#
-#
 def genericDoc(request, cid, docType, pkid, method):
     ''' 
     Handle the generic documents 
@@ -183,186 +136,6 @@ def genericDoc(request, cid, docType, pkid, method):
     return cmethod()
 
 
-#def persistedDoc(request, docType, uri, version=0):
-#    ''' 
-#       Persisted document handling : 
-#       Will retrieve an xml document with a given uri and version number  
-#    '''
-#    
-#    if docType not in ('platform', 'experiment', 'simulation', 'component', 
-#                       'datacontainer'):
-#        return HttpResponseBadRequest('Invalid document type requests - %s' 
-#                                      %docType)
-#    
-#    set = CIMObject.objects.filter(uri=uri)
-#    # Document doesn't exist in the database scenario
-#    if len(set) == 0:
-#        return render_badrequest('error.html', 
-#                                 {'message':'Document with uri %s not found' %uri})
-#    
-#    # Handling different versions 
-#    if version <> 0:
-#        try:
-#            set = set.filter(documentVersion=version)
-#            # Should only be one version per uri
-#            if len(set) <> 1: 
-#                logging.info('CIM Document Inconsistency - %s identical versions'
-#                             %len(set))
-#            obj=set.get(documentVersion=version)
-#        except:
-#            logging.info('Attempt to retrieve %s with version %s failed' 
-#                         %(uri, version))
-#            return render_badrequest('error.html', 
-#                                     {'message':'Document with uri %s has no version %s' 
-#                                      %(uri, version)})
-#    else:
-#        obj=set[len(set)-1]
-#    
-#    # generate an xml 
-#    return HttpResponse(obj.xmlfile.read(), mimetype='application/xml')
-#
-#    
-#def exportFiles(request,cen_id):
-#    ''' Used to export all files to CMIP5 in one go '''
-#    objects=DataContainer.objects.filter(centre__id=cen_id)
-#    return render_badrequest('error.html',{'message':'Sorry not completely implemented'})
-#
-#def testFile(request,fname):
-#    ''' This method returns a file from the test directory '''
-#    filename=os.path.join(settings.TESTDIR,fname)
-#    f=open(filename)
-#    return HttpResponse(f.read(),mimetype='application/xml')
-#
-#def index(request):
-#    #find all the centre objects
-#    centre_list=Centre.objects.all()
-#    f=CentreForm() 
-#    return render_to_response('default.html',{'centre_list':centre_list,'cf':f})
-#  
-  
-
-
-#
-#   
-#def centres(request):
-#    ''' For choosing amongst centres '''
-#    p=Centre.objects.all()
-#    for ab in ['CMIP5','1. Example','2. Test Centre']:
-#        p=p.exclude(abbrev=ab)
-#    
-#    # creating a separate list for the example and test centre
-#    p_aux=Centre.objects.filter(Q(abbrev='1. Example')|Q(abbrev='2. Test Centre'))  
-#    
-#    if request.method=='POST':
-#        #yep we've selected something
-#        try:
-#            if 'choice' in request.POST:
-#                selected_centre=p.get(id=request.POST['choice'])
-#                return HttpResponseRedirect(reverse('pimms_apps.qn.views.centre',args=(selected_centre.id,)))
-#            elif 'auxchoice' in request.POST:
-#                selected_centre=p_aux.get(id=request.POST['auxchoice'])
-#                return HttpResponseRedirect(reverse('pimms_apps.qn.views.centre',args=(selected_centre.id,)))
-#            elif 'ripchoice' in request.POST:
-#                centre = Centre.objects.get(id=request.POST['ripchoice'])
-#                ensembles = []
-#                sims=Simulation.objects.filter(centre=request.POST['ripchoice']).filter(isDeleted=False)
-#                #FIXME
-#                # A temporary fix for empty start dates on input mods
-#                for sim in sims:
-#                    for ens in sim.ensemble_set.all():
-#                        for mem in ens.ensemblemember_set.all():
-#                            if mem.imod:
-#                                try:
-#                                    m = mem.imod.memberStartDate
-#                                    print 'Successful startdate found - %s' % m
-#                                except:
-#                                    print 'Replacing null startdate with %s' % sim.duration.startDate
-#                                    mem.imod.memberStartDate = sim.duration.startDate
-#                                    
-#                return render_to_response('ripinfo.html',{'sims':sims, "ensembles":ensembles, "centre":centre})
-#        except KeyError:
-#            m='Unable to select requested centre %s'%request.POST['choice']
-#            logging.info('ERROR on centres page: Unable to select requested centre %s'%request.POST['choice'])
-#            return render_badrequest('error.html',{'message':m})
-#    else: 
-#        logging.info('Viewing centres')
-#        curl = reverse('pimms_apps.qn.views.centres')
-#        feeds=DocFeed.feeds.keys()
-#        feedlist=[]
-#        for f in sorted(feeds):
-#            feedlist.append((f,reverse('django.contrib.syndication.views.feed',args=('cmip5/%s'%f,))))
-#            
-#        #get publication list for front page table
-#        pubs = getpubs()
-#        
-#        return render_to_response('centres/centres.html', {'objects':sublist(p,4),
-#                                                  'centreList':p,
-#                                                  'auxList':p_aux,
-#                                                  'curl':curl,
-#                                                  'pubs':pubs,
-#                                                  'feedobjects':sublist(feedlist,4)},
-#                                                  context_instance = RequestContext(request)
-#                                                  )
-#    
-#def centre(request,centre_id):
-#    ''' 
-#    Handle the top page on a centre by centre basis 
-#    '''
-#    
-#    c=Centre.objects.get(id=centre_id)
-#    
-#    #models=[]
-#    models=[Component.objects.get(id=m.id) for m in c.component_set.filter(
-#                                                    scienceType='model').filter(
-#                                                    isDeleted=False)]
-#    #monkey patch the urls to edit these ...
-#    for m in models:
-#        m.url=reverse('pimms_apps.qn.views.componentEdit',args=(c.id,m.id))
-#        m.cpURL=reverse('pimms_apps.qn.views.componentCopy',args=(c.id,m.id))
-#    
-#    platforms=[Platform.objects.get(id=p['id']) for p in c.platform_set.values().filter(isDeleted=False)]
-#    for p in platforms:
-#        p.url=reverse('pimms_apps.qn.views.platformEdit',args=(c.id,p.id))
-#    
-#    sims=Simulation.objects.filter(centre=c.id).filter(isDeleted=False).order_by('abbrev')
-#    for s in sims:
-#        s.url=reverse('pimms_apps.qn.views.simulationEdit',args=(c.id,s.id))
-#    
-#    grids=Grid.objects.filter(centre=c.id).filter(istopGrid=True).filter(isDeleted=False) 
-#    for g in grids:
-#        g.url=reverse('pimms_apps.qn.views.gridEdit',args=(c.id,g.id))
-#        g.cpURL=reverse('pimms_apps.qn.views.gridCopy',args=(c.id,g.id))
-#    
-#    newmodURL=reverse('pimms_apps.qn.views.componentAdd',args=(c.id,))
-#    newplatURL=reverse('pimms_apps.qn.views.platformEdit',args=(c.id,))
-#    viewsimURL=reverse('pimms_apps.qn.views.simulationList',args=(c.id,))
-#    newgridURL=reverse('pimms_apps.qn.views.gridAdd',args=(c.id,))
-#    
-#    
-#    refs=Reference.objects.filter(centre=c)
-#    files=DataContainer.objects.filter(centre=c)
-#    parties=ResponsibleParty.objects.filter(centre=c)
-#    
-#    #get simulation info for sim table
-#    tablesims = getsims(c)
-#    
-#    logging.info('Viewing %s'%c.id)
-#    return render_to_response('centre/centre.html',
-#                              {'centre':c, 
-#                               'models':models,
-#                               'platforms':platforms,
-#                               'grids':grids, 
-#                               'refs':refs,
-#                               'files':files, 
-#                               'parties':parties,
-#                               'newmod':newmodURL,
-#                               'newplat':newplatURL,
-#                               'newgrid':newgridURL,
-#                               'sims':sublist(sims,3),
-#                               'viewsimurl':viewsimURL,
-#                               'tabs':tabs(request,c.id, 'Summary'),
-#                               'notAjax':not request.is_ajax(),
-#                               'tablesims':tablesims})
 
     
 ##### COMPONENT HANDLING ########################################################
@@ -503,34 +276,6 @@ def gridEdit(request, qnproj, grid_id):
     return g.edit(request)
 
 
-#@gracefulNotFound
-#def gridRefs(request,centre_id,grid_id):
-#    ''' Manage the references associated with a grid '''
-#    c=gridHandler(centre_id,grid_id)
-#    return c.manageRefs(request)
-#
-#@gracefulNotFound
-#def gridCopy(request,centre_id,grid_id):
-#    c=gridHandler(centre_id,grid_id)
-#    return c.copy()
-#   
-#
-####### REFERENCE HANDLING ######################################################
-##   
-##def referenceList(request,centre_id=None):
-##    ''' Handle the listing of references, including the options to edit, or add'''
-##    rH=referenceHandler(centre_id)
-##    return rH.list()
-##
-##def referenceEdit(request,centre_id,reference_id=None):
-##    ''' Display or edit one reference '''
-##    rH=referenceHandler(centre_id)
-##    return rH.edit(request,reference_id,request.is_ajax())
-##    
-##def assignReferences(request,centre_id,resourceType,resource_id):
-##    ''' Make the link between a reference and a component '''
-##    rH=referenceHandler(centre_id)
-##    return rH.assign(request,resourceType,resource_id)
 
 #    
 ####### SIMULATION HANDLING ####################################################
@@ -697,7 +442,7 @@ def platformEdit(request, qnproj, platform_id=None):
             
             return HttpResponseRedirect(reverse('pimms_apps.qn.views.qnhome', args=(qn, )))
     
-    return render_to_response('qn/platform.html',
+    return render_to_response('platform.html',
                              {'pform': pform, 
                               'urls': urls, 
                               'p': p, 
@@ -726,77 +471,6 @@ def viewExperiment(request, qnproj, experiment_id):
                                                   context_instance=RequestContext(request))
 
 
-######## HELP, ABOUT and Vn History ###############
-#
-#def vnhist(request,cen_id):
-#    return render_to_response('vnhist.html')
-#
-#def trans(request,cen_id):
-#    return render_to_response('trans.html')
-#
-#def help(request,cen_id):    
-#    urls={'vnhist':reverse('pimms_apps.qn.views.vnhist',args=(cen_id,)),
-#          'trans':reverse('pimms_apps.qn.views.trans',args=(cen_id,)),}
-#    
-#    return render_to_response('help.html',{'urls':urls,'tabs':tabs(request,cen_id,'Help')})
-# 
-#def about(request,cen_id):
-#    return render_to_response('about.html',{'tabs':tabs(request,cen_id,'About')})
-#
-#def intro(request,cen_id):
-#    return render_to_response('intro.html',{'tabs':tabs(request,cen_id,'Intro')})
-#            
-############## Ensemble View ###############################            
-#            
-#def ensemble(request,cen_id,sim_id):
-#    ''' Manage ensembles for a given simulation '''
-#    s=Simulation.objects.get(id=sim_id)
-#    e=Ensemble.objects.get(simulation=s)
-#    e.updateMembers()  # in case members were deleted via their code mods or ics.
-#    members=e.ensemblemember_set.all()[1:]
-#        
-#    EnsembleMemberFormset=modelformset_factory(EnsembleMember, 
-#                                               form=EnsembleMemberForm,
-#                                               formset=BaseEnsembleMemberFormSet,
-#                                               extra=0,exclude=('ensemble',
-#                                                                'memberNumber'))
-#    
-#    urls={'self':reverse('pimms_apps.qn.views.ensemble',
-#                         args=(cen_id,sim_id,)),
-#          'sim':reverse('pimms_apps.qn.views.simulationEdit',
-#                        args=(cen_id,sim_id,)),
-#          'mods':reverse('pimms_apps.qn.views.list',
-#                     args=(cen_id,'modelmod','ensemble',s.id,)),
-#          'ics':reverse('pimms_apps.qn.views.list',
-#                     args=(cen_id,'inputmod','ensemble',s.id,)),        
-#                     }              
-#  
-#    if request.method=='GET':
-#        eform=EnsembleForm(instance=e,prefix='set')
-#        eformset=EnsembleMemberFormset(queryset=members,prefix='members')
-#    elif request.method=='POST':
-#        if e.etype is not None:
-#            eformset=EnsembleMemberFormset(request.POST,queryset=members,prefix='members')
-#        else: eformset=None
-#        eform=EnsembleForm(request.POST,instance=e,prefix='set')
-#        ok=True
-#        if eform.is_valid():
-#            eform.save()
-#        else: 
-#            ok=False
-#        if eformset is not None:
-#            if eformset.is_valid():
-#                eformset.save()
-#            else: ok=False
-#        
-#        logging.debug('POST to ensemble is ok - %s'%ok)
-#        if ok: return HttpResponseRedirect(urls['self'])
-#                
-#    for f in eformset.forms: f.specialise(s.experiment.requirementSet)
-#    eform.rset=(s.experiment.requirementSet is not None)
-#    return render_to_response('ensemble.html',
-#               {'s':s,'e':e,'urls':urls,'eform':eform,'eformset':eformset,
-#               'tabs':tabs(request,cen_id,'Ensemble')})
                
 
 ############ Simple Generic Views ########################
@@ -1021,32 +695,3 @@ def assign(request, qnproj, resourceType, targetType, target_id):
     h = ViewHandler(qn, resourceType, None, target_id, targetType)
     
     return h.assign(request) 
-
-
-#def ripinfo(request):
-#    '''
-#       Gathering rip information for a centre
-#    ''' 
-#    if request.method=='GET':
-#        #yep we've selected something
-#        try:
-#            if 'ripinfo' in request.GET:
-#                #get centre for web display
-#                centre = Centre.objects.get(id=request.GET['centrerip'])
-#                ensembles = []
-#                sims=Simulation.objects.filter(centre=request.GET['centrerip']).filter(isDeleted=False)
-#                    #ensembles.append(s.ensemble_set.get())
-#                    #if s.ensemble_set.filter(riphidden=False):
-#                        #sims.delete(s)
-#                        #ensembles.append(s.ensemble_set.get())
-#                #ensemblemembers=[]
-#                #for e in ensembles:
-#                #    ensemblemembers.append(e.ensemblemember_set.all())
-#                return render_to_response('ripinfo.html',{'sims':sims, "ensembles":ensembles, "centre":centre})
-#                #return render_to_response('ripinfo.html',{'sims':sims, "ensembles":ensembles, "ensmems":ensemblemembers, "centre":centre})
-#        except KeyError:
-#            m='Unable to select requested centre %s'%request.POST['centrerip']
-#            logging.info('ERROR on centres page: Unable to select requested centre %s'%request.POST['centrerip'])
-#            return render_badrequest('error.html',{'message':m})    
-#        
-#   
