@@ -78,7 +78,7 @@ def qnhome(request, qnproj):
     tablesims = []
     tablesims = getsims(qn)
     
-    return render_to_response('qn/qnhome/summary.html',
+    return render_to_response('qnhome/summary.html',
                               {'project'   : qn.project, 
                                'models'    : models,
                                'platforms' : platforms,
