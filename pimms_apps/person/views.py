@@ -38,13 +38,13 @@ def UserRegistration(request):
             login(request, new_user)            
             return HttpResponseRedirect(urls['home'])
         else:
-            return render_to_response('person/register.html', {'form': form, 'urls':urls}, context_instance=RequestContext(request))
+            return render_to_response('register.html', {'form': form, 'urls':urls}, context_instance=RequestContext(request))
             
     else:
         ''' user is not submitting a form therefore show a registration form '''
         form = RegistrationForm()
         context = {'form': form, 'urls':urls}
-        return render_to_response('person/register.html', context, context_instance=RequestContext(request))
+        return render_to_response('register.html', context, context_instance=RequestContext(request))
         
 
 def LoginRequest(request):
@@ -66,14 +66,14 @@ def LoginRequest(request):
                 return HttpResponseRedirect(urls['home'])
             else:
                 error = "Username and Password do not match. Please try again"
-                return render_to_response('person/login.html', {'form': form, 'error': error, 'urls': urls}, context_instance=RequestContext(request))
+                return render_to_response('login.html', {'form': form, 'error': error, 'urls': urls}, context_instance=RequestContext(request))
         else:
-            return render_to_response('person/login.html', {'form': form, 'urls': urls}, context_instance=RequestContext(request))        
+            return render_to_response('login.html', {'form': form, 'urls': urls}, context_instance=RequestContext(request))        
     else:
         ''' user is not submitting the form, therefore show the login form '''
         form = LoginForm()        
         context = {'form': form, 'urls':urls}
-        return render_to_response('person/login.html', context, context_instance=RequestContext(request))
+        return render_to_response('login.html', context, context_instance=RequestContext(request))
     
     
 def LogoutRequest(request):
