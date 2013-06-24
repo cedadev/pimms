@@ -1,8 +1,9 @@
 from django.shortcuts import render_to_response
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, Http500, HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
+from django.db import transaction
 
 from pimms_apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
 from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
@@ -10,6 +11,9 @@ from pimms_apps.qn.qnsetup.generateQn import generate_qn
 from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
 from pimms_apps.helpers import getsiteurls
 from pimms_apps.qn.helpers import getqnurls
+
+import logging
+log = logging.getLogger(__name__)
 
 
 def qnsetuphome(request):
@@ -42,6 +46,7 @@ def qndelete(request, qnproj):
     return HttpResponseRedirect(reverse('pimms_apps.qn.qnsetup.views.qnsetuphome'))
     
 
+@transaction.atomic
 def qninputs(request):
     '''
     '''
