@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from django.http import Http404, Http500, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
@@ -46,7 +46,7 @@ def qndelete(request, qnproj):
     return HttpResponseRedirect(reverse('pimms_apps.qn.qnsetup.views.qnsetuphome'))
     
 
-@transaction.atomic
+@transaction.commit_on_success
 def qninputs(request):
     '''
     '''
