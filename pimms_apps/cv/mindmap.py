@@ -78,7 +78,7 @@ def translateMM(mmfile):
     #pull in the mindmap file to be translated
     fin = mmfile
 
-    fpre = open(os.path.join(PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
+    fpre = open(os.path.join(settings.PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
 
     for line in fin:
       if re.match("^<text>",line) or re.match("^<richcontent TYPE=",line):
@@ -92,7 +92,7 @@ def translateMM(mmfile):
     transform = etree.XSLT(xslt_root)
     strResult = transform(xml_input)
 
-    os.remove(os.path.join(PIMMS_TMP_DIR, str(mmfile)+'.pre'))
+    os.remove(os.path.join(settings.PIMMS_TMP_DIR, str(mmfile)+'.pre'))
 
     return strResult
   
