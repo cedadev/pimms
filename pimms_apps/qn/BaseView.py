@@ -26,9 +26,9 @@ class BaseViewHandler:
         self.resource=resource
         self.target=target
         
-        self.editHTML='qn/baseview_edit.html'#'%s_edit.html'%self.resource['type']
-        self.listHTML='qn/baseview_list.html'#'%s_list.html'%self.resource['type']
-        self.selectHTML='qn/baseviewAssign.html'
+        self.editHTML='baseview_edit.html'#'%s_edit.html'%self.resource['type']
+        self.listHTML='baseview_list.html'#'%s_list.html'%self.resource['type']
+        self.selectHTML='baseviewAssign.html'
         
     def objects(self):
         ''' We use the subclass method '''
@@ -125,7 +125,7 @@ class BaseViewHandler:
                                                 'form'        : self._constructForm('GET'),
                                                 'editURL'     : formURL,
                                                 'instance'    : self.resource,
-                                                'snippet_template': 'qn/%s_snippet.html' %self.resource['type'],
+                                                'snippet_template': '%s_snippet.html' %self.resource['type'],
                                                 'target'      : self.target,
                                                 'exportFiles' : exportFiles,
                                                 'filter'      : filterops},
@@ -214,7 +214,7 @@ class BaseViewHandler:
                                      'editURL' :editURL,
                                      'okURL'   :okURL,
                                      'tabs'    :tabs(request,self.qn,'Edit %s'%instance),
-                                     'snippet_template':'qn/%s_snippet.html' %self.resource['type'],
+                                     'snippet_template':'%s_snippet.html' %self.resource['type'],
                                      'resource': self.resource},
                                      context_instance=RequestContext(request))
                                                  

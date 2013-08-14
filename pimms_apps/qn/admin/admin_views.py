@@ -28,6 +28,6 @@ def modelcopy(request):
     else:
         form = CompCopyForm() # An unbound form
     
-    return render_to_response("admin/qn/Component/compcopy.html",
+    return render_to_response("admin/Component/compcopy.html",
                               {'form' : form},
     )

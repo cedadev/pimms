@@ -82,7 +82,7 @@ class DurationWidget(forms.MultiWidget):
         else: return [None,None,None]
     def format_output(self, rendered_widgets):
         widgetContext = {'from':rendered_widgets[0],'to':rendered_widgets[1],'for':rendered_widgets[2]}
-        return render_to_string("qn/DateRange.html", widgetContext)
+        return render_to_string("DateRange.html", widgetContext)
 
 class SDTwidget(forms.MultiWidget):
     def __init__(self):

@@ -167,7 +167,7 @@ class simulationHandler(object):
         # now work out what we want to say about conformances.
         cs = Conformance.objects.filter(simulation=s)
             
-        return render_to_response('qn/simulation.html',
+        return render_to_response('simulation.html',
                                  {'s'        : s, 
                                   'simform'  : simform,
                                   'urls'     : urls,
@@ -209,11 +209,11 @@ class simulationHandler(object):
         if len(p) == 0:
             # Require them to create a platform
             message = 'You need to create a platform before creating a simulation'
-            return render_to_response('qn/error.html', {'message':message, 'url':url})
+            return render_to_response('error.html', {'message':message, 'url':url})
         elif len(m)==0:
             # Require them to create a model
             message = 'You need to create a model before creating a simulation'
-            return render_to_response('qn/error.html', {'message':message, 'url':url})
+            return render_to_response('error.html', {'message':message, 'url':url})
         
         url = reverse('pimms_apps.qn.views.simulationAdd', args = (self.qn, self.expid, ))
        
@@ -265,7 +265,7 @@ class simulationHandler(object):
             
             exp.append(etmp(e.abbrev, sims, e.id, self.qn))
 
-        return render_to_response('qn/simulationList.html',
+        return render_to_response('simulationList.html',
                                   {'experiments': exp, 
                                    'csims'      : csims, 
                                    'cpurl'      : cpurl,

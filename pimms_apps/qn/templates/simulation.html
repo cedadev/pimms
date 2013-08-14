@@ -50,7 +50,7 @@
             {% endifequal %}
             <p> Then you will be ready to:</p>
             <h4> Use this simulation to </h4>
-            {% include 'qn/docbuttons.html' %}
+            {% include 'docbuttons.html' %}
         {% endifnotequal %}
     </div>
 {% endblock %}
@@ -232,7 +232,7 @@
         {% else %}
         <table>
         {% for con in coset %}
-        <tr class="{% cycle 'row1' 'row2'%}"><td>{{con.requirement}}</td><td>{% if con.ctype %} {% include 'qn/pretty_conformance.html'%} {% else %} <span class="red">Not conformant?</span>{% endif %}</tr>
+        <tr class="{% cycle 'row1' 'row2'%}"><td>{{con.requirement}}</td><td>{% if con.ctype %} {% include 'pretty_conformance.html'%} {% else %} <span class="red">Not conformant?</span>{% endif %}</tr>
         {% endfor %}
         </table>
         {% endifnotequal %}
