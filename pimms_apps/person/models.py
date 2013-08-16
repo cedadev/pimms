@@ -11,5 +11,5 @@ class Person(models.Model):
     institute = models.CharField(max_length=512)
     
     def __unicode__(self):
-        return self.name
+        return '%s %s' % (self.firstname, self.surname)
     
