@@ -37,7 +37,7 @@ MESSAGE=''
 # See git history for details.
 # Last commit with the comments was 2fed36609 on devel.
 
-def qnhome(request, qnproj):
+def qnhome(request, qnname):
     ''' 
     Project questionnaire main page
     '''
@@ -45,7 +45,7 @@ def qnhome(request, qnproj):
     ##c=Centre.objects.get(id=centre_id)
     
     # pull out the specific questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     # Grab all models associated with this project
     models = [Component.objects.get(id=m.id) for m in qn.component_set.filter(scienceType='model').filter(isDeleted=False)]
@@ -84,7 +84,7 @@ def qnhome(request, qnproj):
     tablesims = getsims(qn)
     
     return render_to_response('qnhome/summary.html',
-                              {'project'   : qn.project, 
+                              {'qnname'   : qn.qnname, 
                                'models'    : models,
                                'platforms' : platforms,
                                'grids'     : grids, 
@@ -141,13 +141,13 @@ def genericDoc(request, cid, docType, pkid, method):
 ##### COMPONENT HANDLING ########################################################
 
 # Provide a view interface to the component object 
-def componentAdd(request, qnproj):
+def componentAdd(request, qnname):
     ''' 
     Add a component 
     '''
   
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn)
     
@@ -155,13 +155,13 @@ def componentAdd(request, qnproj):
 
 
 @gracefulNotFound
-def componentEdit(request, qnproj, component_id):
+def componentEdit(request, qnname, component_id):
     ''' 
     Edit a component 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -169,13 +169,13 @@ def componentEdit(request, qnproj, component_id):
     
     
 @gracefulNotFound   
-def componentSub(request, qnproj, component_id):
+def componentSub(request, qnname, component_id):
     ''' 
     Add a subcomponent onto a component 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
       
     c = componentHandler(qn, component_id)
     
@@ -183,13 +183,13 @@ def componentSub(request, qnproj, component_id):
     
     
 @gracefulNotFound
-def componentRefs(request, qnproj, component_id):
+def componentRefs(request, qnname, component_id):
     ''' 
     Manage the references associated with a component 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -197,13 +197,13 @@ def componentRefs(request, qnproj, component_id):
   
     
 @gracefulNotFound
-def componentTxt(request, qnproj, component_id):
+def componentTxt(request, qnname, component_id):
     ''' 
     Return a textual view of the component with possible values 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -211,13 +211,13 @@ def componentTxt(request, qnproj, component_id):
   
   
 @gracefulNotFound
-def componentCup(request, qnproj, component_id):
+def componentCup(request, qnname, component_id):
     ''' 
     Return couplings for a component 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
       
     c = couplingHandler(qn, request)
     
@@ -225,13 +225,13 @@ def componentCup(request, qnproj, component_id):
 
 
 @gracefulNotFound
-def componentInp(request, qnproj, component_id):
+def componentInp(request, qnname, component_id):
     ''' 
     Return inputs for a component 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
       
     c = componentHandler(qn, component_id)
     
@@ -239,9 +239,9 @@ def componentInp(request, qnproj, component_id):
  
  
 @gracefulNotFound
-def componentCopy(request, qnproj, component_id):
+def componentCopy(request, qnname, component_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -251,13 +251,13 @@ def componentCopy(request, qnproj, component_id):
 ##### GRID HANDLING ###########################################################
 #
 ## Provide a vew interface to the grid object 
-def gridAdd(request, qnproj):
+def gridAdd(request, qnname):
     ''' 
     Add a grid 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     g = gridHandler(qn)
     
@@ -265,11 +265,11 @@ def gridAdd(request, qnproj):
 
 
 @gracefulNotFound
-def gridEdit(request, qnproj, grid_id):
+def gridEdit(request, qnname, grid_id):
     ''' Edit a grid '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     g = gridHandler(qn, grid_id)
     
@@ -281,36 +281,36 @@ def gridEdit(request, qnproj, grid_id):
 ####### SIMULATION HANDLING ####################################################
 #
 @gracefulNotFound
-def simulationEdit(request, qnproj, simulation_id):
+def simulationEdit(request, qnname, simulation_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simid=simulation_id)
     
     return s.edit(request)
 
 
-def simulationAdd(request, qnproj, experiment_id):
+def simulationAdd(request, qnname, experiment_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, expid=experiment_id)
     
     return s.add(request)
 
 
-def simulationDel(request, qnproj, simulation_id):
+def simulationDel(request, qnname, simulation_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simid=simulation_id)
     
     return s.markdeleted(request)
 
 
-def simulationList(request, qnproj):
+def simulationList(request, qnname):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn)
     
@@ -318,18 +318,18 @@ def simulationList(request, qnproj):
 
 
 @gracefulNotFound
-def simulationCopy(request, qnproj):
+def simulationCopy(request, qnname):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn)
     return s.copy(request)
 
 
 @gracefulNotFound
-def simulationCopyInd(request, qnproj, simulation_id):
+def simulationCopyInd(request, qnname, simulation_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simid=simulation_id)
     
@@ -337,9 +337,9 @@ def simulationCopyInd(request, qnproj, simulation_id):
 
 
 @gracefulNotFound
-def conformanceMain(request, qnproj, simulation_id):
+def conformanceMain(request, qnname=qnname, simulation_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simulation_id)
     
@@ -347,12 +347,12 @@ def conformanceMain(request, qnproj, simulation_id):
 
 
 @gracefulNotFound
-def simulationCup(request, qnproj, simulation_id, coupling_id=None, ctype=None):
+def simulationCup(request, qnname, simulation_id, coupling_id=None, ctype=None):
     ''' 
     Return couplings for a component 
     '''
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     c = couplingHandler(qn,request)
     if ctype: # this method deprecated.
@@ -361,9 +361,9 @@ def simulationCup(request, qnproj, simulation_id, coupling_id=None, ctype=None):
         return c.simulation(simulation_id)
 
     
-def simulationCupReset(request, qnproj, simulation_id):
+def simulationCupReset(request, qnname, simulation_id):
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simulation_id)
     
@@ -402,18 +402,18 @@ class MyPlatformForm(PlatformForm):
        
         
 @gracefulNotFound
-def platformEdit(request, qnproj, platform_id=None):
+def platformEdit(request, qnname, platform_id=None):
     ''' 
     Handle platform editing 
     '''
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     urls = {}
     
     # start by getting a form ...
     if platform_id is None:
-        urls['edit'] = reverse('pimms_apps.qn.views.platformEdit', args=(qnproj, ))
+        urls['edit'] = reverse('pimms_apps.qn.views.platformEdit', args=(qnname, ))
         if request.method == 'GET':
             pform = MyPlatformForm(qn)
         elif request.method == 'POST':
@@ -422,7 +422,7 @@ def platformEdit(request, qnproj, platform_id=None):
         p = None
         puri = atomuri()
     else:
-        urls['edit'] = reverse('pimms_apps.qn.views.platformEdit', args=(qnproj, platform_id, ))
+        urls['edit'] = reverse('pimms_apps.qn.views.platformEdit', args=(qnname, platform_id, ))
         p = Platform.objects.get(id=platform_id)
         puri = p.uri
         if request.method == 'GET':
@@ -454,12 +454,12 @@ def platformEdit(request, qnproj, platform_id=None):
         
 ########## EXPERIMENT VIEWS ##################
     
-def viewExperiment(request, qnproj, experiment_id):
+def viewExperiment(request, qnname, experiment_id):
     '''
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     e = Experiment.objects.get(id=experiment_id)
     r = e.requirements.all()
@@ -644,13 +644,13 @@ class ViewHandler(BaseViewHandler):
                    
         return None
 
-def edit(request, qnproj, resourceType, resource_id, targetType=None, target_id=None, returnType=None):
+def edit(request, qnname, resourceType, resource_id, targetType=None, target_id=None, returnType=None):
     ''' 
     This is the generic simple view editor 
     '''
   
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     h = ViewHandler(qn, resourceType, resource_id, target_id, targetType)
     return h.edit(request, returnType)
@@ -662,13 +662,13 @@ def delete(request,cen_id,resourceType,resource_id,targetType=None,target_id=Non
     return h.delete(request,returnType)
 
 
-def list(request, qnproj, resourceType, targetType=None, target_id=None):
+def list(request, qnname, resourceType, targetType=None, target_id=None):
     ''' 
     This is the generic simple view lister 
     '''
     
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     h = ViewHandler(qn, resourceType, None, target_id, targetType)
     return h.list(request)
@@ -680,14 +680,14 @@ def filterlist(request,cen_id,resourceType):
     return h.filterlist(request)
 
 
-def assign(request, qnproj, resourceType, targetType, target_id):
+def assign(request, qnname, resourceType, targetType, target_id):
     ''' 
     Provide a page to allow the assignation of resources of type resourceType
     to resource target_id of type targetType 
     '''
   
     # get current questionnaire
-    qn = Questionnaire.objects.get(project=qnproj)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     if resourceType == 'file':
         return render_badrequest('error.html', {'message':'Cannot assign files to targets, assign objects from within them!'})

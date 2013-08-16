@@ -35,7 +35,7 @@ class Questionnaire(models.Model):
     '''
     
     # Top layer attributes
-    project         = models.CharField(max_length=32, unique=True)
+    qnname            = models.CharField(max_length=32, unique=True)
     description     = models.TextField(max_length=1024, blank=True, null=True)
     creator         = models.ForeignKey(User, blank=True, null=True)
     cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
@@ -48,7 +48,7 @@ class Questionnaire(models.Model):
          
       
     def __unicode__(self):
-        return self.project   
+        return self.qnname   
       
       
 class CVFile(models.Model):

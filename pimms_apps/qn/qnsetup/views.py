@@ -37,11 +37,11 @@ def qnsetuphome(request):
                                 context_instance=RequestContext(request))
     
     
-def qndelete(request, qnproj):
+def qndelete(request, qnname):
     #!TODO: we should have some check to ensure this has been called from the
     # modal dialog
-    project = Questionnaire.objects.get(project=qnproj)
-    project.delete()
+    qn = Questionnaire.objects.get(qnname=qnname)
+    qn.delete()
 
     return HttpResponseRedirect(reverse('pimms_apps.qn.qnsetup.views.qnsetuphome'))
     
