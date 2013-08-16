@@ -20,7 +20,7 @@ class qnSetupForm(forms.ModelForm):
         cleaned_data = super(qnSetupForm, self).clean()
         qnname = cleaned_data.get('qnname')
 
-        if not re.match(VALID_PROJECT_REXP, qnname):
+        if not re.match(VALID_QNNAME_REXP, qnname):
             self._errors['qnname'] = ['Names cannot contain digits']
             raise forms.ValidationError('Invalid questionnaire name')
 
