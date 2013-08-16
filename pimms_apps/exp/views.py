@@ -32,7 +32,7 @@ def exphome(request):
             exp.delurl = reverse('pimms_apps.exp.views.expdelete', args=(exp.id, ))
     except:
         raise Http404
-    return render_to_response('exp/exphome.html', {'allexps': allexps,
+    return render_to_response('exphome.html', {'allexps': allexps,
                                                'urls': urls},
                                 context_instance=RequestContext(request))
 
@@ -60,7 +60,7 @@ def expview(request, expid):
                               args=(req.id, ))   
     
     #Send to template
-    return render_to_response('exp/expview.html', 
+    return render_to_response('expview.html', 
                               {'exp': exp, 'urls':urls, 'reqs':reqs},
                                 context_instance=RequestContext(request))
 
@@ -132,7 +132,7 @@ def expadd(request):
                     
                     return HttpResponseRedirect(urls['exphome']) # Redirect to list page 
                 else:
-                    return render_to_response('exp/expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
+                    return render_to_response('expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
             elif 'reqform' in request.POST:
                 reqform = RequirementForm(request.POST, 
                                           instance=NumericalRequirement(), 
@@ -146,7 +146,7 @@ def expadd(request):
         expform = ExperimentForm(instance=exp, prefix='exp', user=request.user) # An unbound form
         reqform = RequirementForm(prefix='req') # An unbound form
 
-    return render_to_response('exp/expedit.html', 
+    return render_to_response('expedit.html', 
                               {'expform': expform,               
                                'reqform': reqform, 
                                'urls':urls},
@@ -191,7 +191,7 @@ def expedit(request, expid=None):
                     
                     return HttpResponseRedirect(urls['exphome']) # Redirect to list page 
                 else:
-                    return render_to_response('exp/expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
+                    return render_to_response('expedit.html', {'expform': expform, 'urls':urls}, context_instance=RequestContext(request))
             elif 'reqform' in request.POST:
                 reqform = RequirementForm(request.POST, 
                                           instance=NumericalRequirement(), 
@@ -205,7 +205,7 @@ def expedit(request, expid=None):
         expform = ExperimentForm(instance=exp, prefix='exp', user=request.user) # An unbound form
         reqform = RequirementForm(prefix='req') # An unbound form
 
-    return render_to_response('exp/expedit.html', 
+    return render_to_response('expedit.html', 
                               {'expform': expform,               
                                'reqform': reqform, 
                                'urls':urls},
@@ -247,7 +247,7 @@ def reqlist(request):
     except:
         raise Http404
     
-    return render_to_response('exp/reqlist.html', {'allreqs':allreqs, 'urls':urls}, 
+    return render_to_response('reqlist.html', {'allreqs':allreqs, 'urls':urls}, 
                                        context_instance=RequestContext(request))
     
 
@@ -267,7 +267,7 @@ def reqview(request, reqid):
     urls = getexpurls(urls)  
     urls['reqedit']=reverse('pimms_apps.exp.views.reqedit',args=(req.id, ))
          
-    return render_to_response('exp/reqview.html', {'req':req, 'urls':urls}, 
+    return render_to_response('reqview.html', {'req':req, 'urls':urls}, 
                                 context_instance=RequestContext(request))
 
 
@@ -299,11 +299,11 @@ def reqadd(request):
                 
                 return HttpResponseRedirect(urls['reqlist']) # Redirect after POST
             else:
-                return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
+                return render_to_response('reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
     else:
         reqform = RequirementForm(instance=req) # An unbound form
 
-    return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, 
+    return render_to_response('reqedit.html', {'reqform': reqform, 'urls':urls}, 
                                 context_instance=RequestContext(request))
 
 
@@ -337,11 +337,11 @@ def reqedit(request, reqid=None):
                 
                 return HttpResponseRedirect(urls['reqlist']) # Redirect after POST
             else:
-                return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
+                return render_to_response('reqedit.html', {'reqform': reqform, 'urls':urls}, context_instance=RequestContext(request))
     else:
         reqform = RequirementForm(instance=req) # An unbound form
 
-    return render_to_response('exp/reqedit.html', {'reqform': reqform, 'urls':urls}, 
+    return render_to_response('reqedit.html', {'reqform': reqform, 'urls':urls}, 
                                 context_instance=RequestContext(request))
 
 

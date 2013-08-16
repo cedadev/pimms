@@ -35,7 +35,7 @@ def cvhome(request):
             igWarnings = mmform.cleaned_data['igWarnings']
             
             if errors or (warnings and not igWarnings):   # generate an error/warnings report page
-                return render_to_response('cv/report.html', {'urls': urls, 
+                return render_to_response('report.html', {'urls': urls, 
                                                                'errors': errors, 
                                                                'warnings': warnings}, 
                                        context_instance=RequestContext(request))
@@ -55,7 +55,7 @@ def cvhome(request):
     else:
         mmform = MMForm()      
     
-    return render_to_response('cv/cvhome.html', {'urls': urls, 'mmform': mmform},
+    return render_to_response('cvhome.html', {'urls': urls, 'mmform': mmform},
                               context_instance=RequestContext(request))
 
 

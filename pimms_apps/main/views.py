@@ -11,15 +11,12 @@ from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
 def home(request):
     '''Controller for app home page
     '''
-    try:
-        # get my urls
-        urls = {}
-        urls = getsiteurls(urls)
-        urls = getexpurls(urls)
-        urls = getcvurls(urls)
-        urls = getqnsetupurls(urls)
-    except:
-        raise Http404
+    # get my urls
+    urls = {}
+    urls = getsiteurls(urls)
+    urls = getexpurls(urls)
+    urls = getcvurls(urls)
+    urls = getqnsetupurls(urls)
     
     return render_to_response('main/home.html', {'urls': urls},
                               context_instance=RequestContext(request))
@@ -28,12 +25,9 @@ def home(request):
 def about(request):
     '''Controller for app about page
     '''
-    try:
-        # get my urls
-        urls = {}
-        urls = getsiteurls(urls)
-    except:
-        raise Http404
+    # get my urls
+    urls = {}
+    urls = getsiteurls(urls)
       
     return render_to_response('main/about.html', {'urls': urls},
                               context_instance=RequestContext(request))

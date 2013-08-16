@@ -104,7 +104,7 @@ class gridHandler(object):
                 
         logging.debug('Finished handling %s to grid %s' %(request.method, g.id))
         
-        return render_to_response('qn/gridMain.html',
+        return render_to_response('gridMain.html',
                                  {'g': g,
                                   'gform': gform, 
                                   'pform': pform,

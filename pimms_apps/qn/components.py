@@ -228,7 +228,7 @@ class componentHandler(object):
         else: 
             cset = None        
                 
-        return render_to_response('qn/componentMain.html',
+        return render_to_response('componentMain.html',
                                   {'c':c, 
                                    'refs': refs,
                                    'inps': inps,

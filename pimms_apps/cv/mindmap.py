@@ -24,7 +24,7 @@ def checkMM(mmfile):
     > warninglist - List of warnings encountered during xslt translation
     '''
     
-    logging.debug("INTO checkMM")
+    logging.debug("BEGIN checkMM")
     #pull in the xsl transformation file
     XSLFileName = os.path.join(thisDir, 'xslt', 'mmcheck_0.9.0_bdl.xsl')
     #set the fpre file
@@ -64,6 +64,7 @@ def checkMM(mmfile):
         warninglist.append(entry.message.replace('*WARNING',''))
         
     #Return the collection of errors and warnings
+    logging.debug('END checkMM')
     return errorlist, warninglist
   
   
@@ -72,13 +73,14 @@ def translateMM(mmfile):
     
     '''
   
+    logging.debug('BEGIN translateMM')
     #pull in the xsl transformation file
     XSLFileName = os.path.join(thisDir, 'xslt', 'mm2q_bdl.xsl')
 
     #pull in the mindmap file to be translated
     fin = mmfile
 
-    fpre = open(os.path.join(PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
+    fpre = open(os.path.join(settings.PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
 
     for line in fin:
       if re.match("^<text>",line) or re.match("^<richcontent TYPE=",line):
@@ -87,13 +89,19 @@ def translateMM(mmfile):
       fpre.write(line)
     fpre.close()
 
+    logging.debug('  parse xslt')
     xslt_root = etree.parse(XSLFileName)
+    logging.debug('  parse input')
     xml_input = etree.parse(fpre.name)
+    logging.debug('  create transform')
     transform = etree.XSLT(xslt_root)
+    logging.debug('  apply transform')
     strResult = transform(xml_input)
+    logging.debug('  done')
 
-    os.remove(os.path.join(PIMMS_TMP_DIR, str(mmfile)+'.pre'))
+    os.remove(os.path.join(settings.PIMMS_TMP_DIR, str(mmfile)+'.pre'))
 
+    logging.debug('END translateMM')
     return strResult
   
   
