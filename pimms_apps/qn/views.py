@@ -337,7 +337,7 @@ def simulationCopyInd(request, qnname, simulation_id):
 
 
 @gracefulNotFound
-def conformanceMain(request, qnname=qnname, simulation_id):
+def conformanceMain(request, qnname, simulation_id):
     # get current questionnaire
     qn = Questionnaire.objects.get(qnname=qnname)
     
