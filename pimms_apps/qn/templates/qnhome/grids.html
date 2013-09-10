@@ -10,7 +10,7 @@
 	         <td width="5%">
 	          {% if g.isComplete %}
 	            <center>
-	              <img src="/static/icons/icon-tick.png" title="This has been 
+	              <img src="{{ STATIC_URL }}icons/icon-tick.png" title="This has been 
 	              successfully published at version {{ g.documentVersion }}">
 	            </center>
 	          {% endif %}
@@ -19,7 +19,7 @@
             <center>
               <span style="width:70%"> 
                 <a href="{{g.url}}">
-                  <img src="/static/icons/24x24/Modify.png" title="Edit grid {{g.abbrev}}"/>
+                  <img src="{{ STATIC_URL }}icons/24x24/Modify.png" title="Edit grid {{g.abbrev}}"/>
                 </a>
               </span>
             </center>
@@ -27,7 +27,7 @@
 	         <td width="5%">
             <center> 
                 <a href="{{g.cpURL}}">
-                  <img src="/static/icons/24x24/Copy.png" title="Copy grid {{g.abbrev}}"/>
+                  <img src="{{ STATIC_URL }}icons/24x24/Copy.png" title="Copy grid {{g.abbrev}}"/>
                 </a>
             </center>
           </td>

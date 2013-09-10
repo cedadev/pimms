@@ -2,7 +2,7 @@
 	<tr>
 		<th>File Description</th>
 		<th>Variable Description 
-		  <img src="/static/icons/information-icon.png"
+		  <img src="{{ STATIC_URL }}icons/information-icon.png"
 			title="This column may not be necessary for files being used for ancillary files, but it will be necessary to identify variables for binding to boundary and initial conditions" />
 	    </th>
 	</tr>
@@ -18,14 +18,14 @@
 		</tr>
 		<tr>
 			<td>Link:&nbsp;{{form.cform.link.errors}}<img
-				src="/static/icons/information-icon.png"
+				src="{{ STATIC_URL }}icons/information-icon.png"
 				title="This should point either to a downloadable version of the file, or to a page from which the file can be obtained" /></td>
 			<td>{{form.cform.link}}</td>
 		</tr>
 
 		<tr>
 			<td>File Format:&nbsp;{{form.cform.format.errors}}<img
-				src="/static/icons/information-icon.png"
+				src="{{ STATIC_URL }}icons/information-icon.png"
 				title="This is the ultimate file format not the format of the object returned if you dereference the link" /></td>
 			<td>{{form.cform.format}}</td>
 		</tr>
@@ -60,7 +60,7 @@
 		  </tr>
 		  <tr class="{%cycle 'row1' 'row2'%}">
 			<td>CF Std Name {{f.cfname.errors}}<img
-			  src="/static/icons/information-icon.png"
+			  src="{{ STATIC_URL }}icons/information-icon.png"
 			  title="Enter first 3 letters to expose drop-down box" />
 		    </td>
 			<td>{{f.cfname}}</td>

@@ -13,7 +13,7 @@
 	         <td width="5%">
 	           {% if p.isComplete %}
 	             <center>
-	               <img src="/static/icons/icon-tick.png" title="This has been 
+	               <img src="{{ STATIC_URL }}icons/icon-tick.png" title="This has been 
 	               successfully published at version {{ p.documentVersion }}">
 	             </center>
 	           {% endif %}
@@ -22,7 +22,7 @@
 	           <center>
 	             <span>
 	               <a href="{{p.url}}">
-	                 <img src="/static/icons/24x24/Modify.png" title="Edit platform {{p.abbrev}}"/>
+	                 <img src="{{ STATIC_URL }}icons/24x24/Modify.png" title="Edit platform {{p.abbrev}}"/>
 	               </a>
 	             </span>
 	           </center>

@@ -13,7 +13,7 @@
 	    <table>
 	      <tr>
 	        <td>
-	  	      <img src="/static/icons/expand-collapse.gif" title="Click to expand/collapse panel"/>
+	  	      <img src="{{ STATIC_URL }}icons/expand-collapse.gif" title="Click to expand/collapse panel"/>
 	  	    </td>
 	        <td>
 	          <h5>{{f.title}}</h5>
@@ -39,7 +39,7 @@
 	        <tr>
 	          <td align=right>
 	            {{f.cf.notInUse}} Not applicable 
-	  	        <img src="/static/icons/information-icon.png" title="Although you defined this binding at the model level, it may be that it is not relevant for this particular simulation, in which case you can mark it as 'Not applicable'."/>
+	  	        <img src="{{ STATIC_URL }}icons/information-icon.png" title="Although you defined this binding at the model level, it may be that it is not relevant for this particular simulation, in which case you can mark it as 'Not applicable'."/>
 		      </td>
 		    </tr>
 		  </table>

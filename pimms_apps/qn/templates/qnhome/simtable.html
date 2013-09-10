@@ -57,12 +57,12 @@
 	                <td>{{sim.documentVersion}}</td>
 	                <td>{{sim.updated}}</td>
 	                <td>{{sim.isComplete}}</td>
-	                <td><a href={{sim.url}}><img src="/static/icons/24x24/Modify.png" title="Edit simulation {{sim.abbrev}}"/></a></td>
-	                <td><a href={{sim.copysimurl}}><img src="/static/icons/24x24/Copy.png" title="Copy simulation {{sim.abbrev}}"/></a></td>
+	                <td><a href={{sim.url}}><img src="{{ STATIC_URL }}icons/24x24/Modify.png" title="Edit simulation {{sim.abbrev}}"/></a></td>
+	                <td><a href={{sim.copysimurl}}><img src="{{ STATIC_URL }}icons/24x24/Copy.png" title="Copy simulation {{sim.abbrev}}"/></a></td>
 	                {% if sim.delurl %}
-	                  <td><a class="ask" href={{sim.delurl}}><img src="/static/icons/24x24/Erase.png" title="Delete simulation {{sim.abbrev}}"/></a></td>
+	                  <td><a class="ask" href={{sim.delurl}}><img src="{{ STATIC_URL }}icons/24x24/Erase.png" title="Delete simulation {{sim.abbrev}}"/></a></td>
 	                {% else %}
-	                  <td><img src="/static/icons/24x24/Erase_Grey.png" title="Unable to delete published (or previously published) simulations"/></a></td>
+	                  <td><img src="{{ STATIC_URL }}icons/24x24/Erase_Grey.png" title="Unable to delete published (or previously published) simulations"/></a></td>
 	                {% endif %} 
                 </tr>
               {% endfor %}

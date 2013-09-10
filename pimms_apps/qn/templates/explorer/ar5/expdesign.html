@@ -34,9 +34,9 @@
         {% for req in exp.reqsinexp %}
           <td class="truecell" width="5%">
             {% if req %}
-              <img src="/static/icons/24x24/OK.png" title="This requirement is part of experiment {{ exp }}"/>
+              <img src="{{ STATIC_URL }}icons/24x24/OK.png" title="This requirement is part of experiment {{ exp }}"/>
             {% else %}
-              <img src="/static/icons/24x24/No.png" title="This requirement is NOT part of experiment {{ exp }}"/>
+              <img src="{{ STATIC_URL }}icons/24x24/No.png" title="This requirement is NOT part of experiment {{ exp }}"/>
             {% endif %}
           </td>
         {% endfor %}

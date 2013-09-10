@@ -140,7 +140,7 @@
             {% endcomment %}
             <br/>
             <h4> Related Simulation 
-            <img src="/static/icons/information-icon.png"
+            <img src="{{ STATIC_URL }}icons/information-icon.png"
 				title="If this simulation has a related control simulation or extends another, please identify it here. {% if ensemble %} (Such relationships may extend between ensembles too.){% endif %}" />
             </h4>
             <p>Simulation {{s}} {{rform.value}}{{rform.value.errors}} simulation {{rform.sto}}{{rform.sto.errors}}</p>
@@ -151,7 +151,7 @@
             <h4> Authorship* </h4>
             <center>
             <p>Please enter the list of authors you wish to appear in a DOI for this simulation.
-            <img src="/static/icons/information-icon.png"
+            <img src="{{ STATIC_URL }}icons/information-icon.png"
 				title="The lead author should be indicated using the 'parties' tab and the 'lead author' drop down list above." />
             <br/>
             {{simform.authorList.errors}}:</p><p>{{simform.authorList}}</p>
@@ -191,7 +191,7 @@
     
     {% if ensemble %}<div class="boxer">
         <h4> Ensemble Characteristics 
-        <img src="/static/icons/information-icon.png"
+        <img src="{{ STATIC_URL }}icons/information-icon.png"
 				title="You can modify these Ensemble Characteristics using the 'Describe Ensemble' button on the left hand menu." />
         </h4>
         <p>Description:{{ensemble.set.description}}</p>
@@ -204,7 +204,7 @@
             
     <div class="boxer">
         <h4> Required Inputs and Couplings 
-        <img src="/static/icons/information-icon.png"
+        <img src="{{ STATIC_URL }}icons/information-icon.png"
 				title="You can modify these using the 'Input Coupling' button on the left hand menu." />
         </h4>
         
@@ -224,7 +224,7 @@
     
     <div class="boxer backgrey">
         <h4> Conformance: How this simulation conforms to the numerical requirements of experiment {{exp}}
-        <img src="/static/icons/information-icon.png"
+        <img src="{{ STATIC_URL }}icons/information-icon.png"
 				title="You can modify these using the 'conformance' button on the left hand menu." />
         </h4>
         {% ifnotequal label "Update" %}

@@ -21,7 +21,7 @@
             <td width="5%">
               <center>
                 {% if s.isComplete %}
-                  <img src="/static/icons/icon-tick.png" title="This has been successfully published at version {{ s.documentVersion }}">
+                  <img src="{{ STATIC_URL }}icons/icon-tick.png" title="This has been successfully published at version {{ s.documentVersion }}">
                 {% endif %}
               </center>
             </td>

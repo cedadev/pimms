@@ -13,21 +13,21 @@
 		        <td width="5%">
 		          {% if m.isComplete %}
 		            <center>
-		              <img src="/static/icons/icon-tick.png" title="This has been successfully published at version {{ m.documentVersion }}">
+		              <img src="{{ STATIC_URL }}icons/icon-tick.png" title="This has been successfully published at version {{ m.documentVersion }}">
 		            </center>
 		          {% endif %}
 		        </td>
 		        <td width="5%">
 		          <center> 
 		              <a href="{{m.url}}">
-		                <img src="/static/icons/24x24/Modify.png" title="Edit model {{m.abbrev}}"/>
+		                <img src="{{ STATIC_URL }}icons/24x24/Modify.png" title="Edit model {{m.abbrev}}"/>
 		              </a>
 		          </center>
 		        </td>
 		        <td width="5%">
             <center> 
                 <a href="{{m.cpURL}}">
-                  <img src="/static/icons/24x24/Copy.png" title="Copy model {{m.abbrev}}"/>
+                  <img src="{{ STATIC_URL }}icons/24x24/Copy.png" title="Copy model {{m.abbrev}}"/>
                 </a>
             </center>
 		          <center>
