@@ -3,7 +3,7 @@ from pimms_apps.qn.models import Questionnaire
 
 import re
 
-VALID_PROJECT_REXP = r'^\D+$'
+VALID_QNNAME_REXP = r'^\D+$'
 
 class qnSetupForm(forms.ModelForm):
     ''' 
@@ -18,11 +18,11 @@ class qnSetupForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(qnSetupForm, self).clean()
-        project = cleaned_data.get('project')
+        qnname = cleaned_data.get('qnname')
 
-        if not re.match(VALID_PROJECT_REXP, project):
-            self._errors['project'] = ['Projects cannot contain digits']
-            raise forms.ValidationError('Invalid project name')
+        if not re.match(VALID_QNNAME_REXP, qnname):
+            self._errors['qnname'] = ['Names cannot contain digits']
+            raise forms.ValidationError('Invalid questionnaire name')
 
         return cleaned_data
         

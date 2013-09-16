@@ -21,7 +21,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Project</th>
+            <th>Name</th>
             <th>Created by</th>
             <th>Creation date</th>
             <th></th>
@@ -33,7 +33,7 @@
         <tbody>
           {% for qn in allqns %}
             <tr>
-              <td>{{ qn.project }}</td>
+              <td>{{ qn.qnname }}</td>
               <td>{{ qn.creator }}</td>
               <td>{{ qn.creationDate }}</td>
               <td><a href="{{ qn.url }}"><i class="icon-search" title="Go"></i></a></td>

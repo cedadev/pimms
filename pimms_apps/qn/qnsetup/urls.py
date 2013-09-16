@@ -8,6 +8,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', 'pimms_apps.qn.qnsetup.views.qnsetuphome', {}, 'qnsetuphome'),
     (r'^qninputs$', 'pimms_apps.qn.qnsetup.views.qninputs', {}, 'qninputs'),
-    (r'^success/(?P<qnproj>\w+)/$', 'pimms_apps.qn.qnsetup.views.qnsetupsuccess', {}, 'qnsetupsuccess'),
-    (r'^qndelete/(?P<qnproj>\w+)/$', 'pimms_apps.qn.qnsetup.views.qndelete', {}, 'qndelete'),                       
+    (r'^success/(?P<qnname>\w+)/$', 'pimms_apps.qn.qnsetup.views.qnsetupsuccess', {}, 'qnsetupsuccess'),
+    (r'^qndelete/(?P<qnname>\w+)/$', 'pimms_apps.qn.qnsetup.views.qndelete', {}, 'qndelete'),                       
     )

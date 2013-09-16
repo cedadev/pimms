@@ -37,11 +37,11 @@ def qnsetuphome(request):
                                 context_instance=RequestContext(request))
     
     
-def qndelete(request, qnproj):
+def qndelete(request, qnname):
     #!TODO: we should have some check to ensure this has been called from the
     # modal dialog
-    project = Questionnaire.objects.get(project=qnproj)
-    project.delete()
+    qn = Questionnaire.objects.get(qnname=qnname)
+    qn.delete()
 
     return HttpResponseRedirect(reverse('pimms_apps.qn.qnsetup.views.qnsetuphome'))
     
@@ -133,7 +133,7 @@ def qninputs(request):
                                 context_instance=RequestContext(request))
     
     
-def qnsetupsuccess(request, qnproj):
+def qnsetupsuccess(request, qnname):
     '''
     View controller for successful questionnaire setup
     '''
@@ -143,14 +143,14 @@ def qnsetupsuccess(request, qnproj):
         urls = getsiteurls(urls)
         urls = getqnsetupurls(urls)
         # get qn specific url for success page
-        urls['qnsetupsuccess'] = reverse('pimms_apps.qn.qnsetup.views.qnsetupsuccess', args=(qnproj, ))
+        urls['qnsetupsuccess'] = reverse('pimms_apps.qn.qnsetup.views.qnsetupsuccess', args=(qnname, ))
         
         #### Now construct a url using the qnname and the home url for an actual questionnaire
-        urls['qnhome'] = reverse('pimms_apps.qn.views.qnhome', args=(qnproj, ))
+        urls['qnhome'] = reverse('pimms_apps.qn.views.qnhome', args=(qnname, ))
         
         
     except:
         raise Http404
     
-    return render_to_response('qnsetup/qnsetupsuccess.html', {'urls': urls, 'qnname':qnproj},
+    return render_to_response('qnsetup/qnsetupsuccess.html', {'urls': urls, 'qnname':qnname},
                               context_instance=RequestContext(request))

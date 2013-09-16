@@ -6,14 +6,14 @@
 <style type="text/css">
     .add-row {
         padding-left:18px;
-        background:url(/static/images/add.png) no-repeat left center;
+        background:url({{ STATIC_URL }}images/add.png) no-repeat left center;
     }
     .delete-row {
         float:right;
         display:block;
         margin-left:4px;
         padding-left:18px;
-        background:url(/static/images/delete.png) no-repeat left center;
+        background:url({{ STATIC_URL }}images/delete.png) no-repeat left center;
     }
     .dynamic-event-form th {
         text-align:right;
@@ -42,14 +42,14 @@
         
         <div class="row">
           <div class="span2">
-            <label for="project"{% if qnsetupform.project.errors %} class="text-error" {% endif %}>Project {% if qnsetupform.fields.project.required %}*{% endif %}</label>
+            <label for="qnname"{% if qnsetupform.qnname.errors %} class="text-error" {% endif %}>Name {% if qnsetupform.fields.qnname.required %}*{% endif %}</label>
           </div>
           <div class="span3">
-            {{ qnsetupform.project }}
+            {{ qnsetupform.qnname }}
           </div>
           <div class="span2">
-            {% if qnsetupform.project.errors %}
-              {% for error in qnsetupform.project.errors %}
+            {% if qnsetupform.qnname.errors %}
+              {% for error in qnsetupform.qnname.errors %}
                 <p class="text-error">{{ error }}</p>
               {% endfor %}
             {% endif %}
@@ -59,7 +59,7 @@
         
         <div class="row">
           <div class="span2">
-            <label for="project"{% if qnsetupform.description.errors %} class="text-error" {% endif %}>Description {% if qnsetupform.fields.description.required %}*{% endif %}</label>
+            <label for="qnname"{% if qnsetupform.description.errors %} class="text-error" {% endif %}>Description {% if qnsetupform.fields.description.required %}*{% endif %}</label>
           </div>
           <div class="span3">
             {{ qnsetupform.description }}

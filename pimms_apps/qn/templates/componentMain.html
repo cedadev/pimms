@@ -173,12 +173,12 @@
                   <td width="3%"> 
                     {% if cform.instance.implemented %}
                       <center>
-                        <img src="/static/icons/information-icon.png"
+                        <img src="{{ STATIC_URL }}icons/information-icon.png"
                         title="Untick the box if there is no representation of {{ cform.instance.scienceType }} in your model" />
                       </center>
                     {% else %}
                       <center>
-                        <img src="/static/icons/information-icon.png"
+                        <img src="{{ STATIC_URL }}icons/information-icon.png"
                         title="Tick the box to describe an implementation of {{ cform.instance.scienceType }}" />
                       </center> 
                     {% endif %}  
@@ -239,7 +239,7 @@
             <tr>
               <td width="3%">
                 <center>
-                  <img src="/static/icons/information-icon.png"
+                  <img src="{{ STATIC_URL }}icons/information-icon.png"
                    title="Ticking the box will copy each of the described responsible parties to all child components of the current component" />
                 </center>
               </td>
@@ -265,7 +265,7 @@
             <tr>
               <td width="3%">
                 <center> 
-                  <img src="/static/icons/information-icon.png"
+                  <img src="{{ STATIC_URL }}icons/information-icon.png"
                   title="The year first released applies to the version you are describing in this questionnaire. If this version is a substantial upgrade to a previous version, please provide the name of that previous version and some key scientific details of the upgrade." />
                 </center>
               </td>
@@ -282,7 +282,7 @@
             <tr>
               <td width="3%"> 
                 <center>
-                  <img src="/static/icons/information-icon.png"
+                  <img src="{{ STATIC_URL }}icons/information-icon.png"
                   title="Please tell us how this component has been improved from that previous version" /> 
                 </center>
               </td>
@@ -345,7 +345,7 @@
                 <tr>
                   <td width="3%">
                   <center>
-                    <img src="/static/icons/information-icon.png"
+                    <img src="{{ STATIC_URL }}icons/information-icon.png"
                       title="Ticking the box will copy the selected grid to all child components of the current component" />
                   </center>
                   </td>

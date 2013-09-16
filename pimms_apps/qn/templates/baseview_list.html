@@ -3,8 +3,8 @@
 
 {% block pagehead %}
   <!-- linking in autocomplete javascript -->
-  <script type="text/javascript" src="/static/jquery/jquery-autocomplete/jquery.autocomplete.js"></script>
-  <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-autocomplete/jquery.autocomplete.css"/>
+  <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-autocomplete/jquery.autocomplete.js"></script>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery/jquery-autocomplete/jquery.autocomplete.css"/>
 {% endblock %}
 
 
@@ -69,8 +69,8 @@
             <td width="10%">
               <center>
                 {% if d.delURL %}
-                  <form action="{{d.delURL}}" method="POST" onsubmit="myProject.bypassConfirm()"> <input type="image" src="/static/icons/24x24/Erase.png" value="delete"></form>
-                  <!-- <a href = {{ d.delURL }}><img src="/static/icons/24x24/Erase.png" title="Delete {{d}}"/></a> -->
+                  <form action="{{d.delURL}}" method="POST" onsubmit="myProject.bypassConfirm()"> <input type="image" src="{{ STATIC_URL }}icons/24x24/Erase.png" value="delete"></form>
+                  <!-- <a href = {{ d.delURL }}><img src="{{ STATIC_URL }}icons/24x24/Erase.png" title="Delete {{d}}"/></a> -->
                 {% endif %}
               </center>
             </td>
