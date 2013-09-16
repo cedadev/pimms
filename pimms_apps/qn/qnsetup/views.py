@@ -107,7 +107,7 @@ def qninputs(request):
                 #Now run the questionnaire setup script with the uploaded files/settings and return the generated url
                 generate_qn(qn, cvlist, gridupload, explist)
                 
-                urls['qnsetupsuccess'] = reverse('pimms_apps.qn.qnsetup.views.qnsetupsuccess', args=(qn.project, ))
+                urls['qnsetupsuccess'] = reverse('pimms_apps.qn.qnsetup.views.qnsetupsuccess', args=(qn.qnname, ))
                 
                 return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
             else:
