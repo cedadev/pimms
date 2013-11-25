@@ -123,7 +123,7 @@ class componentHandler(object):
             
             #print 'Return Value',r
             self.component.components.add(c)
-            url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn ,c.id,))
+            url=reverse('pimms_apps.qn.views.componentEdit',args=(self.centre_id,c.id,))
             logging.info('Created subcomponent %s in component %s (type "new")' %(c.id,self.component.id))
             return HttpResponseRedirect(url)
         else:
@@ -254,22 +254,22 @@ class componentHandler(object):
         for r in allrefs: 
             if r not in refs:available.append(r) 
         rform=ReferenceForm()
-        refu=reverse('pimms_apps.qn.views.addReference',args=(self.qn ,c.id,))
+        refu=reverse('pimms_apps.qn.views.addReference',args=(self.centre_id,c.id,))
         baseURLa=reverse('pimms_apps.qn.views.assignReference',args=(1,1,))[0:-4]
         baseURLr=reverse('pimms_apps.qn.views.remReference',args=(1,1,))[0:-4]
         return render_to_response('componentRefs.html',
             {'refs':refs,'available':available,'rform':rform,'c':c,
             'refu':refu,'baseURLa':baseURLa,'baseURLr':baseURLr,
-            'tabs':tabs(request,self.qn,'References for %s'%c),
+            'tabs':tabs(request,self.centre_id,'References for %s'%c),
             'notAjax':not request.is_ajax()})
         
     def coupling(self,request,ctype=None):
         ''' Handle the construction of component couplings '''
         # we do the couplings for the parent model of a component
         model=self.component.model
-        okURL=reverse('pimms_apps.qn.views.componentCup',args=(self.qn ,self.pkid,))
+        okURL=reverse('pimms_apps.qn.views.componentCup',args=(self.centre_id,self.pkid,))
         urls={'self':reverse('pimms_apps.qn.views.componentCup',
-                args=(self.qn ,self.pkid,))
+                args=(self.centre_id,self.pkid,))
               }
         cg=CouplingGroup.objects.filter(component=model).get(simulation=None)
         if request.method=='POST':
@@ -283,11 +283,11 @@ class componentHandler(object):
             Intform=MyCouplingFormSet(cg)
             Intform.specialise()
         return render_to_response('coupling.html',{'c':model,'urls':urls,
-        'Intform':Intform,'tabs':tabs(request,self.qn ,'Coupling for %s'%model)})
+        'Intform':Intform,'tabs':tabs(request,self.centre_id,'Coupling for %s'%model)})
         
     def inputs(self,request):
         ''' Handle the construction of input requirements into a component '''
-        okURL=reverse('pimms_apps.qn.views.componentInp',args=(self.qn ,self.pkid,))
+        okURL=reverse('pimms_apps.qn.views.componentInp',args=(self.centre_id,self.pkid,))
         urls={'ok':okURL,'self':self.url}
         if request.method=='POST':
             Inpform=MyComponentInputFormSet(self.component,self.component.isRealm,
@@ -302,7 +302,7 @@ class componentHandler(object):
             Inpform.specialise()
         return render_to_response('inputs.html',{'c':self.component,'urls':urls,
                                    'form':Inpform,
-                                   'tabs':tabs(request,self.qn,'Inputs for %s'%self.component)})
+                                   'tabs':tabs(request,self.centre_id,'Inputs for %s'%self.component)})
     
     def copy(self):
         ''' 
@@ -311,11 +311,11 @@ class componentHandler(object):
         '''
         if not self.component.isModel: 
             return HttpResponse("Not a model, wont copy")
-        centre=Centre.objects.get(id=self.qn)
+        centre=Centre.objects.get(id=self.centre_id)
         new=self.component.copy(centre)
         new.abbrev=self.component.abbrev+'cp'
         new.title=self.component.title+'cp'
         new.save()
-        url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn,new.id,))
+        url=reverse('pimms_apps.qn.views.componentEdit',args=(self.centre_id,new.id,))
         logging.info('Created new model %s with id %s (copy of %s)'%(new,new.id,self.component))
         return HttpResponseRedirect(url)
