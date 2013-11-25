@@ -86,7 +86,7 @@ class componentHandler(object):
                 logging.debug('Attempt to open an unknown component %s'%component_id)
                 raise Exception,e
         
-        self.url = reverse('pimms_apps.qn.views.componentEdit', args=(self.qn.qnname, self.component.id))
+        self.url = reverse('pimms_apps.qn.views.componentEdit', args=(self.qn, self.component.id))
        
             
     def XMLasText(self):
@@ -123,7 +123,7 @@ class componentHandler(object):
             
             #print 'Return Value',r
             self.component.components.add(c)
-            url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn.qnname ,c.id,))
+            url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn ,c.id,))
             logging.info('Created subcomponent %s in component %s (type "new")' %(c.id,self.component.id))
             return HttpResponseRedirect(url)
         else:
@@ -148,7 +148,7 @@ class componentHandler(object):
                     if len(c.components.all()) <> 0:
                         return HttpResponse('You need to delete child components first')
                     parent=Component.objects.filter(components=c)[0]
-                    url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn.qnname, parent.id, ))
+                    url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn, parent.id, ))
                     c.delete()
                     return HttpResponseRedirect(url)
         
@@ -156,15 +156,15 @@ class componentHandler(object):
         # find my own urls ...
         urls = {}
         urls['form']     = self.url
-        urls['refs']     = reverse('pimms_apps.qn.views.assign', args=(self.qn.qnname, 'reference', 'component', c.id,))
-        urls['subcomp']  = reverse('pimms_apps.qn.views.componentSub', args=(self.qn.qnname, c.id,))
-        urls['coupling'] = reverse('pimms_apps.qn.views.componentCup', args=(self.qn.qnname, c.id))
-        urls['inputs']   = reverse('pimms_apps.qn.views.componentInp', args=(self.qn.qnname, c.id))
-        urls['text']     = reverse('pimms_apps.qn.views.componentTxt', args=(self.qn.qnname, c.id))
+        urls['refs']     = reverse('pimms_apps.qn.views.assign', args=(self.qn, 'reference', 'component', c.id,))
+        urls['subcomp']  = reverse('pimms_apps.qn.views.componentSub', args=(self.qn, c.id,))
+        urls['coupling'] = reverse('pimms_apps.qn.views.componentCup', args=(self.qn, c.id))
+        urls['inputs']   = reverse('pimms_apps.qn.views.componentInp', args=(self.qn, c.id))
+        urls['text']     = reverse('pimms_apps.qn.views.componentTxt', args=(self.qn, c.id))
         
         urls = commonURLs(c.model, urls)
         
-        baseURL   = reverse('pimms_apps.qn.views.componentAdd', args=(self.qn.qnname, ))
+        baseURL   = reverse('pimms_apps.qn.views.componentAdd', args=(self.qn, ))
         template  = '+EDID+'
         baseURL   = baseURL.replace('add/', '%s/edit' %template)
     
@@ -267,9 +267,9 @@ class componentHandler(object):
         ''' Handle the construction of component couplings '''
         # we do the couplings for the parent model of a component
         model=self.component.model
-        okURL=reverse('pimms_apps.qn.views.componentCup',args=(self.qn.qnname ,self.pkid,))
+        okURL=reverse('pimms_apps.qn.views.componentCup',args=(self.qn ,self.pkid,))
         urls={'self':reverse('pimms_apps.qn.views.componentCup',
-                args=(self.qn.qnname ,self.pkid,))
+                args=(self.qn ,self.pkid,))
               }
         cg=CouplingGroup.objects.filter(component=model).get(simulation=None)
         if request.method=='POST':
@@ -283,11 +283,11 @@ class componentHandler(object):
             Intform=MyCouplingFormSet(cg)
             Intform.specialise()
         return render_to_response('coupling.html',{'c':model,'urls':urls,
-        'Intform':Intform,'tabs':tabs(request,self.qn.qnname ,'Coupling for %s'%model)})
+        'Intform':Intform,'tabs':tabs(request,self.qn ,'Coupling for %s'%model)})
         
     def inputs(self,request):
         ''' Handle the construction of input requirements into a component '''
-        okURL=reverse('pimms_apps.qn.views.componentInp',args=(self.qn.qnname ,self.pkid,))
+        okURL=reverse('pimms_apps.qn.views.componentInp',args=(self.qn ,self.pkid,))
         urls={'ok':okURL,'self':self.url}
         if request.method=='POST':
             Inpform=MyComponentInputFormSet(self.component,self.component.isRealm,
@@ -302,7 +302,7 @@ class componentHandler(object):
             Inpform.specialise()
         return render_to_response('inputs.html',{'c':self.component,'urls':urls,
                                    'form':Inpform,
-                                   'tabs':tabs(request,self.qn.qnname,'Inputs for %s'%self.component)})
+                                   'tabs':tabs(request,self.qn,'Inputs for %s'%self.component)})
     
     def copy(self):
         ''' 
@@ -311,11 +311,11 @@ class componentHandler(object):
         '''
         if not self.component.isModel: 
             return HttpResponse("Not a model, wont copy")
-        centre=Centre.objects.get(id=self.qn.qnname)
+        centre=Centre.objects.get(id=self.qn)
         new=self.component.copy(centre)
         new.abbrev=self.component.abbrev+'cp'
         new.title=self.component.title+'cp'
         new.save()
-        url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn.qnname,new.id,))
+        url=reverse('pimms_apps.qn.views.componentEdit',args=(self.qn,new.id,))
         logging.info('Created new model %s with id %s (copy of %s)'%(new,new.id,self.component))
         return HttpResponseRedirect(url)
