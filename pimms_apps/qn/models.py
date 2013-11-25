@@ -293,7 +293,8 @@ class Doc(Fundamentals):
         if self.isComplete:
             return False,'This document has already been exported',None
         
-        centre = Centre.objects.get(id=self.centre_id)
+        #!FIXME: Find a replacement for Centre in this case.
+        #centre = Centre.objects.get(id=self.centre_id)
         
         valid, html = self.validate()
             
@@ -358,6 +359,7 @@ class Doc(Fundamentals):
     @models.permalink
     def edit_url(self):
         ''' How can we edit me? '''
+        #!FIXME: this references centre_id which is removed.
         return ('pimms_apps.qn.views.%sEdit'%self._meta.module_name,(self.centre_id,self.id,))
   
 class Relationship(models.Model):
@@ -1460,7 +1462,7 @@ class DataContainer(Doc):
             return self.abbrev
         else: return self.title[0:44]  # truncation ...
     class Meta:
-        ordering=('centre','title')
+        ordering=('title',)
             
             
 class DataObject(models.Model):
@@ -1718,7 +1720,7 @@ class Ensemble(models.Model):
         ed.etype = self.etype
         # we can't assume that none of the simulation characteristics have not 
         # been changed, so let's just copy them lock stock and barrel.
-        for a in ('centre', 'author', 'funder', 'contact', 
+        for a in ('author', 'funder', 'contact', 
                   'metadataMaintainer', 'title', 'abbrev', 'description'):
             ed.__setattr__(a, self.simulation.__getattribute__(a))
         # is that enough of a shell?
@@ -1766,7 +1768,6 @@ class Modification(ParentModel):
     '''
     mnemonic = models.SlugField()
     description = models.TextField()
-    centre = models.ForeignKey(Centre)
     def __unicode__(self):
         #return '%s(%s)'%(self.mnemonic,self.get_child_name())
         return '%s'%(self.mnemonic)
