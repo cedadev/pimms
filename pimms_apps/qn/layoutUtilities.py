@@ -181,7 +181,7 @@ class tabs(list):
             ('Simulation', 'pimms_apps.qn.views.simulationEdit', (qn, request.session['Simulation'],), 'left'),
             #('Files', 'pimms_apps.qn.views.list', (qn, 'file',), 'left'),
             ('References', 'pimms_apps.qn.views.list', (qn, 'reference',), 'left'),
-            ('Parties', 'pimms_apps.qn.views.list', (qn, 'parties',), 'left'),
+            #('Parties', 'pimms_apps.qn.views.list', (qn, 'parties',), 'left'),
             #('Help', 'pimms_apps.qn.views.help', (qn,), 'right'),
             #('About', 'pimms_apps.qn.views.about', (qn,), 'right'),
             ]

@@ -223,14 +223,14 @@ class BaseViewHandler:
         ''' Delete an item ... '''
         if self.target:
             okURL=reverse('pimms_apps.qn.views.%s'%returnType,
-               args=(self.qn ,self.resource['type'],self.target['type'],self.target['instance'].id,))
+               args=(self.cid,self.resource['type'],self.target['type'],self.target['instance'].id,))
         else:
             okURL=reverse('pimms_apps.qn.views.%s'%returnType,
-               args=(self.qn ,self.resource['type'],))
+               args=(self.cid,self.resource['type'],))
         if request.method=='POST':
             if self.resource['id']<>'0':
                 instance=self.resource['class'].objects.get(id=self.resource['id'])
-                if instance.qn == self.qn: 
+                if instance.centre==self.centre: 
                     if 'confirmed' in request.POST:
                         success,related_objects=instance.delete()
                         if success:
@@ -319,9 +319,9 @@ class BaseViewHandler:
         
         #editURL and form used to add a new instance.
         editURL=reverse('pimms_apps.qn.views.edit',
-            args=(self.qn ,self.resource['type'],0,self.target['type'],self.target['instance'].id,'assign'))
+            args=(self.cid,self.resource['type'],0,self.target['type'],self.target['instance'].id,'assign'))
         listURL=reverse('pimms_apps.qn.views.list',
-            args=(self.qn ,self.resource['type'],self.target['type'],self.target['instance'].id))
+            args=(self.cid,self.resource['type'],self.target['type'],self.target['instance'].id))
             
         return render_to_response(self.selectHTML,
             {'showChoices':showChoices,
@@ -330,7 +330,7 @@ class BaseViewHandler:
                 'form':self._constructForm('GET'),
                 'editURL':editURL,'listURL':listURL,
                 'editTemplate':'%s_snippet.html'%self.resource['type'],
-                'tabs':tabs(request,self.qn ,'Assign %s'%self.resource['type']),
+                'tabs':tabs(request,self.cid,'Assign %s'%self.resource['type']),
                 'chooseURL':url})
                
            

@@ -656,12 +656,10 @@ def edit(request, qnname, resourceType, resource_id, targetType=None, target_id=
     return h.edit(request, returnType)
   
 
-def delete(request, qnname, resourceType, resource_id, targetType=None, target_id=None, returnType=None):
+def delete(request,cen_id,resourceType,resource_id,targetType=None,target_id=None,returnType=None):
     ''' This is the generic simple item deleter '''
-    qn = Questionnaire.objects.get(qnname=qnname)
-    h = ViewHandler(qn, resourceType, resource_id, target_id, targetType)
-    
-    return h.delete(request, returnType)
+    h=ViewHandler(cen_id,resourceType,resource_id,target_id,targetType)
+    return h.delete(request,returnType)
 
 
 def list(request, qnname, resourceType, targetType=None, target_id=None):

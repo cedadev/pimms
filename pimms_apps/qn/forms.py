@@ -21,7 +21,7 @@ class ConformanceForm(forms.ModelForm):
     
     class Meta:
         model   = Conformance
-        exclude = ('simulation',)
+        exclude = ('simulation')
         
     def specialise(self, simulation):
         #http://docs.djangoproject.com/en/dev/ref/models/querysets/#in
@@ -627,11 +627,11 @@ class ResponsiblePartyForm(forms.ModelForm):
     
     class Meta:
         model   = ResponsibleParty
-        exclude = ('qn',)
+        exclude = ('qn')
     
-    def __init__(self, qn, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         forms.ModelForm.__init__(self, *args, **kwargs)
-        self.qn = qn
+        self.hostQn = None
     
     def clean_uri(self):
         ''' 
@@ -645,7 +645,7 @@ class ResponsiblePartyForm(forms.ModelForm):
     
     def save(self):
         r = forms.ModelForm.save(self, commit=False)
-        r.qn = self.qn
+        r.centre = self.hostQn
         r.save()
         return r
                
