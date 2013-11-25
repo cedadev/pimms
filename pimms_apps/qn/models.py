@@ -581,7 +581,7 @@ class Component(Doc):
             if self.isRealm:
                 realm = new
             else:
-                raise ValueError('Deep copy called with invalid realm arguments: %s' %self)
+                logging.warn('Allowing realm of None copying component.')
         
         new.model = model
         new.realm = realm
