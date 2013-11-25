@@ -311,7 +311,7 @@ class componentHandler(object):
         '''
         if not self.component.isModel: 
             return HttpResponse("Not a model, wont copy")
-        new=self.component.copy(self)
+        new=self.component.copy(self.qn)
         new.abbrev=self.component.abbrev+'cp'
         new.title=self.component.title+'cp'
         new.save()
