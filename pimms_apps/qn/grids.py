@@ -136,6 +136,7 @@ class gridHandler(object):
         
     def copy(self):
         ''' Make a copy for later editing.'''
+        centre=Centre.objects.get(id=self.centre_id)
         new=self.grid.copy(centre)
         new.abbrev=self.grid.abbrev+'cp'
         new.title=self.grid.title+'cp'

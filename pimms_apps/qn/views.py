@@ -41,7 +41,9 @@ def qnhome(request, qnname):
     ''' 
     Project questionnaire main page
     '''
-        
+    
+    ##c=Centre.objects.get(id=centre_id)
+    
     # pull out the specific questionnaire
     qn = Questionnaire.objects.get(qnname=qnname)
     
