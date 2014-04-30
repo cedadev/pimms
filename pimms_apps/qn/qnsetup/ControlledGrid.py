@@ -240,6 +240,7 @@ class GridParser:
                     isParamGroup=self.isParamGroup,
                     uri=u,
                     qn=self.grid.qn,
+                    centre=self.grid.centre,
                     contact=self.grid.contact,
                     author=self.grid.author,
                     funder=self.grid.funder)
