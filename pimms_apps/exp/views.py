@@ -21,6 +21,7 @@ def exphome(request):
     controller for experiment list home page .
     '''
     try:
+       # import pdb; pdb.set_trace()
         # get my urls
         urls = {}
         urls = getsiteurls(urls)
@@ -220,9 +221,16 @@ def exppub(request, expid):
     '''
     # generate xml instance of self
     cim = getCIMXML(expid)
+
+    exp = get_object_or_404(Experiment, pk=expid)
+    title = exp.title.encode('utf8','ignore')
+    filename = title.replace(' ', '_') + '.xml'
     
-    mimetype='application/xml'
-    return HttpResponse(cim, mimetype)
+    response = HttpResponse(cim, content_type='application/xml')
+    response['Content-Disposition'] = 'attachment; filename=' + filename 
+ #   mimetype='application/xml'
+ #   return HttpResponse(cim, mimetype)
+    return response
     
 
 @login_required
@@ -233,6 +241,7 @@ def reqlist(request):
     
     try:        
         allreqs = NumericalRequirement.objects.filter(author=request.user)
+        Assert = False
         for req in allreqs:
             req.url = reverse('pimms_apps.exp.views.reqview', 
                               args=(req.id, ))

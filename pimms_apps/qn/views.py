@@ -41,7 +41,9 @@ def qnhome(request, qnname):
     ''' 
     Project questionnaire main page
     '''
-        
+    
+    ##c=Centre.objects.get(id=centre_id)
+    
     # pull out the specific questionnaire
     qn = Questionnaire.objects.get(qnname=qnname)
     
@@ -101,7 +103,7 @@ def qnhome(request, qnname):
 
 
 
-def genericDoc(request, cid, docType, pkid, method):
+def genericDoc(request, qnname, docType, pkid, method):
     ''' 
     Handle the generic documents 
     '''

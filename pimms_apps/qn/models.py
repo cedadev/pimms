@@ -211,6 +211,7 @@ class Doc(Fundamentals):
     # Managing documents on a per project questionnaire level
     qn = models.ForeignKey('Questionnaire')
     # Parties (all documents are associated with a centre)
+    centre            = models.ForeignKey('Centre', blank=True, null=True)
     author            = models.ForeignKey('ResponsibleParty', blank=True, null=True, related_name='%(class)s_author', on_delete=models.SET_NULL)
     funder            = models.ForeignKey('ResponsibleParty', blank=True, null=True, related_name='%(class)s_funder', on_delete=models.SET_NULL)
     contact           = models.ForeignKey('ResponsibleParty', blank=True, null=True, related_name='%(class)s_contact', on_delete=models.SET_NULL)
@@ -276,6 +277,15 @@ class Doc(Fundamentals):
         logging.debug("%s validate errors=%s"%(self._meta.module_name,self.validErrors))
         self.save()
         return v.valid,v.errorsAsHtml()
+# FIXME: This moved from component to here ... needs something done eventually ...
+#    def validate(self):
+#        # I don't work yet as I need my local component_id
+#       ''' Check to see if component is valid. Returns True/False '''
+#        nm=NumericalModel(Centre.objects.get(id=self.centre_id),component_id)
+#        CIMDoc=nm.export(recurse=False)
+#       sct_doc = ET.parse("xsl/BasicChecks.sch")
+#        schematron = ET.Schematron(sct_doc)
+#        return schematron.validate(CIMFragment)
 
     def cimView(self):
         ''' 
