@@ -6,6 +6,7 @@ from pimms_apps.cv.forms import MMForm
 from pimms_apps.cv.mindmap import checkMM, translateMM
 from pimms_apps.cv.helpers import getcvurls
 from pimms_apps.helpers import getsiteurls
+from os.path import splitext
 
 
 def cvhome(request):
@@ -24,6 +25,7 @@ def cvhome(request):
     except:
         raise Http404
       
+   # import pdb; pdb.set_trace()
     if request.method == 'POST':
         mmform = MMForm(request.POST, request.FILES)
         if mmform.is_valid():
@@ -43,8 +45,13 @@ def cvhome(request):
             else: #continue to translation
                 translation = translateMM(mmfile)
                 
-                mimetype='application/xml'
-                return HttpResponse(translation, mimetype)
+                filename = mmfile.name.encode('utf8','ignore')
+                basename = splitext(filename)[0]
+                response = HttpResponse(translation, content_type='application/xml')
+                response['Content-Disposition'] = 'attachment; filename=' + basename + '.xml'
+                return response
+#               mimetype='application/xml'
+#               return HttpResponse(translation, mimetype)
                 #return render_to_response('page/report.html', {'urls': urls, 
                 #                                               'translation': translation}, 
                 #                       context_instance=RequestContext(request))
