@@ -103,7 +103,7 @@ def qnhome(request, qnname):
 
 
 
-def genericDoc(request, cid, docType, pkid, method):
+def genericDoc(request, qnname, docType, pkid, method):
     ''' 
     Handle the generic documents 
     '''
