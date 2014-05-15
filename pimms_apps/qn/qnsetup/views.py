@@ -4,6 +4,7 @@ from django.template.context import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 from pimms_apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
 from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
@@ -15,7 +16,7 @@ from pimms_apps.qn.helpers import getqnurls
 import logging
 log = logging.getLogger(__name__)
 
-
+@login_required
 def qnsetuphome(request):
     '''
     controller for experiment list home page .
@@ -24,19 +25,21 @@ def qnsetuphome(request):
     urls = {}
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)        
+    #import pdb; pdb.set_trace()
 
     #!FIXME: if one of the questionnairs raises an error none will be built.
-    allqns = Questionnaire.objects.filter()
-    for qn in allqns:
+    allmyqns = Questionnaire.objects.filter(creator = request.user)
+    for qn in allmyqns:
         qn.url = reverse('pimms_apps.qn.views.qnhome', args=(qn, ))
         qn.delurl = reverse('pimms_apps.qn.qnsetup.views.qndelete', args=(qn, ))
         qn.abbrev = qn
         #!TODO: qn.cpurl
       
-    return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allqns, 'urls': urls},
+    return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allmyqns, 'urls': urls},
                                 context_instance=RequestContext(request))
     
     
+@login_required
 def qndelete(request, qnname):
     #!TODO: we should have some check to ensure this has been called from the
     # modal dialog
@@ -46,6 +49,7 @@ def qndelete(request, qnname):
     return HttpResponseRedirect(reverse('pimms_apps.qn.qnsetup.views.qnsetuphome'))
     
 
+@login_required
 @transaction.commit_on_success
 def qninputs(request):
     '''
@@ -55,6 +59,7 @@ def qninputs(request):
     urls = {}
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)  
+    #import pdb;pdb.set_trace();
     
     CVFileFormSet = formset_factory(UploadCVForm, extra=2)
     ExpFileFormSet = formset_factory(UploadExpForm, extra =2)
@@ -65,13 +70,15 @@ def qninputs(request):
         if cancel:
             return HttpResponseRedirect(urls['qnsetuphome'])
         else:        
-            qnsetupform = qnSetupForm(request.POST, prefix='qn') 
+            qnmodel = Questionnaire(creator = request.user)
+            qnsetupform = qnSetupForm(request.POST, prefix='qn', request = request, instance = qnmodel) 
             cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
             gridcvform   = UploadGridCVForm(request.POST, request.FILES, prefix='gridcvfile')
             expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
             if qnsetupform.is_valid() and gridcvform.is_valid() and cvformset.is_valid() and expformset.is_valid():
                 # deal with saving qn details
                 qn = qnsetupform.save()
+                #qn.creator = request.user
                 
                 # deal with saving cv file details
                 cvlist = []
@@ -133,6 +140,7 @@ def qninputs(request):
                                 context_instance=RequestContext(request))
     
     
+@login_required
 def qnsetupsuccess(request, qnname):
     '''
     View controller for successful questionnaire setup
