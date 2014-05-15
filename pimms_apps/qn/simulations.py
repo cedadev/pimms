@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
 from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -209,11 +210,11 @@ class simulationHandler(object):
         if len(p) == 0:
             # Require them to create a platform
             message = 'You need to create a platform before creating a simulation'
-            return render_to_response('error.html', {'message':message, 'url':url})
+            return render(request, 'error.html', {'message':message, 'url':url})
         elif len(m)==0:
             # Require them to create a model
             message = 'You need to create a model before creating a simulation'
-            return render_to_response('error.html', {'message':message, 'url':url})
+            return render(request, 'error.html', {'message':message, 'url':url})
         
         url = reverse('pimms_apps.qn.views.simulationAdd', args = (self.qn, self.expid, ))
        
@@ -299,8 +300,8 @@ class simulationHandler(object):
             cformset=MyConformanceFormSet(s)
             cformset.specialise()
           
-        return render_to_response('conformance.html',{'s':s, 'e':e, 'cform':cformset, 'urls':urls, 
-                                                      'tabs':tabs(request, self.centreid, 'Conformance')})
+        return render(request, 'conformance.html',{'s':s, 'e':e, 'cform':cformset, 'urls':urls, 
+                                                   'tabs':tabs(request, self.centreid, 'Conformance')})
   
   
     def copy(self, request):
