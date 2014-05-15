@@ -13,7 +13,7 @@ def commonURLs(obj, dictionary):
     '''
     Add urls for the common methods to a dictionary for use in a template
     '''
-    import pdb; pdb.set_trace() 
+    #import pdb; pdb.set_trace() 
     for key in ['validate', 'xml', 'cimView']:
         dictionary[key] = reverse('pimms_apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, key))
         
