@@ -1,6 +1,6 @@
 from lxml import etree as ET
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
@@ -13,7 +13,7 @@ def commonURLs(obj, dictionary):
     '''
     Add urls for the common methods to a dictionary for use in a template
     '''
-  
+    #import pdb; pdb.set_trace() 
     for key in ['validate', 'xml', 'cimView']:
         dictionary[key] = reverse('pimms_apps.qn.views.genericDoc', args=(obj.qn, obj._meta.module_name, obj.id, key))
         
@@ -27,9 +27,10 @@ class cimHandler(object):
     This handles common operations to produce views etc on CIM document objects
     '''
 
-    def __init__(self, obj):
+    def __init__(self, obj, request):
         ''' Instantiate the object '''
         self.obj = obj
+        self.request = request
 
     def _XMLO(self):
         ''' XML view of self as an lxml element tree instance '''
@@ -53,26 +54,26 @@ class cimHandler(object):
         if mymodelname not in model_list.modelnames:
             html = ''' The model name used is not valid for CMIP5. Return to
                        the top level model page to correct this. '''
-            return render_to_response('cimpage.html', {'source': 'Validation',
-                                                       'obj': self.obj,
-                                                       'html': html,
-                                                       'urls': urls})
+            return render(self.request, 'cimpage.html', {'source': 'Validation',
+                                                         'obj': self.obj,
+                                                         'html': html,
+                                                         'urls': urls})
         valid, html = self.obj.validate()
-        return render_to_response('cimpage.html', {'source': 'Validation',
-                                                   'obj': self.obj,
-                                                   'html': html,
-                                                   'urls': urls})
+        return render(self.request, 'cimpage.html', {'source': 'Validation',
+                                                     'obj': self.obj,
+                                                     'html': html,
+                                                     'urls': urls})
 
     def html(self):
         ''' Return a "pretty" version of self '''
         html = viewer(self._XMLO())
         urls = commonURLs(self.obj, {})
         del urls['html']
-        return render_to_response('cimpage.html',
-                                  {'source': 'View',
-                                   'obj': self.obj,
-                                   'html': html,
-                                   'urls': urls})
+        return render(self.request, 'cimpage.html',
+                                   {'source': 'View',
+                                    'obj': self.obj,
+                                    'html': html,
+                                    'urls': urls})
 
     def xml(self):
         mimetype = 'application/xml'
@@ -85,18 +86,18 @@ class cimHandler(object):
         html = '<p>%s</p>' % msg
         urls = commonURLs(self.obj, {'persisted': url})
         del urls['export']
-        return render_to_response('cimpage.html', {'source': 'Export to CMIP5',
-                                                   'obj': self.obj,
-                                                   'html': html,
-                                                   'urls': urls})
+        return render(self.request, 'cimpage.html', {'source': 'Export to CMIP5',
+                                                     'obj': self.obj,
+                                                     'html': html,
+                                                     'urls': urls})
 
     def cimView(self):
         ''' View this in the CIMView interface '''
         html = self.obj.cimView()
         urls = commonURLs(self.obj, {})
         del urls['cimView']  # we've just done it
-        return render_to_response('viewer/cimview.html',
-                                  {'source': 'cimView',
-                                   'obj': self.obj,
-                                   'viewhtml': html,
-                                   'urls': urls})
+        return render(self.request, 'viewer/cimview.html',
+                                    {'source': 'cimView',
+                                     'obj': self.obj,
+                                     'viewhtml': html,
+                                     'urls': urls})

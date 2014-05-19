@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
 
 from pimms_apps.cv.forms import MMForm
@@ -9,6 +10,7 @@ from pimms_apps.helpers import getsiteurls
 from os.path import splitext
 
 
+@login_required
 def cvhome(request):
     '''Controller for cv app home page
     
@@ -66,6 +68,7 @@ def cvhome(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def about(request):
     '''Controller for app about page
     

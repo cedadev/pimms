@@ -35,7 +35,7 @@ class Questionnaire(models.Model):
     '''
     
     # Top layer attributes
-    qnname            = models.CharField(max_length=32, unique=True)
+    qnname            = models.CharField(max_length=32)
     description     = models.TextField(max_length=1024, blank=True, null=True)
     creator         = models.ForeignKey(User, blank=True, null=True)
     cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
