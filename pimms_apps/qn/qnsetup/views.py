@@ -71,7 +71,7 @@ def qninputs(request):
             return HttpResponseRedirect(urls['qnsetuphome'])
         else:        
             qnmodel = Questionnaire(creator = request.user)
-            qnsetupform = qnSetupForm(request.POST, prefix='qn', request = request, instance = qnmodel) 
+            qnsetupform = qnSetupForm(request.POST, prefix='qn', instance = qnmodel) 
             cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
             gridcvform   = UploadGridCVForm(request.POST, request.FILES, prefix='gridcvfile')
             expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
