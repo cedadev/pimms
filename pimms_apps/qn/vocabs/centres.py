@@ -45,6 +45,6 @@ def loadCentres():
                               abbrev='Unknown',
                               address='Erehwon',
                               email='u@foo.bar',
-                              uri=str(uuid.uuid1()),
-                              centre=c)
+                              uri=str(uuid.uuid1()))
+  #                            centre=c)
         rp.save()

@@ -7,7 +7,6 @@ from datetime import datetime
 from django.core.files.base import ContentFile
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
-from django.contrib.auth.models import User
 
 from pimms_apps.qn.cimHandling import *
 from pimms_apps.qn.utilities import atomuri
@@ -35,9 +34,10 @@ class Questionnaire(models.Model):
     '''
     
     # Top layer attributes
-    qnname            = models.CharField(max_length=32)
+    qnname            = models.CharField(max_length=32, unique=True)
     description     = models.TextField(max_length=1024, blank=True, null=True)
     creator         = models.ForeignKey(User, blank=True, null=True)
+    centre          = models.ForeignKey('Centre', blank=True, null= True)
     cvs             = models.ManyToManyField('CVFile', blank=True, null=True)
     gridcv          = models.ForeignKey('GridCVFile', blank=True, null=True)
     exps            = models.ManyToManyField('ExpFile', blank=True, null=True)
@@ -413,7 +413,7 @@ class ResponsibleParty(models.Model):
     ''' 
     So we have the flexibility to use this in future versions 
     '''
-  
+
     isOrganisation = models.BooleanField(default=False)
     name           = models.CharField(max_length=256,blank=True)
     webpage        = models.CharField(max_length=128,blank=True)
@@ -421,7 +421,7 @@ class ResponsibleParty(models.Model):
     email          = models.EmailField(blank=True)
     address        = models.TextField(blank=True)
     uri            = models.CharField(max_length=64,unique=True)
-    qn             = models.ForeignKey('Questionnaire')
+    qn             = models.ForeignKey('Questionnaire',null=True,blank=True)
     
     # for access control
     #centre = models.ForeignKey('Centre',blank=True,null=True) 

@@ -27,7 +27,6 @@ def cvhome(request):
     except:
         raise Http404
       
-   # import pdb; pdb.set_trace()
     if request.method == 'POST':
         mmform = MMForm(request.POST, request.FILES)
         if mmform.is_valid():

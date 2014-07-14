@@ -88,6 +88,7 @@ def qnhome(request, qnname):
     
     return render_to_response('qnhome/summary.html',
                               {'qnname'   : qn.qnname, 
+                               'centre'   : qn.centre,
                                'models'    : models,
                                'platforms' : platforms,
                                'grids'     : grids, 

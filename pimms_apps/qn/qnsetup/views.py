@@ -9,9 +9,10 @@ from django.contrib.auth.decorators import login_required
 from pimms_apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
 from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
 from pimms_apps.qn.qnsetup.generateQn import generate_qn
-from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
+from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile, Centre
 from pimms_apps.helpers import getsiteurls
 from pimms_apps.qn.helpers import getqnurls
+from pimms_apps.qn.vocabs.centres import loadCentres 
 
 import logging
 log = logging.getLogger(__name__)
@@ -25,7 +26,6 @@ def qnsetuphome(request):
     urls = {}
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)        
-    #import pdb; pdb.set_trace()
 
     #!FIXME: if one of the questionnairs raises an error none will be built.
     allmyqns = Questionnaire.objects.filter(creator = request.user)
@@ -59,7 +59,12 @@ def qninputs(request):
     urls = {}
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)  
-    #import pdb;pdb.set_trace();
+
+    if Centre.objects.count() == 0:
+        loadCentres()
+	# print "Need to load some Centres!"
+    qncentres = Centre.objects.all()
+
     
     CVFileFormSet = formset_factory(UploadCVForm, extra=2)
     ExpFileFormSet = formset_factory(UploadExpForm, extra =2)
@@ -71,14 +76,17 @@ def qninputs(request):
             return HttpResponseRedirect(urls['qnsetuphome'])
         else:        
             qnmodel = Questionnaire(creator = request.user)
-            qnsetupform = qnSetupForm(request.POST, prefix='qn', request = request, instance = qnmodel) 
+            qnsetupform = qnSetupForm(request.POST, prefix='qn', instance=qnmodel) 
             cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
             gridcvform   = UploadGridCVForm(request.POST, request.FILES, prefix='gridcvfile')
             expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
             if qnsetupform.is_valid() and gridcvform.is_valid() and cvformset.is_valid() and expformset.is_valid():
                 # deal with saving qn details
-                qn = qnsetupform.save()
+               
+                qn = qnsetupform.save(commit=False)
                 #qn.creator = request.user
+                qn.centre = Centre.objects.get(abbrev=request.POST['qncentre'])
+                qn.save()
                 
                 # deal with saving cv file details
                 cvlist = []
@@ -110,6 +118,7 @@ def qninputs(request):
                         qn.exps.add(expfile)
                         #add the files to a list to pass to the qn generator
                         explist.append(entry['expfile'])
+                qn.save()
                 
                 #Now run the questionnaire setup script with the uploaded files/settings and return the generated url
                 generate_qn(qn, cvlist, gridupload, explist)
@@ -119,7 +128,8 @@ def qninputs(request):
                 return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
             else:
                 return render_to_response('qnsetup/qninputs.html', 
-                                          {'qnsetupform': qnsetupform,
+                                          {'qncentres': qncentres,
+					   'qnsetupform': qnsetupform,
                                            'cvformset': cvformset, 
                                            'gridcvform': gridcvform,
                                            'expformset': expformset,
@@ -132,7 +142,8 @@ def qninputs(request):
         expformset  = ExpFileFormSet(prefix='expfile')
 
     return render_to_response('qnsetup/qninputs.html', 
-                              {'qnsetupform': qnsetupform,
+                              {'qncentres': qncentres,
+                               'qnsetupform': qnsetupform,
                                'cvformset': cvformset,
                                'gridcvform': gridcvform,
                                'expformset': expformset,
