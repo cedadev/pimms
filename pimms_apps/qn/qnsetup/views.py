@@ -5,13 +5,17 @@ from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from pimms_apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
 from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
 from pimms_apps.qn.qnsetup.generateQn import generate_qn
-from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile
+from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile, Centre
 from pimms_apps.helpers import getsiteurls
 from pimms_apps.qn.helpers import getqnurls
+from pimms_apps.qn.vocabs.centres import loadCentres 
+
+from pimms_apps.person.models import Person
 
 import logging
 log = logging.getLogger(__name__)
@@ -25,18 +29,31 @@ def qnsetuphome(request):
     urls = {}
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)        
-    #import pdb; pdb.set_trace()
 
     #!FIXME: if one of the questionnairs raises an error none will be built.
-    allmyqns = Questionnaire.objects.filter(creator = request.user)
-    for qn in allmyqns:
+    next_page = 'userhome.html'
+    person = Person.objects.get(user=request.user)
+
+    if request.user.has_perm('qn_create_questionnaire'):
+       next_page = 'adminhome.html'
+       qns = Questionnaire.objects.all()
+    else:
+       if Centre.objects.count() == 0:
+          loadCentres()
+       try:
+          centre_id = Centre.objects.get(abbrev=person.institute).id
+          qns = Questionnaire.objects.filter(centre = centre_id)
+       except ObjectDoesNotExist:
+          qns={}
+
+    for qn in qns:
         qn.url = reverse('pimms_apps.qn.views.qnhome', args=(qn, ))
         qn.delurl = reverse('pimms_apps.qn.qnsetup.views.qndelete', args=(qn, ))
         qn.abbrev = qn
         #!TODO: qn.cpurl
       
-    return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allmyqns, 'urls': urls},
-                                context_instance=RequestContext(request))
+    return render_to_response('qnsetup/'+next_page, {'person':person,'qns': qns,\
+             'urls': urls}, context_instance=RequestContext(request))
     
     
 @login_required
@@ -59,7 +76,12 @@ def qninputs(request):
     urls = {}
     urls = getsiteurls(urls)
     urls = getqnsetupurls(urls)  
-    #import pdb;pdb.set_trace();
+
+    if Centre.objects.count() == 0:
+        loadCentres()
+	# print "Need to load some Centres!"
+    qncentres = Centre.objects.all()
+
     
     CVFileFormSet = formset_factory(UploadCVForm, extra=2)
     ExpFileFormSet = formset_factory(UploadExpForm, extra =2)
@@ -71,14 +93,17 @@ def qninputs(request):
             return HttpResponseRedirect(urls['qnsetuphome'])
         else:        
             qnmodel = Questionnaire(creator = request.user)
-            qnsetupform = qnSetupForm(request.POST, prefix='qn', instance = qnmodel) 
+            qnsetupform = qnSetupForm(request.POST, prefix='qn', instance=qnmodel) 
             cvformset   = CVFileFormSet(request.POST, request.FILES, prefix='cvfile')
             gridcvform   = UploadGridCVForm(request.POST, request.FILES, prefix='gridcvfile')
             expformset  = ExpFileFormSet(request.POST, request.FILES, prefix='expfile')
             if qnsetupform.is_valid() and gridcvform.is_valid() and cvformset.is_valid() and expformset.is_valid():
                 # deal with saving qn details
-                qn = qnsetupform.save()
+               
+                qn = qnsetupform.save(commit=False)
                 #qn.creator = request.user
+                qn.centre = Centre.objects.get(abbrev=request.POST['qncentre'])
+                qn.save()
                 
                 # deal with saving cv file details
                 cvlist = []
@@ -110,6 +135,7 @@ def qninputs(request):
                         qn.exps.add(expfile)
                         #add the files to a list to pass to the qn generator
                         explist.append(entry['expfile'])
+                qn.save()
                 
                 #Now run the questionnaire setup script with the uploaded files/settings and return the generated url
                 generate_qn(qn, cvlist, gridupload, explist)
@@ -119,7 +145,8 @@ def qninputs(request):
                 return HttpResponseRedirect(urls['qnsetupsuccess']) # Redirect to list page 
             else:
                 return render_to_response('qnsetup/qninputs.html', 
-                                          {'qnsetupform': qnsetupform,
+                                          {'qncentres': qncentres,
+					   'qnsetupform': qnsetupform,
                                            'cvformset': cvformset, 
                                            'gridcvform': gridcvform,
                                            'expformset': expformset,
@@ -132,7 +159,8 @@ def qninputs(request):
         expformset  = ExpFileFormSet(prefix='expfile')
 
     return render_to_response('qnsetup/qninputs.html', 
-                              {'qnsetupform': qnsetupform,
+                              {'qncentres': qncentres,
+                               'qnsetupform': qnsetupform,
                                'cvformset': cvformset,
                                'gridcvform': gridcvform,
                                'expformset': expformset,
@@ -162,3 +190,19 @@ def qnsetupsuccess(request, qnname):
     
     return render_to_response('qnsetup/qnsetupsuccess.html', {'urls': urls, 'qnname':qnname},
                               context_instance=RequestContext(request))
+
+
+def qnuser(request):
+    '''
+    '''
+    person = Person.objects.get(user=request.user)
+    if Centre.objects.count() == 0:
+       loadCentres()
+    centre_id = Centre.objects.get(abbrev='NCAR').id
+    qns = Questionnaire.objects.filter(centre = centre_id)
+
+    return render_to_response('qnsetup/userhome.html', {'person':person, \
+                             'qns':qns}, \
+                             context_instance=RequestContext(request))
+
+

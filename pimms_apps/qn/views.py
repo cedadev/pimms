@@ -47,8 +47,7 @@ def qnhome(request, qnname):
     ##c=Centre.objects.get(id=centre_id)
     
     # pull out the specific questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     # Grab all models associated with this project
     models = [Component.objects.get(id=m.id) for m in qn.component_set.filter(scienceType='model').filter(isDeleted=False)]
@@ -88,6 +87,7 @@ def qnhome(request, qnname):
     
     return render_to_response('qnhome/summary.html',
                               {'qnname'   : qn.qnname, 
+                               'centre'   : qn.centre,
                                'models'    : models,
                                'platforms' : platforms,
                                'grids'     : grids, 
@@ -150,8 +150,7 @@ def componentAdd(request, qnname):
     '''
   
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn)
     
@@ -166,8 +165,7 @@ def componentEdit(request, qnname, component_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -182,8 +180,7 @@ def componentSub(request, qnname, component_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
       
     c = componentHandler(qn, component_id)
     
@@ -198,8 +195,7 @@ def componentRefs(request, qnname, component_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -214,8 +210,7 @@ def componentTxt(request, qnname, component_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -230,8 +225,7 @@ def componentCup(request, qnname, component_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
       
     c = couplingHandler(qn, request)
     
@@ -246,8 +240,7 @@ def componentInp(request, qnname, component_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
       
     c = componentHandler(qn, component_id)
     
@@ -258,8 +251,7 @@ def componentInp(request, qnname, component_id):
 @login_required
 def componentCopy(request, qnname, component_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     c = componentHandler(qn, component_id)
     
@@ -276,8 +268,7 @@ def gridAdd(request, qnname):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     g = gridHandler(qn)
     
@@ -290,8 +281,7 @@ def gridEdit(request, qnname, grid_id):
     ''' Edit a grid '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     g = gridHandler(qn, grid_id)
     
@@ -306,8 +296,7 @@ def gridEdit(request, qnname, grid_id):
 @login_required
 def simulationEdit(request, qnname, simulation_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simid=simulation_id)
     
@@ -317,8 +306,7 @@ def simulationEdit(request, qnname, simulation_id):
 @login_required
 def simulationAdd(request, qnname, experiment_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, expid=experiment_id)
     
@@ -328,8 +316,7 @@ def simulationAdd(request, qnname, experiment_id):
 @login_required
 def simulationDel(request, qnname, simulation_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simid=simulation_id)
     
@@ -339,8 +326,7 @@ def simulationDel(request, qnname, simulation_id):
 @login_required
 def simulationList(request, qnname):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn)
     
@@ -351,8 +337,7 @@ def simulationList(request, qnname):
 @gracefulNotFound
 def simulationCopy(request, qnname):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn)
     return s.copy(request)
@@ -362,8 +347,7 @@ def simulationCopy(request, qnname):
 @gracefulNotFound
 def simulationCopyInd(request, qnname, simulation_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simid=simulation_id)
     
@@ -374,8 +358,7 @@ def simulationCopyInd(request, qnname, simulation_id):
 @gracefulNotFound
 def conformanceMain(request, qnname, simulation_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simulation_id)
     
@@ -389,8 +372,7 @@ def simulationCup(request, qnname, simulation_id, coupling_id=None, ctype=None):
     Return couplings for a component 
     '''
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     c = couplingHandler(qn,request)
     if ctype: # this method deprecated.
@@ -402,8 +384,7 @@ def simulationCup(request, qnname, simulation_id, coupling_id=None, ctype=None):
 @login_required
 def simulationCupReset(request, qnname, simulation_id):
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     s = simulationHandler(qn, simulation_id)
     
@@ -448,8 +429,7 @@ def platformEdit(request, qnname, platform_id=None):
     Handle platform editing 
     '''
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     urls = {}
     
@@ -502,8 +482,7 @@ def viewExperiment(request, qnname, experiment_id):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     e = Experiment.objects.get(id=experiment_id)
     r = e.requirements.all()
@@ -695,8 +674,7 @@ def edit(request, qnname, resourceType, resource_id, targetType=None, target_id=
     '''
   
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     h = ViewHandler(qn, resourceType, resource_id, target_id, targetType)
     return h.edit(request, returnType)
@@ -705,8 +683,7 @@ def edit(request, qnname, resourceType, resource_id, targetType=None, target_id=
 @login_required
 def delete(request, qnname, resourceType, resource_id, targetType=None, target_id=None, returnType=None):
     ''' This is the generic simple item deleter '''
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     h = ViewHandler(qn, resourceType, resource_id, target_id, targetType)
     
     return h.delete(request, returnType)
@@ -719,8 +696,7 @@ def list(request, qnname, resourceType, targetType=None, target_id=None):
     '''
     
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
     
     h = ViewHandler(qn, resourceType, None, target_id, targetType)
     return h.list(request)
@@ -741,8 +717,7 @@ def assign(request, qnname, resourceType, targetType, target_id):
     '''
   
     # get current questionnaire
-    userqn = Questionnaire.objects.filter(creator=request.user)
-    qn = userqn.get(qnname=qnname)
+    qn = Questionnaire.objects.get(qnname=qnname)
   
     if resourceType == 'file':
         return render_badrequest('error.html', {'message':'Cannot assign files to targets, assign objects from within them!'})

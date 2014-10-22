@@ -21,7 +21,6 @@ def exphome(request):
     controller for experiment list home page .
     '''
     try:
-       # import pdb; pdb.set_trace()
         # get my urls
         urls = {}
         urls = getsiteurls(urls)

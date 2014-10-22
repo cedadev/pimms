@@ -55,7 +55,7 @@ urlpatterns = patterns('',
     (r'^(?P<qnname>\D+)/simulation/copy/$', 'pimms_apps.qn.views.simulationCopy'),
     (r'^(?P<qnname>\D+)/simulation/(?P<simulation_id>\d+)/copyind/$', 'pimms_apps.qn.views.simulationCopyInd'),
     #(r'^(?P<qnname>\D+)/simulation/(?P<simulation_id>\d+)/resetCouplings/$', 'pimms_apps.qn.views.simulationCupReset'), 
-    #(r'^(?P<qnname>\D+)/simulation/(?P<simulation_id>\d+)/delete/$', 'pimms_apps.qn.views.simulationDel'),
+    (r'^(?P<qnname>\D+)/simulation/(?P<simulation_id>\d+)/delete/$', 'pimms_apps.qn.views.simulationDel'),
 #    # 
 #    # GRIDS:
 #    #   

@@ -1,0 +1,79 @@
+{% extends "site/home_two_column_page.html" %}
+    
+    {% block pagetitle %}
+      User home page
+      {% if user.is_authenticated %}
+         - welcome 
+         {% if user.first_name or user.last_name %}
+             {{ user.first_name }} {{ user.last_name }}
+         {% else %}
+             {{ user.username }}
+         {% endif %}
+      {% endif %} 
+    {% endblock %}
+ 
+    {% block page_column_one %}
+      <p>
+        <iframe title="YouTube video player" class="youtube-player" type="text/html" 
+			width="350" height="260" src="http://www.youtube.com/embed/W-Q7RMpINVo"
+			frameborder="0" allowFullScreen>
+	    </iframe>
+      </p>
+      <h4>What is PIMMS?</h4>
+      <p>
+        PIMMS is an infrastructure to manage the metadata requirements of a climate modelling project.......
+        <a href="{{ urls.about }}">(read more)</a>
+      </p>
+      
+    
+    {% endblock %}
+    
+    
+    {% block page_column_two %}
+      {% if user.is_authenticated %}
+	   
+	      <div class="row well well-sm">
+	        <div class="span2">
+	          <strong>1. Go to {{ person.institute }} institution questionnaires</strong>            
+	        </div>
+	        <div class="offset1 span1">
+	          <a href="{{ urls.qnsetuphome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
+	        </div>
+	      </div>
+	      
+	      <div class="row well well-sm">
+	        <div class="span2">
+	          <strong>2. Change password</strong>            
+	        </div>
+	        <div class="offset1 span1">
+	         <button class="btn btn-primary btn-block disabled"><strong>Soon!</strong>
+	        </div>
+	      </div>
+	      
+<!--	      <div class="row well">
+	        <div class="span2">
+	          <strong>3. Metadata Questionnaire</strong>            
+	        </div>
+	        <div class="offset1 span1">
+	          <a href="{{ urls.qnsetuphome }}" class="btn btn-primary btn-block"><strong>Go</strong></a>
+	        </div>
+-->
+	      </div>  
+	  {% else %}    
+	      <div class="row">
+            <div class="span12 btn-toolbar">
+            </div>
+          </div>
+          <div class="row">
+            <div class="span12 btn-toolbar">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="span4 offset1">
+              <a href="{{ urls.login }}" class="btn btn-primary btn-block"><strong>Login</strong></a>
+            </div>
+          </div>
+      {% endif %}
+      
+{% endblock %}

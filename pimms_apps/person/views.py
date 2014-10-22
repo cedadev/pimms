@@ -8,6 +8,8 @@ from pimms_apps.person.forms import RegistrationForm, LoginForm
 from pimms_apps.person.models import Person
 from pimms_apps.helpers import getsiteurls
 
+from pimms_apps.qn.vocabs.centres import loadCentres
+from pimms_apps.qn.models import Centre
 
 def UserRegistration(request):
     ''' Registers credentials for a user '''
@@ -15,6 +17,8 @@ def UserRegistration(request):
     # get my urls
     urls = {}
     urls = getsiteurls(urls)
+    if Centre.objects.count() == 0:
+       loadCentres()
         
     if request.user.is_authenticated():
         return HttpResponseRedirect(urls['home'])
@@ -38,12 +42,14 @@ def UserRegistration(request):
             login(request, new_user)            
             return HttpResponseRedirect(urls['home'])
         else:
-            return render_to_response('register.html', {'form': form, 'urls':urls}, context_instance=RequestContext(request))
+            qncentres = Centre.objects.all()
+            return render_to_response('register.html', {'form': form, 'urls':urls, 'qncentres': qncentres}, context_instance=RequestContext(request))
             
     else:
         ''' user is not submitting a form therefore show a registration form '''
         form = RegistrationForm()
-        context = {'form': form, 'urls':urls}
+        qncentres = Centre.objects.all()
+        context = {'form': form, 'urls':urls, 'qncentres': qncentres}
         return render_to_response('register.html', context, context_instance=RequestContext(request))
         
 

@@ -1,0 +1,31 @@
+[
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "pimms",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": false,
+      "last_login": "2014-10-22 11:47:59",
+      "groups": [],
+      "user_permissions": [],
+      "password": "sha1$b6259$4197e04c8d9d9650ab86867febb938c6c6510c25",
+      "email": "charlotte.pascoe@stfc.ac.uk",
+      "date_joined": "2014-10-22 11:45:29"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "person.person",
+    "fields": {
+      "institute": "STFC",
+      "create_questionnaire": false,
+      "surname": "Manager",
+      "user": 1,
+      "firstname": "Pimms"
+    }
+  }
+]

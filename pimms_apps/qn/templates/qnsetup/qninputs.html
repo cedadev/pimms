@@ -42,6 +42,27 @@
         
         <div class="row">
           <div class="span2">
+            <label for="qnname"{% if qnsetupform.qncentre.errors %} class="text-error" {% endif %}>Centre *</label>
+          </div>
+          <div class="span3">
+          <select name="qncentre">
+            {% for centre in qncentres %}
+                <option>{{ centre.abbrev }}</option>
+            {% endfor %}
+          </select>
+          </div>
+          <div class="span2">
+            {% if qnsetupform.qncentre.errors %}
+              {% for error in qnsetupform.qncentre.errors %}
+                <p class="text-error">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <br/>
+        
+        <div class="row">
+          <div class="span2">
             <label for="qnname"{% if qnsetupform.qnname.errors %} class="text-error" {% endif %}>Name {% if qnsetupform.fields.qnname.required %}*{% endif %}</label>
           </div>
           <div class="span3">
