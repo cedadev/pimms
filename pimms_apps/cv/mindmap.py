@@ -29,6 +29,8 @@ def checkMM(mmfile):
     XSLFileName = os.path.join(thisDir, 'xslt', 'mmcheck_0.9.0_bdl.xsl')
     #set the fpre file
 
+    if not os.path.exists(settings.PIMMS_TMP_DIR):
+       os.makedirs(settings.PIMMS_TMP_DIR)
     fpre = open(os.path.join(settings.PIMMS_TMP_DIR, str(mmfile)+'.pre'), 'w')
     #begin reading through each line in the mm file, and....
     for line in mmfile:

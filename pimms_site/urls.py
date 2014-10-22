@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^cv/', include('pimms_apps.cv.urls')),
     (r'^qn/', include('pimms_apps.qn.urls')),
     (r'^qnsetup/', include('pimms_apps.qn.qnsetup.urls')),
-    (r'^bkm/', include('pimms_apps.bkm.urls')),
+#    (r'^bkm/', include('pimms_apps.bkm.urls')),
 )
 
 

@@ -3,6 +3,7 @@ from pimms_apps.qn.models import *
 import uuid
 
 CENTRES=(
+             ('BADC','UK National Centre for Atmospheric Science',('HiGEM1.2')),
              ('NCAS','UK National Centre for Atmospheric Science',('HiGEM1.2')),
              ('NCAR','US National Centre for Atmospheric Research',('CCSM4(H)','CCM4(M)')),
              ('MOHC','UK Met Office Hadley Centre',('HadCM3','HadCM3Q','HadGEM2-ES')),

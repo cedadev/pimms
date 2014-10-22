@@ -9,6 +9,7 @@ class Person(models.Model):
     firstname = models.CharField(max_length=100)
     surname   = models.CharField(max_length=100)
     institute = models.CharField(max_length=512)
+    create_questionnaire = models.BooleanField(default=False)
     
     def __unicode__(self):
         return '%s %s' % (self.firstname, self.surname)

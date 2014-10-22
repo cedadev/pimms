@@ -5,6 +5,7 @@ from django.forms.formsets import formset_factory
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from pimms_apps.qn.qnsetup.forms import qnSetupForm, UploadCVForm, UploadGridCVForm, UploadExpForm
 from pimms_apps.qn.qnsetup.helpers import getqnsetupurls
@@ -13,6 +14,8 @@ from pimms_apps.qn.models import Questionnaire, CVFile, GridCVFile, ExpFile, Cen
 from pimms_apps.helpers import getsiteurls
 from pimms_apps.qn.helpers import getqnurls
 from pimms_apps.qn.vocabs.centres import loadCentres 
+
+from pimms_apps.person.models import Person
 
 import logging
 log = logging.getLogger(__name__)
@@ -28,15 +31,29 @@ def qnsetuphome(request):
     urls = getqnsetupurls(urls)        
 
     #!FIXME: if one of the questionnairs raises an error none will be built.
-    allmyqns = Questionnaire.objects.filter(creator = request.user)
-    for qn in allmyqns:
+    next_page = 'userhome.html'
+    person = Person.objects.get(user=request.user)
+
+    if request.user.has_perm('qn_create_questionnaire'):
+       next_page = 'adminhome.html'
+       qns = Questionnaire.objects.all()
+    else:
+       if Centre.objects.count() == 0:
+          loadCentres()
+       try:
+          centre_id = Centre.objects.get(abbrev=person.institute).id
+          qns = Questionnaire.objects.filter(centre = centre_id)
+       except ObjectDoesNotExist:
+          qns={}
+
+    for qn in qns:
         qn.url = reverse('pimms_apps.qn.views.qnhome', args=(qn, ))
         qn.delurl = reverse('pimms_apps.qn.qnsetup.views.qndelete', args=(qn, ))
         qn.abbrev = qn
         #!TODO: qn.cpurl
       
-    return render_to_response('qnsetup/qnsetuphome.html', {'allqns': allmyqns, 'urls': urls},
-                                context_instance=RequestContext(request))
+    return render_to_response('qnsetup/'+next_page, {'person':person,'qns': qns,\
+             'urls': urls}, context_instance=RequestContext(request))
     
     
 @login_required
@@ -173,3 +190,19 @@ def qnsetupsuccess(request, qnname):
     
     return render_to_response('qnsetup/qnsetupsuccess.html', {'urls': urls, 'qnname':qnname},
                               context_instance=RequestContext(request))
+
+
+def qnuser(request):
+    '''
+    '''
+    person = Person.objects.get(user=request.user)
+    if Centre.objects.count() == 0:
+       loadCentres()
+    centre_id = Centre.objects.get(abbrev='NCAR').id
+    qns = Questionnaire.objects.filter(centre = centre_id)
+
+    return render_to_response('qnsetup/userhome.html', {'person':person, \
+                             'qns':qns}, \
+                             context_instance=RequestContext(request))
+
+

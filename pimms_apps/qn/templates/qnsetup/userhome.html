@@ -1,7 +1,7 @@
 {% extends "site/one_column_page.html" %}
 
 {% block pagetitle %}
-    Metadata questionnaires 
+    Metadata questionnaires for site {{ person.institute }}
 {% endblock %}
   
 {% block page_column_one %}
@@ -10,18 +10,19 @@
     <h3>Questionnaires <small>Table of current questionnaires</small></h3>
   </div>
   
-  <div class="row"> 
+<!--  <div class="row"> 
     <div class="span3 offset8">
       <a class="btn btn-primary btn-block" href="{{ urls.qninputs }}">Generate New Questionnaire</a>
     </div>
   </div>
+-->
   <div class="row">
     <div class="span10 offset1">
       <br/>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Project</th>
             <th>Created by</th>
             <th>Centre</th>
             <th>Creation date</th>
@@ -32,18 +33,20 @@
         </thead>
         <!-- <tbody data-provides="rowlink"> -->
         <tbody>
-          {% for qn in allqns %}
+          {% for qn in qns %}
             <tr>
               <td>{{ qn.qnname }}</td>
               <td>{{ qn.creator }}</td>
               <td>{{ qn.centre  }}</td>
               <td>{{ qn.creationDate }}</td>
-              <td><a href="{{ qn.url }}"><i class="icon-search" title="Go"></i></a></td>
+              <td><a href="{{ qn.url }}"><i class="icon-pencil" title="Edit"></i></a></td>
               <td>
-                <a href="#" onclick="return MyDialogs.loadConfirmationModal('my_modal_id', 
+<!--                <a href="#" onclick="return MyDialogs.loadConfirmationModal('my_modal_id', 
                                                                             '{{ qn.delurl }}', 
                                                                             'Delete Experiment', 
-                                                                            'Are you sure you want to delete {{ qn.abbrev }}?');"><i class="icon-trash" title="Delete"></i></a>
+                                                                            'Are you sure you want to delete {{ qn.abbrev }}?');"><i class="icon-eye-open" title="View"></i></a>
+-->
+                    <a href="#" ><i class="icon-eye-open" title="View - not yet implmented"></i></a>
               </td>
             </tr>
           {% endfor %}
